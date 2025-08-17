@@ -1,78 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>iajuar</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About – iajuar</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #1a1a1a;       /* slightly lighter dark background */
-      --bg-alt: #222;       /* slightly lighter section background */
-      --text: #f5f5f5;
-      --accent: #facc15;
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family:'Inter', sans-serif;
-      background-color:var(--bg);
-      color:var(--text);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      text-align:center;
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background: #0b0b0b;
+      color: #f5f5f5;
+      overflow-x: hidden;
     }
 
-    img {
-      max-width:600px;
-      width:80%;
-      height:auto;
-      margin-bottom:40px;
+    /* Warped grid background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.05), transparent 70%),
+                  repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 40px),
+                  repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 40px);
+      z-index: -1;
     }
 
-    nav {
-      display:flex;
-      gap:40px;
+    .top-photo {
+      position: relative;
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+      border: 2px solid #555;
     }
 
-    nav a {
-      color:var(--text);
-      text-decoration:none;
-      font-weight:500;
-      font-size:1.2rem;
-      transition:color 0.3s ease;
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 3px 6px;
+      font-size: 12px;
+      border: 1px solid #fff;
+      display: none;
+      pointer-events: none;
     }
 
-    nav a:hover {
-      color:var(--accent);
+    .hotspot {
+      position: absolute;
+      width: 30px; height: 30px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      border: 1px dashed #fff;
     }
 
-    @media(max-width:600px) {
-      nav { gap:20px; }
-      nav a { font-size:1rem; }
-      img { max-width:300px; }
+    section {
+      padding: 50px 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    section h3 {
+      border-bottom: 1px solid #fff;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-  <!-- HERO: Logo -->
-  <img src="images/iajuarLOGOTYPEtransparent.png" alt="iajuar logo">
+  <!-- Backpack Photo -->
+  <div style="position:relative; max-width:1000px; margin:auto;">
+    <img src="IMG_4435.jpeg" class="top-photo" alt="Backpack contents">
 
-  <!-- NAVIGATION MENU -->
-  <nav>
-    <a href="#music">Music</a>
-    <a href="#projects">Projects</a>
-    <a href="#about">About</a>
-  </nav>
+    <!-- Example hotspots -->
+    <div class="hotspot" data-label="Admin" data-target="admin" style="top:20%; left:60%;"></div>
+    <div class="hotspot" data-label="First Aid Kit" data-target="firstaid" style="top:15%; left:10%;"></div>
+    <div class="hotspot" data-label="Combat Boots" data-target="boots" style="top:40%; left:85%;"></div>
+  </div>
 
-  <!-- PLACEHOLDER SECTIONS -->
-  <section id="music"></section>
-  <section id="projects"></section>
-  <section id="about"></section>
+  <div class="tooltip" id="tooltip"></div>
 
+  <!-- Descriptions -->
+  <section id="admin">
+    <h3>Admin</h3>
+    <p>[Your description here]</p>
+  </section>
+
+  <section id="firstaid">
+    <h3>First Aid Kit</h3>
+    <p>[Your description here]</p>
+  </section>
+
+  <section id="boots">
+    <h3>Combat Boots</h3>
+    <p>[Your description here]</p>
+  </section>
+
+  <script>
+    // Warped grid background tracking
+    document.addEventListener("mousemove", e => {
+      document.body.style.setProperty("--x", e.clientX + "px");
+      document.body.style.setProperty("--y", e.clientY + "px");
+    });
+
+    const hotspots = document.querySelectorAll(".hotspot");
+    const tooltip = document.getElementById("tooltip");
+    let mobileMode = window.matchMedia("(max-width: 768px)").matches;
+    let activeHotspot = null;
+
+    hotspots.forEach(hotspot => {
+      const label = hotspot.dataset.label;
+      const targetId = hotspot.dataset.target;
+
+      if (!mobileMode) {
+        // Desktop: hover shows, click scrolls
+        hotspot.addEventListener("mouseenter", e => {
+          tooltip.textContent = label;
+          tooltip.style.display = "block";
+        });
+        hotspot.addEventListener("mousemove", e => {
+          tooltip.style.left = e.pageX + 10 + "px";
+          tooltip.style.top = e.pageY + 10 + "px";
+        });
+        hotspot.addEventListener("mouseleave", e => {
+          tooltip.style.display = "none";
+        });
+        hotspot.addEventListener("click", e => {
+          document.getElementById(targetId).scrollIntoView({behavior: "smooth"});
+        });
+      } else {
+        // Mobile: tap once shows tooltip, tap again scrolls
+        hotspot.addEventListener("click", e => {
+          if (activeHotspot === hotspot) {
+            document.getElementById(targetId).scrollIntoView({behavior: "smooth"});
+            tooltip.style.display = "none";
+            activeHotspot = null;
+          } else {
+            tooltip.textContent = label;
+            tooltip.style.display = "block";
+            tooltip.style.left = e.pageX + "px";
+            tooltip.style.top = e.pageY + "px";
+            activeHotspot = hotspot;
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
