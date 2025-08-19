@@ -1,148 +1,108 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About – iajuar</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <title>Hyper Mobility Kit</title>
   <style>
     body {
       margin: 0;
-      font-family: 'JetBrains Mono', monospace;
-      background: #0b0b0b;
-      color: #f5f5f5;
-      overflow-x: hidden;
+      font-family: monospace;
+      background: #0a0a0a;
+      color: #e0e0e0;
     }
 
-    /* Warped grid background */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.05), transparent 70%),
-                  repeating-linear-gradient(0deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 40px),
-                  repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 40px);
-      z-index: -1;
-    }
-
-    .top-photo {
+    .photo-container {
       position: relative;
-      display: block;
       max-width: 100%;
-      margin: 0 auto;
-      border: 2px solid #555;
+      overflow: hidden;
+    }
+
+    .photo-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Hotspots */
+    .hotspot {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(0, 255, 128, 0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .tooltip {
       position: absolute;
-      background: rgba(0, 0, 0, 0.85);
-      color: #fff;
-      padding: 3px 6px;
-      font-size: 12px;
-      border: 1px solid #fff;
+      background: #111;
+      color: #0f0;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 14px;
       display: none;
-      pointer-events: none;
+      white-space: nowrap;
     }
 
-    .hotspot {
-      position: absolute;
-      width: 30px; height: 30px;
-      cursor: pointer;
-      background: rgba(255,255,255,0.15);
-      border-radius: 50%;
-      border: 1px dashed #fff;
-    }
-
-    section {
-      padding: 50px 20px;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    section h3 {
-      border-bottom: 1px solid #fff;
-      padding-bottom: 4px;
-      margin-bottom: 10px;
+    .description {
+      padding: 2rem;
+      border-bottom: 1px solid #333;
     }
   </style>
 </head>
 <body>
-
-  <!-- Backpack Photo -->
-  <div style="position:relative; max-width:1000px; margin:auto;">
+  <div class="photo-container">
     <img src="assets/images/IMG_4435.jpeg" alt="Kit Layout">
 
-    <!-- Example hotspots -->
-    <div class="hotspot" data-label="Admin" data-target="admin" style="top:20%; left:60%;"></div>
-    <div class="hotspot" data-label="First Aid Kit" data-target="firstaid" style="top:15%; left:10%;"></div>
-    <div class="hotspot" data-label="Combat Boots" data-target="boots" style="top:40%; left:85%;"></div>
+    <!-- Example hotspot (we’ll expand all later) -->
+    <div class="hotspot" style="top:10%; left:20%;" data-target="first-aid">
+      <span class="tooltip">First Aid Kit</span>
+    </div>
+
+    <div class="hotspot" style="top:40%; left:50%;" data-target="rei-trail">
+      <span class="tooltip">REI Trail 25</span>
+    </div>
   </div>
 
-  <div class="tooltip" id="tooltip"></div>
-
-  <!-- Descriptions -->
-  <section id="admin">
-    <h3>Admin</h3>
-    <p>[Your description here]</p>
+  <!-- Example Descriptions -->
+  <section id="first-aid" class="description">
+    <h2>First Aid Kit</h2>
+    <p>[First aid kit description from HyperMobility document goes here.]</p>
   </section>
 
-  <section id="firstaid">
-    <h3>First Aid Kit</h3>
-    <p>[Your description here]</p>
-  </section>
-
-  <section id="boots">
-    <h3>Combat Boots</h3>
-    <p>[Your description here]</p>
+  <section id="rei-trail" class="description">
+    <h2>REI Trail 25</h2>
+    <p>[Trail 25 description from HyperMobility document goes here.]</p>
   </section>
 
   <script>
-    // Warped grid background tracking
-    document.addEventListener("mousemove", e => {
-      document.body.style.setProperty("--x", e.clientX + "px");
-      document.body.style.setProperty("--y", e.clientY + "px");
-    });
-
-    const hotspots = document.querySelectorAll(".hotspot");
-    const tooltip = document.getElementById("tooltip");
-    let mobileMode = window.matchMedia("(max-width: 768px)").matches;
-    let activeHotspot = null;
+    const hotspots = document.querySelectorAll('.hotspot');
 
     hotspots.forEach(hotspot => {
-      const label = hotspot.dataset.label;
-      const targetId = hotspot.dataset.target;
+      const tooltip = hotspot.querySelector('.tooltip');
+      let clickedOnce = false;
 
-      if (!mobileMode) {
-        // Desktop: hover shows, click scrolls
-        hotspot.addEventListener("mouseenter", e => {
-          tooltip.textContent = label;
-          tooltip.style.display = "block";
-        });
-        hotspot.addEventListener("mousemove", e => {
-          tooltip.style.left = e.pageX + 10 + "px";
-          tooltip.style.top = e.pageY + 10 + "px";
-        });
-        hotspot.addEventListener("mouseleave", e => {
-          tooltip.style.display = "none";
-        });
-        hotspot.addEventListener("click", e => {
-          document.getElementById(targetId).scrollIntoView({behavior: "smooth"});
-        });
-      } else {
-        // Mobile: tap once shows tooltip, tap again scrolls
-        hotspot.addEventListener("click", e => {
-          if (activeHotspot === hotspot) {
-            document.getElementById(targetId).scrollIntoView({behavior: "smooth"});
-            tooltip.style.display = "none";
-            activeHotspot = null;
-          } else {
-            tooltip.textContent = label;
-            tooltip.style.display = "block";
-            tooltip.style.left = e.pageX + "px";
-            tooltip.style.top = e.pageY + "px";
-            activeHotspot = hotspot;
+      hotspot.addEventListener('click', () => {
+        if (!clickedOnce) {
+          tooltip.style.display = 'block';
+          clickedOnce = true;
+        } else {
+          const targetId = hotspot.getAttribute('data-target');
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
           }
-        });
-      }
+          tooltip.style.display = 'none';
+          clickedOnce = false;
+        }
+      });
     });
   </script>
 </body>
