@@ -1,12 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title></title>
-  <style>html,body{margin:0;background:#000}img{display:block;max-width:100%;height:auto;margin:0 auto}</style>
+  <meta charset="UTF-8">
+  <title>Hyper Mobility Kit</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .photo-container {
+      position: relative;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .photo-container img {
+      width: 100%;
+      display: block;
+    }
+
+    .hotspot {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: rgba(0, 128, 255, 0.8);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: black;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      display: none;
+      transform: translate(-50%, -120%);
+    }
+
+    .hotspot.show-tooltip .tooltip {
+      display: block;
+    }
+
+    section {
+      padding: 40px 20px;
+      border-bottom: 1px solid #ccc;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    section h2 {
+      margin-top: 0;
+    }
+  </style>
 </head>
 <body>
-  <img src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit" />
+
+  <div class="photo-container">
+    <img src="assets/images/IMG_4435.jpeg" alt="Kit Layout">
+
+    <!-- Example hotspot -->
+    <div class="hotspot" style="top: 10%; left: 5%;" data-target="first-aid-kit">
+      <div class="tooltip">First Aid Kit</div>
+    </div>
+
+    <div class="hotspot" style="top: 15%; left: 20%;" data-target="bandana">
+      <div class="tooltip">Bandana</div>
+    </div>
+
+    <div class="hotspot" style="top: 15%; left: 30%;" data-target="mask">
+      <div class="tooltip">Mask</div>
+    </div>
+
+    <div class="hotspot" style="top: 18%; left: 40%;" data-target="umbrella">
+      <div class="tooltip">Umbrella</div>
+    </div>
+
+    <div class="hotspot" style="top: 20%; left: 50%;" data-target="admin">
+      <div class="tooltip">Admin</div>
+    </div>
+
+    <!-- continue this pattern for: Cap, Carabiner, Passport Photos, Notebook, Wallet, Coin Carrier, Passport, Pens, Combat Boots, Sandals, Hygiene, REI Trail 25, Fjallraven Greenland Pocket, MacBook Air, Belt, Clothing, Packable Tote, Apple Watch, AirPods, 2x AirTag, Anker Power Bank, USBC adapter, Cables, Regional Adapter, Flash Drive, Headphone Adapter, Headlamp, Zip Pouch, Uniball Vision Micro, PaperMate Flair -->
+
+  </div>
+
+  <!-- Description Sections -->
+  <section id="first-aid-kit">
+    <h2>First Aid Kit</h2>
+    <p>[Insert description from Hyper Mobility doc]</p>
+  </section>
+
+  <section id="bandana">
+    <h2>Bandana</h2>
+    <p>[Insert description]</p>
+  </section>
+
+  <section id="mask">
+    <h2>Mask</h2>
+    <p>[Insert description]</p>
+  </section>
+
+  <section id="umbrella">
+    <h2>Umbrella</h2>
+    <p>[Insert description]</p>
+  </section>
+
+  <section id="admin">
+    <h2>Admin (Muji Passport Organizer)</h2>
+    <p>[Insert description]</p>
+  </section>
+
+  <!-- ... repeat for all items ... -->
+
+  <script>
+    document.querySelectorAll('.hotspot').forEach(hotspot => {
+      let tappedOnce = false;
+
+      hotspot.addEventListener('click', () => {
+        if (!tappedOnce) {
+          hotspot.classList.toggle('show-tooltip');
+          tappedOnce = true;
+          setTimeout(() => tappedOnce = false, 1500); // reset after 1.5s
+        } else {
+          const targetId = hotspot.getAttribute('data-target');
+          const section = document.getElementById(targetId);
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
