@@ -1,109 +1,21 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hyper Mobility Kit</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>iajuar — image test</title>
   <style>
-    body {
-      margin: 0;
-      font-family: monospace;
-      background: #0a0a0a;
-      color: #e0e0e0;
-    }
-
-    .photo-container {
-      position: relative;
-      max-width: 100%;
-      overflow: hidden;
-    }
-
-    .photo-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* Hotspots */
-    .hotspot {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(0, 255, 128, 0.7);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #000;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .tooltip {
-      position: absolute;
-      background: #111;
-      color: #0f0;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 14px;
-      display: none;
-      white-space: nowrap;
-    }
-
-    .description {
-      padding: 2rem;
-      border-bottom: 1px solid #333;
-    }
+    html, body { margin:0; padding:0; background:#111; }
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 24px; }
+    img { display:block; width:100%; height:auto; border:1px solid #333; }
+    h1 { font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#bbb; margin: 0 0 12px; }
   </style>
 </head>
 <body>
-  <div class="photo-container">
-    <img src="assets/images/IMG_4435.jpeg" alt="Kit Layout">
-
-    <!-- Example hotspot (we’ll expand all later) -->
-    <div class="hotspot" style="top:10%; left:20%;" data-target="first-aid">
-      <span class="tooltip">First Aid Kit</span>
-    </div>
-
-    <div class="hotspot" style="top:40%; left:50%;" data-target="rei-trail">
-      <span class="tooltip">REI Trail 25</span>
-    </div>
-  </div>
-
-  <!-- Example Descriptions -->
-  <section id="first-aid" class="description">
-    <h2>First Aid Kit</h2>
-    <p>[First aid kit description from HyperMobility document goes here.]</p>
-  </section>
-
-  <section id="rei-trail" class="description">
-    <h2>REI Trail 25</h2>
-    <p>[Trail 25 description from HyperMobility document goes here.]</p>
-  </section>
-
-  <script>
-    const hotspots = document.querySelectorAll('.hotspot');
-
-    hotspots.forEach(hotspot => {
-      const tooltip = hotspot.querySelector('.tooltip');
-      let clickedOnce = false;
-
-      hotspot.addEventListener('click', () => {
-        if (!clickedOnce) {
-          tooltip.style.display = 'block';
-          clickedOnce = true;
-        } else {
-          const targetId = hotspot.getAttribute('data-target');
-          const targetEl = document.getElementById(targetId);
-          if (targetEl) {
-            targetEl.scrollIntoView({ behavior: 'smooth' });
-          }
-          tooltip.style.display = 'none';
-          clickedOnce = false;
-        }
-      });
-    });
-  </script>
+  <main class="wrap">
+    <h1>Backpack contents</h1>
+    <!-- If your image is in /assets/images/, change the src to assets/images/IMG_4435.jpeg -->
+    <img src="assets/IMG_4435.jpeg" alt="Backpack contents laid out" />
+  </main>
 </body>
 </html>
