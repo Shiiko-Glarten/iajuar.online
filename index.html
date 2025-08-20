@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>iajuar — kit hotspots</title>
+  <title>iajuar — kit outline editor</title>
 
   <!-- JetBrains Mono -->
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -21,19 +21,17 @@
     .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
     .imgStage{position:relative;user-select:none}
     .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
-    /* hotspot marker */
-    .hs{
+    
+    /* Outline hotspot */
+    .outline{
       position:absolute;
-      width:18px;height:18px;
-      border-radius:50%;
-      background:rgba(255,255,255,.58);
-      box-shadow:0 0 0 1px rgba(255,255,255,.35) inset, 0 0 12px rgba(0,0,0,.35);
-      transform:translate(-50%,-50%);
-      cursor:pointer; 
+      border:2px solid rgba(255,255,255,.7);
+      border-radius:6px;
+      cursor:pointer;
     }
-    .hs:focus{outline:2px solid rgba(255,255,255,.8);outline-offset:2px}
-    .hs:hover{background:rgba(255,255,255,.75)}
-    /* tooltip */
+    .outline:hover{border-color:rgba(255,255,255,1);}
+    
+    /* Tooltip */
     .tip{
       position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
       background:var(--tip); color:var(--ink);
@@ -41,8 +39,9 @@
       white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease;
       box-shadow:0 4px 14px rgba(0,0,0,.35);
     }
-    .hs:hover .tip, .hs.show .tip{opacity:1}
-    /* helper overlay (alignment mode) */
+    .outline:hover .tip{opacity:1;}
+
+    /* toolbar & other UI */
     .bar{
       position:sticky; top:0; z-index:10; background:#111; border:1px solid #222; border-left:none;border-right:none;
       padding:10px 12px; display:flex; gap:10px; align-items:center; justify-content:space-between
@@ -63,39 +62,34 @@
 </head>
 <body>
 
-  <!-- Alignment/placement toolbar (click-to-place precise coords). 
-       If coords already exist in localStorage, hotspots render immediately. -->
   <div class="bar wrap" id="toolbar">
     <div class="pill">
-      <b>Alignment mode</b>
-      <small id="modeHint" class="msg">Click the image to place current item at the exact Helvetica number position.</small>
+      <b>Outline editor</b>
+      <small id="modeHint" class="msg">Click-drag to draw a rectangle around each item. Hover to see label.</small>
     </div>
     <div class="pill">
       <small id="itemLabel" class="msg"></small>
-      <button id="prevBtn" title="Previous (←)">◀︎ Prev</button>
-      <button id="nextBtn" title="Next (→)">Next ▶︎</button>
-      <button id="toggleBtn" title="Toggle editor (E)"><span id="toggleTxt">Exit</span> editor</button>
-      <button id="saveBtn" title="Save to localStorage">Save</button>
-      <button id="resetBtn" title="Clear saved">Reset</button>
-      <button id="exportBtn" title="Copy JSON">Export</button>
+      <button id="prevBtn">◀︎ Prev</button>
+      <button id="nextBtn">Next ▶︎</button>
+      <button id="saveBtn">Save</button>
+      <button id="resetBtn">Reset</button>
+      <button id="exportBtn">Export JSON</button>
     </div>
   </div>
 
   <div class="wrap">
     <div class="imgStage" id="stage">
-      <!-- Absolute URL so it *always* loads -->
-      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
-      <!-- Hotspots will be injected here using saved coordinates -->
+      <img id="kit" src="/mnt/data/IMG_4435.jpeg" alt="kit layout" />
+      <!-- outlines will be injected here -->
     </div>
   </div>
 
   <div id="description" class="wrap">
     <h2>DESCRIPTION</h2>
-    <p>Paste your full document here. All hotspots currently scroll to this section.</p>
+    <p>Hover over any rectangle to see the label.</p>
   </div>
 
 <script>
-/* ===== Configuration ===== */
 const ITEMS = [
   "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
   "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
@@ -105,29 +99,20 @@ const ITEMS = [
   "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
 ];
 
-// storage key for your repo
-const STORE_KEY = "iajuar_hotspots_v2";
+const STORE_KEY = "iajuar_outlines_v1";
+let outlines = loadOutlines(); 
+let idx = firstUnplacedIndex(outlines);
 
-/* ===== State ===== */
-let points = loadPoints(); // array of {top,left} in %
-let editor = true;         // alignment mode on by default
-let idx = firstUnplacedIndex(points);
-
-/* ===== DOM ===== */
 const stage = document.getElementById('stage');
 const img = document.getElementById('kit');
-const toolbar = document.getElementById('toolbar');
 const itemLabel = document.getElementById('itemLabel');
-const toggleBtn = document.getElementById('toggleBtn');
-const toggleTxt = document.getElementById('toggleTxt');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const saveBtn = document.getElementById('saveBtn');
 const resetBtn = document.getElementById('resetBtn');
 const exportBtn = document.getElementById('exportBtn');
 
-/* ===== Helpers ===== */
-function loadPoints(){
+function loadOutlines(){
   const saved = localStorage.getItem(STORE_KEY);
   if(saved){
     try{
@@ -135,7 +120,6 @@ function loadPoints(){
       if(Array.isArray(arr) && arr.length === ITEMS.length) return arr;
     }catch(e){}
   }
-  // start empty
   return new Array(ITEMS.length).fill(null);
 }
 function firstUnplacedIndex(arr){
@@ -145,93 +129,97 @@ function firstUnplacedIndex(arr){
 function setLabel(){
   itemLabel.textContent = `Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`;
 }
-function percentFromEvent(e){
-  const rect = img.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width * 100;
-  const y = (e.clientY - rect.top) / rect.height * 100;
-  return { left: clamp(x,0,100), top: clamp(y,0,100) };
-}
-function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
-function renderHotspots(){
-  // remove old
-  [...stage.querySelectorAll('.hs')].forEach(n => n.remove());
-  // add for each placed point
-  points.forEach((p,i)=>{
-    if(!p) return;
-    const d = document.createElement('button');
-    d.className = 'hs';
-    d.style.left = p.left + '%';
-    d.style.top  = p.top  + '%';
-    d.setAttribute('aria-label', ITEMS[i]);
-    d.innerHTML = `<span class="tip">${ITEMS[i]}</span>`;
-    d.addEventListener('click', ()=>{
-      // second tap/ click scroll
-      d.classList.toggle('show');
-      if(d.classList.contains('show')){
-        setTimeout(()=>{ 
-          document.getElementById('description').scrollIntoView({behavior:'smooth'});
-        }, 120);
-      }
-    });
-    stage.appendChild(d);
-  });
-}
-function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(points)); }
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(outlines)); }
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
-  points = new Array(ITEMS.length).fill(null);
+  outlines = new Array(ITEMS.length).fill(null);
   idx = 0;
   setLabel();
-  renderHotspots();
+  renderOutlines();
 }
 function exportJSON(){
-  const txt = JSON.stringify(points);
+  const txt = JSON.stringify(outlines);
   navigator.clipboard?.writeText(txt);
-  alert("Hotspot coordinates copied to clipboard.\n\n" + txt);
+  alert("Outline coordinates copied to clipboard.\n\n" + txt);
 }
 
-/* ===== Events ===== */
-img.addEventListener('click', (e)=>{
-  if(!editor) return;
-  const pos = percentFromEvent(e);
-  points[idx] = pos;
-  idx = (idx + 1) % ITEMS.length;
-  setLabel();
-  renderHotspots();
+let startX, startY, drawing = false;
+
+img.addEventListener('mousedown', (e)=>{
+  if(idx === null) return;
+  const rect = img.getBoundingClientRect();
+  startX = ((e.clientX - rect.left)/rect.width)*100;
+  startY = ((e.clientY - rect.top)/rect.height)*100;
+  drawing = true;
 });
 
-toggleBtn.addEventListener('click', ()=>{
-  editor = !editor;
-  toggleTxt.textContent = editor ? "Exit" : "Enter";
-  toolbar.querySelector('#modeHint').style.opacity = editor ? 1 : .6;
+img.addEventListener('mousemove', (e)=>{
+  if(!drawing) return;
+  renderOutlines(); // clear temp overlay
+  const rect = img.getBoundingClientRect();
+  const currentX = ((e.clientX - rect.left)/rect.width)*100;
+  const currentY = ((e.clientY - rect.top)/rect.height)*100;
+
+  const x = Math.min(startX,currentX);
+  const y = Math.min(startY,currentY);
+  const w = Math.abs(startX-currentX);
+  const h = Math.abs(startY-currentY);
+
+  const outline = document.createElement('div');
+  outline.className = 'outline';
+  outline.style.left = x + '%';
+  outline.style.top = y + '%';
+  outline.style.width = w + '%';
+  outline.style.height = h + '%';
+  outline.innerHTML = `<span class="tip">${ITEMS[idx]}</span>`;
+  stage.appendChild(outline);
 });
-prevBtn.addEventListener('click', ()=>{
-  idx = (idx - 1 + ITEMS.length) % ITEMS.length;
-  setLabel();
-});
-nextBtn.addEventListener('click', ()=>{
+
+img.addEventListener('mouseup', (e)=>{
+  if(!drawing) return;
+  drawing = false;
+  const rect = img.getBoundingClientRect();
+  const endX = ((e.clientX - rect.left)/rect.width)*100;
+  const endY = ((e.clientY - rect.top)/rect.height)*100;
+
+  outlines[idx] = {
+    left: Math.min(startX,endX),
+    top: Math.min(startY,endY),
+    width: Math.abs(startX-endX),
+    height: Math.abs(startY-endY)
+  };
   idx = (idx + 1) % ITEMS.length;
   setLabel();
+  renderOutlines();
 });
+
+function renderOutlines(){
+  [...stage.querySelectorAll('.outline')].forEach(n=>n.remove());
+  outlines.forEach((o,i)=>{
+    if(!o) return;
+    const outline = document.createElement('div');
+    outline.className = 'outline';
+    outline.style.left = o.left + '%';
+    outline.style.top = o.top + '%';
+    outline.style.width = o.width + '%';
+    outline.style.height = o.height + '%';
+    outline.innerHTML = `<span class="tip">${ITEMS[i]}</span>`;
+    stage.appendChild(outline);
+  });
+}
+
+// Toolbar buttons
+prevBtn.addEventListener('click', ()=>{ idx = (idx-1+ITEMS.length)%ITEMS.length; setLabel(); });
+nextBtn.addEventListener('click', ()=>{ idx = (idx+1)%ITEMS.length; setLabel(); });
 saveBtn.addEventListener('click', save);
 resetBtn.addEventListener('click', resetAll);
 exportBtn.addEventListener('click', exportJSON);
 
-// keyboard helpers
-window.addEventListener('keydown', (e)=>{
-  if(e.key === 'ArrowRight'){ nextBtn.click(); }
-  if(e.key === 'ArrowLeft'){ prevBtn.click(); }
-  if(e.key.toLowerCase() === 'e'){ toggleBtn.click(); }
-});
-
-/* ===== Init ===== */
 img.addEventListener('load', ()=>{
-  // If points already exist, skip straight to viewing
-  if(points.some(Boolean)) editor = false;
-  toggleTxt.textContent = editor ? "Exit" : "Enter";
   setLabel();
-  renderHotspots();
+  renderOutlines();
 });
 </script>
+
 </body>
 </html>
