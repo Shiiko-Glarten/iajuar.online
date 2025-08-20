@@ -1,285 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Hotspot Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>iajuar — kit hotspots</title>
+
+  <!-- JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      margin: 0;
-      font-family: 'JetBrains Mono', monospace;
-      background-color: #f5f5f5;
-      color: #222;
-      line-height: 1.6;
+    :root{
+      --bg:#0b0b0b;
+      --ink:#eaeaea;
+      --ink-dim:#bdbdbd;
+      --tip:#111;
+      --accent:#ffffff;
     }
-    .image-container {
-      position: relative;
-      text-align: center;
-      margin: 20px auto;
-      max-width: 95%;
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.55}
+    .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
+    .imgStage{position:relative;user-select:none}
+    .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
+    /* hotspot marker */
+    .hs{
+      position:absolute;
+      width:18px;height:18px;
+      border-radius:50%;
+      background:rgba(255,255,255,.58);
+      box-shadow:0 0 0 1px rgba(255,255,255,.35) inset, 0 0 12px rgba(0,0,0,.35);
+      transform:translate(-50%,-50%);
+      cursor:pointer; 
     }
-    .image-container img {
-      width: 100%;
-      height: auto;
-      display: block;
+    .hs:focus{outline:2px solid rgba(255,255,255,.8);outline-offset:2px}
+    .hs:hover{background:rgba(255,255,255,.75)}
+    /* tooltip */
+    .tip{
+      position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
+      background:var(--tip); color:var(--ink);
+      padding:6px 8px; border-radius:8px; font-size:12px;
+      white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease;
+      box-shadow:0 4px 14px rgba(0,0,0,.35);
     }
-    .hotspot {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      background-color: rgba(255, 255, 255, 0.6);
-      border-radius: 50%;
-      cursor: pointer;
-      transform: translate(-50%, -50%);
+    .hs:hover .tip, .hs.show .tip{opacity:1}
+    /* helper overlay (alignment mode) */
+    .bar{
+      position:sticky; top:0; z-index:10; background:#111; border:1px solid #222; border-left:none;border-right:none;
+      padding:10px 12px; display:flex; gap:10px; align-items:center; justify-content:space-between
     }
-    .tooltip {
-      visibility: hidden;
-      width: max-content;
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-      padding: 3px 8px;
-      border-radius: 6px;
-      position: absolute;
-      z-index: 1;
-      transform: translate(-50%, -120%);
-      white-space: nowrap;
-      font-size: 12px;
+    .bar small{color:var(--ink-dim)}
+    .bar button{
+      background:#1b1b1b;color:#eee;border:1px solid #2c2c2c;border-radius:8px;padding:8px 10px;font-family:inherit;cursor:pointer
     }
-    .hotspot:hover .tooltip,
-    .hotspot.active .tooltip {
-      visibility: visible;
-    }
-    #description {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    #description h2 {
-      font-size: 1.4rem;
-      margin-bottom: 15px;
-    }
+    .bar button:hover{background:#242424}
+    .pill{display:inline-flex;gap:6px;align-items:center}
+    .pill b{color:#fff}
+    .kbd{font-size:.85em;background:#181818;border:1px solid #2b2b2b;border-bottom-color:#222;border-radius:6px;padding:2px 6px}
+    .msg{font-size:.9rem;color:var(--ink-dim)}
+    #description{max-width:900px;margin:24px auto 64px;background:#0f0f0f;border:1px solid #1d1d1d;border-radius:14px;padding:18px}
+    #description h2{margin:0 0 10px 0;font-size:1.05rem;color:#fff}
+    #description p{margin:0;color:#cfcfcf}
   </style>
 </head>
 <body>
-  <div class="image-container">
-    <img src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="Hotspot Image">
-    
-    <!-- Hotspots -->
-    <div class="hotspot" style="top:8%; left:9%;" data-target="description"><span class="tooltip">First Aid Kit</span></div>
-    <div class="hotspot" style="top:15%; left:20%;" data-target="description"><span class="tooltip">Umbrella</span></div>
-    <div class="hotspot" style="top:15%; left:30%;" data-target="description"><span class="tooltip">Case</span></div>
-    <div class="hotspot" style="top:26%; left:7%;" data-target="description"><span class="tooltip">Bandana</span></div>
-    <div class="hotspot" style="top:26%; left:13%;" data-target="description"><span class="tooltip">Mask</span></div>
-    <div class="hotspot" style="top:8%; left:55%;" data-target="description"><span class="tooltip">Cap</span></div>
-    <div class="hotspot" style="top:20%; left:61%;" data-target="description"><span class="tooltip">Carabiner</span></div>
-    <div class="hotspot" style="top:8%; left:70%;" data-target="description"><span class="tooltip">Notebook</span></div>
-    <div class="hotspot" style="top:8%; left:74%;" data-target="description"><span class="tooltip">Instructions</span></div>
-    <div class="hotspot" style="top:8%; left:79%;" data-target="description"><span class="tooltip">Photo Book</span></div>
-    <div class="hotspot" style="top:20%; left:69%;" data-target="description"><span class="tooltip">Wallet</span></div>
-    <div class="hotspot" style="top:20%; left:75%;" data-target="description"><span class="tooltip">Coin Pouch</span></div>
-    <div class="hotspot" style="top:8%; left:86%;" data-target="description"><span class="tooltip">Passport</span></div>
-    <div class="hotspot" style="top:26%; left:86%;" data-target="description"><span class="tooltip">Pen</span></div>
-    <div class="hotspot" style="top:30%; left:86%;" data-target="description"><span class="tooltip">Pencil</span></div>
-    <div class="hotspot" style="top:14%; left:94%;" data-target="description"><span class="tooltip">Boots</span></div>
-    <div class="hotspot" style="top:32%; left:94%;" data-target="description"><span class="tooltip">Sandals</span></div>
-    <div class="hotspot" style="top:44%; left:91%;" data-target="description"><span class="tooltip">Toiletry Bag</span></div>
-    <div class="hotspot" style="top:40%; left:63%;" data-target="description"><span class="tooltip">Backpack</span></div>
-    <div class="hotspot" style="top:58%; left:52%;" data-target="description"><span class="tooltip">Laptop</span></div>
-    <div class="hotspot" style="top:58%; left:42%;" data-target="description"><span class="tooltip">Bag</span></div>
-    <div class="hotspot" style="top:72%; left:36%;" data-target="description"><span class="tooltip">Pouch</span></div>
-    <div class="hotspot" style="top:72%; left:22%;" data-target="description"><span class="tooltip">Organizer</span></div>
-    <div class="hotspot" style="top:58%; left:12%;" data-target="description"><span class="tooltip">Belt</span></div>
-    <div class="hotspot" style="top:50%; left:45%;" data-target="description"><span class="tooltip">Watch</span></div>
-    <div class="hotspot" style="top:44%; left:48%;" data-target="description"><span class="tooltip">Earbuds</span></div>
-    <div class="hotspot" style="top:50%; left:50%;" data-target="description"><span class="tooltip">Cables</span></div>
-    <div class="hotspot" style="top:50%; left:54%;" data-target="description"><span class="tooltip">AirPods</span></div>
-    <div class="hotspot" style="top:50%; left:58%;" data-target="description"><span class="tooltip">Hard Drive</span></div>
-    <div class="hotspot" style="top:50%; left:62%;" data-target="description"><span class="tooltip">Headlamp</span></div>
-    <div class="hotspot" style="top:50%; left:66%;" data-target="description"><span class="tooltip">Adapter</span></div>
-    <div class="hotspot" style="top:50%; left:70%;" data-target="description"><span class="tooltip">Charger</span></div>
-    <div class="hotspot" style="top:50%; left:74%;" data-target="description"><span class="tooltip">SD Card</span></div>
-    <div class="hotspot" style="top:50%; left:78%;" data-target="description"><span class="tooltip">Light</span></div>
+
+  <!-- Alignment/placement toolbar (click-to-place precise coords). 
+       If coords already exist in localStorage, hotspots render immediately. -->
+  <div class="bar wrap" id="toolbar">
+    <div class="pill">
+      <b>Alignment mode</b>
+      <small id="modeHint" class="msg">Click the image to place current item at the exact Helvetica number position.</small>
+    </div>
+    <div class="pill">
+      <small id="itemLabel" class="msg"></small>
+      <button id="prevBtn" title="Previous (←)">◀︎ Prev</button>
+      <button id="nextBtn" title="Next (→)">Next ▶︎</button>
+      <button id="toggleBtn" title="Toggle editor (E)"><span id="toggleTxt">Exit</span> editor</button>
+      <button id="saveBtn" title="Save to localStorage">Save</button>
+      <button id="resetBtn" title="Clear saved">Reset</button>
+      <button id="exportBtn" title="Copy JSON">Export</button>
+    </div>
   </div>
 
-  <div id="description">
+  <div class="wrap">
+    <div class="imgStage" id="stage">
+      <!-- Absolute URL so it *always* loads -->
+      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
+      <!-- Hotspots will be injected here using saved coordinates -->
+    </div>
+  </div>
+
+  <div id="description" class="wrap">
     <h2>DESCRIPTION</h2>
-    <p>
-REI Trail 25:
-A 25L pack is my ideal size: Small enough to fit as a personal item even on the strictest budget airlines, while still large enough to fit ~7 days worth of clothes. Perfect carrying capacity while in transit and plenty inconspicuous enough to use as an EDC upon arrival. The hiking centric design of this pack means little in the way of organization in favor of reducing weight, but this has proven useful in managing budget airline weight restrictions. There are many bucket style, half zip loader backpacks in this category but the features that keep me tied to my Trail 25 are the hip belt, endlessly useful  and endlessly stretchy side pockets, and a stowable rain cover. Ive added shock cord to the pack’s exterior for versatility and Nite-Ize locking S-carabiners on the zipper for security.
-
-
-Fjallraven Greenland Pocket:
-Inevitably, there are times when carrying a backpack is overkill. A small crossbody pouch is all that is needed for essentials -  My wallet, notebook/pens, phone, earbuds, and passport all live organized within these pockets. Wise to keep mission critical items out of clothing pockets and behind a zipper for security. This keeps essentials organized and adds modularity. Bonus points for being able to wear this simultaneously with my backpack- hanging forward on my abdomen for easy access to my wallet and passport in airports.
-
-CLOTHING
-
-My philosophy for clothing keeps things as minimal as possible without having to worry about laundry too often. I’ve found roughly a weeks worth of clothes is a good balance here. Shorter trips may require less clothing, but while living somewhere for a few weeks, it is nice to not have to wash things every few days. My uniform is formulaically black bottoms and a gray or other neutral tone top with the exception of one colored shirt for variety.
-
-My packing list here varies slightly between climates, but the core remains unchanged:
-
-2x Gray T-Shirts: 100% polyester composition isn’t my first choice, usually favoring blends, but in the current peak of southeastern Asia’s summer, nothing else dries  quickly enough/wicks sweat efficiently. These are from Uniqlo’s Airism collection - the ubiquity of Uniqlo means these are cheap and easily replaceable if needed. Merino wool is fantastic for odor control but can be delicate and I’m not a fan of babying my clothing. Polyester isn’t fussy in this regard- tough and cheap- so its the tool for the job here. 
-
-2x Collared Shirts:  65/35 poly/cotton blends in polyester’s favor. Nothing beats the minimalism and utility of a plain old t-shirt but a classier variety is a welcome addition.
-These were acquired from thrifts years ago and earned their stay.
-
-1x Black Pants: I don’t dare travel anywhere without a pair of pants of some kind (shorts on flights is often regrettable in my experience). While in Tokyo, I recently replaced the pair of Dickie’s 874s that had been traveling with me for a pair of Arc’teryx Levon LT pants. I optimized for weight and packability here because they are often in my pack during the daytime. The 100% nylon composition keeps things light and quick drying while still being plenty tough. These are patterned as a standard 5 pocket jean sans any of Arc’teryx usual branding to keep things low profile; plenty technical without looking like I’m headed on a hike.
-
-1x Black Shorts: My most worn item recently here in Asia: These are Arc’teryx Gamma Quick Dry shorts. The 100% nylon material is unbeatable, refusing to hold moisture and have loads of pockets without visually reading as odious cargo shorts. Being fully nylon they do not stretch, making them feel far more robust and secure than a pair of running shorts while adding hardly any more bulk. Each of the 5 pockets has a zipper which makes them look slightly more technical than casual but this is bearable for the utility. My only gripe is that these feature an integrated waist belt which, while perfectly functional, deprives me of the option of clipping things to my belt loops (of which there are none) and ability to choose my own belts.
-
-Socks: I have tried many over the years but return to the functional balance of REI’s merino wool sock liners while traveling. These are marketed as a next to skin layer to wear underneath another more padded pair of socks to protect your feet from blisters and control odor during longer through hikes, however I’ve found that their thinner profile makes them perfect for packability. I bring 3 pairs and usually wear each pair for at least two days before there is any odor no matter how hot and sweaty my feet get. Could probably do with just 2 pairs, but I’m always wearing a pair in transit anyway so 3 pairs it is for now. Durable, as the merino wool’s fragility is strengthened by weaving with nylon, and dry very quickly.
-
-Underwear:  I packed 7x polyester boxers here - A mix of Uniqlo’s classic Airism boxers, and some similar Nike pairs which will eventually be retired and replaced by more Uniqlo pairs. These all pack ultra small and the polyester composition wicks moisture and stops chafing during long haul days. 7 might be excessive but underwear is the one thing I never skimp on, particularly in hot and humid climates. Being stuck wearing dirty undergarments is so uniquely demoralizing that carrying a few extra pairs is well worth its weight in my opinion, especially here in southeast Asia. 
-
-Belt: Recently, I found a generic nylon belt that features my favorite clasp: the Cobra Buckle. I’ve been enamored by the immensely satisfying mechanics of these parachute style buckles since first interacting with one on a messenger bag I purchased from Waterfield SF. Not quite as aesthetically versatile as my leather belts, but perfect for adventurous contexts with the nylon offering an additional edge over leather when facing wet conditions.
-
-Sleep: Roughly a fourth of any 24 hours is spent asleep, so Im willing to justify having one light T-shirt and pair of thin running shorts that only see use for these hours. Comforting, knowing that I always have clean clothes to change into at the end of the day, and hygienic, keeping all the grime of the day out of my bed. 
-
-OUTERWEAR 
-
-Packable Jacket: On this leg of my travels, the need for jackets and other outerwear is pretty minimal. It too hot and humid here for heavier rain shells to be desirable when facing the all too frequent precipitation, so that is not currently part of my kit. Instead I opted to just bring a packable windbreaker from Uniqlo. Unbranded as everything they do, and exactly as functional as needed, this packable jacket is ideal for colder planes and trains. Recently it even saved me from an over-air conditioned cafe. This one features an oversized hood for privacy and takes up minimal space. There is nothing particular about this one from Uniqlo, there are many similar jackets that serve this function perfectly, but these packable windbreakers have permanently lived in my daily carry packs for about 10 years after I fell in love with their endless functionality on a tour of western Europe. 
-
-Cap: I rarely go out without a hat. Endlessly thankful to have it when I need it, and takes up practically nothing when I don’t. This one is a no brainer, from fighting the sun and rain to simple bad hair days. This is a light and minimal quick drying hat from a brand of skateboards that I used to ride. Bonus that it can be combined with a bandana to make a makeshift sun cape for my neck. 
-
-
-FOOTWEAR
-
-Combat Boots: 5 years ago, I stumbled across a pair of mil-spec boots deeply discounted. After lacing them up I realized their potential and they left the store with me that day, becoming a mainstay ever since. The military aesthetics can be a bit much for certain contexts, but their adventure-readiness is unbeatable. My pair is from Merrell - their MQC-2 model. These uniquely forgo the clunkiness associated with boots and feel more akin to a sneaker, remaining quite light while offering all the desirable ankle support of boots. Being a desert boot, these are designed to be breathable in hot conditions which the nylon mesh upper achieves spectacularly. Truly the most comfortable footwear I've ever owned; perfect combination of factors making them tough enough for anything (most recently climbing Mt. Fuji) and comfortable enough to walk 20+ miles while forgetting you’re wearing anything at all.
-
-Barefoot Sandals: This is a recent addition to my load out as I'm not typically someone who reaches for sandals at all, but the summer climate in Asia made this option a necessity. I opted for a pair of Xero Z-Trail EV sandals after seeing them at REI. Ive held my interest in the barefoot shoe community at arms length, enticed by all the benefits promised and praises sung by its members, but not entirely motivated to try for myself until now. Initially chosen for their packability, It has been an unexpected delight to try running in these and strengthen my previously neglected muscles. Bonus points here that they can double as shower shoes very easily, replacing the typical cheap thong style flip flops that have accompanied me on some previous trips.
-
-
-TECH
-
-Over the past 10 years my tech has been slowly and surely dominated by Apple’s solutions. At this point my entire working ecosystem is Apple products, something which works gracefully and integrates painlessly. Having tried a fair amount of  equivalent tech options, I can confidently say that no system has been able to rival this cross device seamlessness. 
-
-iPhone 15: Arguably the most important item on this list. Great camera which instantly syncs to my cloud storage as do my notes. True mobile control center for navigation, communication apps, mobile payments, and everything else imaginable. I have been with T-Mobile for years and my plan offers unlimited roaming data and texts abroad - throttled after a certain number of MBs usage. With my plan, Im usually able to avoid purchasing local sims, and while international calls aren’t included or cheap, I typically use WhatsApp to talk. Covered for accidental damage as well as theft and loss. 
-
-AirPod Pro: This is the second most important item on this list for me; I am listening to something- music, podcasts, droning noise- almost 100% of the time when I am not with anyone. The active noise cancelling feature of the pro models is an absolutely necessity on planes and in other noisy public spaces. The space these take up in my bag is virtually nonexistent, and considering their endless utility, the benefits pay for themselves 10x over. Pairs instantly with my phone, computer, and watch, transitioning between each seamlessly. My only gripe here is that I wish they could last for longer than 4 hours before needing to briefly return to their case and charge, but this is forgivable for the miraculous convenience they otherwise offer.
-
-M3 MacBook Air 13”: Earlier this year, I traded in a 16” MacBook Pro for this model of Air. I have always been someone who uses Pros, But with Apple’s new generation of silicon processors, I can truly say that the Air is powerful enough. The decision to downgrade was one I was hesitant about, but don’t regret for the space and weight that I save. While the Pro was a true powerhouse with a gorgeous screen and fantastic speakers, it was admittedly a brick to lug around. For additional protection, I have been storing my laptop in a rugged zipped case from Thule.
-
-Apple Watch S10: The newest item in this category as I’m not particularly inclined towards smartwatches and have worn Casios for years, I was finally convinced by the ability to have live maps, control my music, and the translation features at a glance on my wrist. Being able to keep my phone in my bag while walking around is both convenient and secure, and I’ve also come to appreciate tracking my steps and route as I get lost on my walks and runs. At the end of the day, it was a laugh to review the exact haphazard route by which I led myself through Tokyo, remembering the galleries, shops, and eateries I stumbled upon. I wear mine with the matching black titanium milanese loop sold by apple which is the only saving grace regarding aesthetic appeal, while remaining hyper functional as I find the rubber bands too sporty and visually uninteresting. Hygienic, tough as nails, secure clasp- this is as good as it gets. Despite the endless functionality, I will still never be won over by the aesthetics of smartwatches, ever favoring the charm of my beloved and ultra slim Casio A700-W and A500 in this regard.
-
-2x AirTag: These are for peace of mind more than anything else, one permanently lives hidden in my backpack, and the other in my pouch of essentials. There are a number of equivalent devices at comparable price points, but these integrate most seamlessly into my current ecosystem.
-
-
-CHARGING:
-
-Anker A1388 PowerBank: Mobile charging is essential when my phone is working double time navigating all day and I inevitably find my phone getting low. This model from Anker won for two prominent features: First the digital display which indicates the battery’s percentage, and second, the attached usb-c cable which functions as a removable lanyard. All my devices charge via usb-c and having one permanently attached to my power source is ultra convenient to save digging one out from my pouch of cables. This model is 10k mAh and while I briefly considered a larger 20k capacity model, I ultimately decided that 10k was the correct balance of functionality for its size.
-
-35W Dual USB-C Adapter: This adapter now comes in the box with MacBook Airs and is actually quite compact. It earned its place on this trip for the dual charging capabilities, able to service my laptop and phone simultaneously. Inside, a protocol controlled converter chip regulates and appropriately adjusts the voltage output for device safety.
-
-1m Braided USB-C to USB-C: Charges my phone, laptop, or earbuds.
-
-1m Braided USB-C to Mag: Apple’s proprietary watch charger. The fastest charging option currently available which can deliver 50% of my watch’s battery in just 30 minutes.
-
-3m Braided USB-C to MagSafe: This might be redundant because I can technically charge my laptop using the 1m cable, but the additional length buys me valuable distance from whatever outlet on which I’m reliant. This one also came in the box with my laptop which means it wasn’t an additional purchase or errand.
-
-Regional Adapter: My 35W adapter features the North American Type-A prong configuration meaning that it often needs to be adapted when traveling internationally. Finding a cheap regional adapter is simple and far more cost effective than any other option. I often only have one regionally specific adapter at a time, although I’ve been meaning to add a global multi adapter to my kit. 
-
-Zip Pouch: All of my cables and adapters live in a simple zippered pouch from Muji with no organization other than one unsealed outer pocked which rarely gets used. Minimal and uncomplicated.
-
-
-ADMIN
-
-Leather Wallet: My daily carry is an ultra minimal custom leather wallet made entirely by me, a model which I have also given to friends and family. Ideal for holding ~4 cards, a tiny bit of cash/receipts, and nothing else. Perfect for travel because it encourages me to carry cash separate from my cards so I can’t lose both at once. I was previously a bifold wallet user for 10+ years but fell in love with my more modular system and the minimal size of just carrying my cards. 
-	With me daily:
-	1 - Capital One Quicksilver - Primary card, no international fees or annual fees
-	2 - Apple Card - Secondary card, no international fees or annual fees
-	3 - US Bank Debit - Linked to my checking account for ATM withdrawals
-	4 - Local transit card or library card
-	
-Muji Passport Organizer: This organizer was marketed as a passport wallet, but is a  bit larger than it needs to be for exclusively my passport. I find the extra organizational space it offers perfect for my miscellaneous admin items. This acts as a mobile filing cabinet for my important documents and other small items while minimizing bulk.
-	Documents:
-	- International Drivers Permit
-	- 2x printed passport photos - In case of lost passport
-	- Printed copy of passport info page - See above
-	- 6x printed visa photos - For visa applications, also have a digital version filed
-	- Proof of vaccination records - Required for entry into certain countries
-	
-	Additional Cards:
-	- US Drivers License - Required to drive in tandem with IDP 
-	- Global Entry Card - Skip customs lines when retuning stateside
-	- HSA Card - For use on prescriptions and at drug stores
-	- Student ID - Old but undated, for discounted entry to museums
-	- Transit Cards - Only keep ones that can be reloaded like Suica etc.
-	- US Bank Altitude Connect - Credit card for fights/accommodations. 5x on 		   	   both with purchase protections. Kept locked as a backup when not in use.
-	
-	First Aid Kit: Fit into a repurposed cigarette case
-	- 10x various sized bandages
-	- Alcohol pads and antiseptic ointment
-	- 2x doses Ibuprofen
-	- 2x doses Asprin
-	- 2x doses Pepto Bismol
-	- 1x dose Tums 
-	- 1 course of Azithromycin antibiotics
-	
-	Small Items: 
-	- 64gb Flash Drive - For physical backup of important projects
-	- USB-C Headphone Adapter 
-	- Rubber Bands / Paperclips - Weigh nothing and versatile in a pinch
-	- Thin stack of Post-Its - To do lists and reminders
-	- Reusable cloth face mask
-
-
-HYGEINE
-
-This section is the least optimized, but I make an effort to maintain some semblance of a regular routine. Travel sized versions of all the usual suspects, housed in a zippered pouch from REI. Notable on this list is the Wahl Detail Trimmer which also features a nose hair trimming attachment - the smallest trimmer of this kind I’ve been able to find, often on sale for just $10.
-
-Daily:
-Face Wash
-Lotion
-Toothbrush + Toothpaste
-Deodorant
-Conditioner
-Comb
-Mouthguard
-Shaving
-5 Blade Razor + Replacement Head
-Shaving Cream
-Wahl Detail trimer
-Tweezers
-Nail Clippers
-
-MISCELLANEOUS:
-
-Coin Carrier: I use cash more frequently when abroad, meaning I also accumulate more coins. A custom triangular design: One single piece of leather with a snap closure which I’ve made in many colors and given to friends alongside the wallets. Solves my organization needs elegantly.
-
-A6 Notebook: Comes with 50 pages at a time to keep things compact. From Muji
-
-UniBall Vision Micro: Rollerball pen writing at .5mm which I’ve come to prefer over its related .7 model, although I love both. Quick drying ink, good for sketching and customs forms - my go to travel pen because they absolutely never leak on planes. Increasingly difficult to find the .5 Micro, making it all the more coveted. 
-
-PaperMate Flair: Felt tip pen which writes much akin to a sharpie - great for labeling and to do lists. Unbothered by changing plane cabin pressures, so also no leaks. 
-
-Headlamp:  A rechargeable model from Black Diamond. Useful when staying in more remote areas, but doesn’t come with me on every trip.
-
-Packable Umbrella: Only weighs a few grams, and worth its weight in gold when protection is needed from the rain or sun. Could be sturdier, but this is a tradeoff for the compact nature. 
-
-Bandana: Usually worn tied to a carabiner which is clipped around one of my belt loops. Endlessly functional as a towel to dry my hands, protection from the sun, or a mask to cover my eyes for sleep. 
-
-Waterproof Stuff-Sack: 5L size model from Sea-to-Summit. This functions as a compressible packing cube and keeps my washed clothes clean, dry, and organized.
-
-Packable Tote: A simple packable nylon tote bag that I use for my dirty laundry. A convenient solution for keeping my clean and dirty clothes separate, I simply let my dirty laundry accumulate here until I just grab the whole bag and head off to a laundromat at the end of the week.
-
-
-</p>
+    <p>Paste your full document here. All hotspots currently scroll to this section.</p>
   </div>
 
-  <script>
-    document.querySelectorAll('.hotspot').forEach(hotspot => {
-      hotspot.addEventListener('click', function() {
-        if (this.classList.contains('active')) {
-          document.getElementById(this.dataset.target).scrollIntoView({ behavior: 'smooth' });
-          this.classList.remove('active');
-        } else {
-          document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
-          this.classList.add('active');
-        }
-      });
+<script>
+/* ===== Configuration ===== */
+const ITEMS = [
+  "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
+  "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
+  "Passport","Uniball Vision Elite","PaperMate Flair","Combat Boots","Barefoot Sandals","Hygiene Kit",
+  "REI Trail 25","MacBook Air","Packable Tote","Fjallraven Greenland Pocket","Clothing + Stuffsack",
+  "Belt","Apple Watch S10","AirTag x2","35W Adapter","Chargers","AirPods Pro","Anker 10k Powerbank",
+  "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
+];
+
+// storage key for your repo
+const STORE_KEY = "iajuar_hotspots_v2";
+
+/* ===== State ===== */
+let points = loadPoints(); // array of {top,left} in %
+let editor = true;         // alignment mode on by default
+let idx = firstUnplacedIndex(points);
+
+/* ===== DOM ===== */
+const stage = document.getElementById('stage');
+const img = document.getElementById('kit');
+const toolbar = document.getElementById('toolbar');
+const itemLabel = document.getElementById('itemLabel');
+const toggleBtn = document.getElementById('toggleBtn');
+const toggleTxt = document.getElementById('toggleTxt');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const saveBtn = document.getElementById('saveBtn');
+const resetBtn = document.getElementById('resetBtn');
+const exportBtn = document.getElementById('exportBtn');
+
+/* ===== Helpers ===== */
+function loadPoints(){
+  const saved = localStorage.getItem(STORE_KEY);
+  if(saved){
+    try{
+      const arr = JSON.parse(saved);
+      if(Array.isArray(arr) && arr.length === ITEMS.length) return arr;
+    }catch(e){}
+  }
+  // start empty
+  return new Array(ITEMS.length).fill(null);
+}
+function firstUnplacedIndex(arr){
+  const i = arr.findIndex(p => !p);
+  return i === -1 ? 0 : i;
+}
+function setLabel(){
+  itemLabel.textContent = `Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`;
+}
+function percentFromEvent(e){
+  const rect = img.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width * 100;
+  const y = (e.clientY - rect.top) / rect.height * 100;
+  return { left: clamp(x,0,100), top: clamp(y,0,100) };
+}
+function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+function renderHotspots(){
+  // remove old
+  [...stage.querySelectorAll('.hs')].forEach(n => n.remove());
+  // add for each placed point
+  points.forEach((p,i)=>{
+    if(!p) return;
+    const d = document.createElement('button');
+    d.className = 'hs';
+    d.style.left = p.left + '%';
+    d.style.top  = p.top  + '%';
+    d.setAttribute('aria-label', ITEMS[i]);
+    d.innerHTML = `<span class="tip">${ITEMS[i]}</span>`;
+    d.addEventListener('click', ()=>{
+      // second tap/ click scroll
+      d.classList.toggle('show');
+      if(d.classList.contains('show')){
+        setTimeout(()=>{ 
+          document.getElementById('description').scrollIntoView({behavior:'smooth'});
+        }, 120);
+      }
     });
-  </script>
+    stage.appendChild(d);
+  });
+}
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(points)); }
+function resetAll(){
+  localStorage.removeItem(STORE_KEY);
+  points = new Array(ITEMS.length).fill(null);
+  idx = 0;
+  setLabel();
+  renderHotspots();
+}
+function exportJSON(){
+  const txt = JSON.stringify(points);
+  navigator.clipboard?.writeText(txt);
+  alert("Hotspot coordinates copied to clipboard.\n\n" + txt);
+}
+
+/* ===== Events ===== */
+img.addEventListener('click', (e)=>{
+  if(!editor) return;
+  const pos = percentFromEvent(e);
+  points[idx] = pos;
+  idx = (idx + 1) % ITEMS.length;
+  setLabel();
+  renderHotspots();
+});
+
+toggleBtn.addEventListener('click', ()=>{
+  editor = !editor;
+  toggleTxt.textContent = editor ? "Exit" : "Enter";
+  toolbar.querySelector('#modeHint').style.opacity = editor ? 1 : .6;
+});
+prevBtn.addEventListener('click', ()=>{
+  idx = (idx - 1 + ITEMS.length) % ITEMS.length;
+  setLabel();
+});
+nextBtn.addEventListener('click', ()=>{
+  idx = (idx + 1) % ITEMS.length;
+  setLabel();
+});
+saveBtn.addEventListener('click', save);
+resetBtn.addEventListener('click', resetAll);
+exportBtn.addEventListener('click', exportJSON);
+
+// keyboard helpers
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'ArrowRight'){ nextBtn.click(); }
+  if(e.key === 'ArrowLeft'){ prevBtn.click(); }
+  if(e.key.toLowerCase() === 'e'){ toggleBtn.click(); }
+});
+
+/* ===== Init ===== */
+img.addEventListener('load', ()=>{
+  // If points already exist, skip straight to viewing
+  if(points.some(Boolean)) editor = false;
+  toggleTxt.textContent = editor ? "Exit" : "Enter";
+  setLabel();
+  renderHotspots();
+});
+</script>
 </body>
 </html>
