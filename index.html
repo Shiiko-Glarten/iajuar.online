@@ -1,117 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>iajuar — Hyper Mobility Kit</title>
-
-<!-- JetBrains Mono -->
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --hot-size: 18px;
-    --hot-bg: rgba(255,255,255,0.35);
-    --hot-bg-hover: rgba(255,255,255,0.9);
-    --tooltip-bg: rgba(10,10,10,0.96);
-    --tooltip-fg: #fff;
-    --accent: #f5f5f5;
-  }
-  html{scroll-behavior:smooth}
-  html,body{margin:0;background:#000;color:#eaeaea;font-family:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-  .wrap{max-width:1400px;margin:0 auto;padding:12px}
-  .photo{position:relative}
-  .photo img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
-
-  /* Hotspots: small, white, mostly transparent */
-  .hotspot{
-    position:absolute;
-    width:var(--hot-size); height:var(--hot-size);
-    transform:translate(-50%,-50%);
-    border-radius:50%;
-    background:var(--hot-bg);
-    color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size:11px; line-height:1; font-weight:700;
-    cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.5);
-    transition:background .15s ease, transform .08s ease, opacity .15s ease;
-  }
-  .hotspot:hover{ background:var(--hot-bg-hover); color:#000; transform:translate(-50%,-50%) scale(1.05); }
-
-  /* Tooltip bubble */
-  .tooltip{
-    position:absolute; left:50%; top:0;
-    transform: translate(-50%,-140%);
-    background:var(--tooltip-bg); color:var(--tooltip-fg);
-    padding:6px 10px; border-radius:6px; font-size:12px; white-space:nowrap;
-    border:1px solid rgba(255,255,255,0.08);
-    display:none; pointer-events:none; z-index:20;
-  }
-  .hotspot.show .tooltip{ display:block; }
-
-  /* Descriptions under image */
-  .descriptions{max-width:900px;margin:36px auto 64px;padding:0 8px}
-  .desc{padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
-  .desc:last-child{border-bottom:0}
-  .desc h2{margin:0 0 6px;color:var(--accent);font-size:16px}
-  .desc p{margin:0;color:#ddd;white-space:pre-wrap}
-
-  @media (max-width:720px){
-    :root{ --hot-size: 22px; }
-    .desc{padding:14px 0}
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Hotspot Map</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f5f5f5;
+      color: #222;
+      line-height: 1.6;
+    }
+    .image-container {
+      position: relative;
+      text-align: center;
+      margin: 20px auto;
+      max-width: 95%;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .hotspot {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+    }
+    .tooltip {
+      visibility: hidden;
+      width: max-content;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      padding: 3px 8px;
+      border-radius: 6px;
+      position: absolute;
+      z-index: 1;
+      transform: translate(-50%, -120%);
+      white-space: nowrap;
+      font-size: 12px;
+    }
+    .hotspot:hover .tooltip,
+    .hotspot.active .tooltip {
+      visibility: visible;
+    }
+    #description {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #description h2 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-
-  <!-- IMAGE (absolute URL confirmed working) -->
-  <div class="photo" id="photo">
-    <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="Kit layout" />
-    <!-- 34 hotspots (positions are percentage-based; easy to refine by editing data-top/left) -->
-    <div class="hotspot" data-n="1"  data-label="First Aid Kit"                 data-top="8"   data-left="13"  aria-label="First Aid Kit"></div>
-    <div class="hotspot" data-n="2"  data-label="Umbrella"                      data-top="17"  data-left="18"  aria-label="Umbrella"></div>
-    <div class="hotspot" data-n="3"  data-label="Admin Organizer"               data-top="17"  data-left="29"  aria-label="Admin Organizer"></div>
-    <div class="hotspot" data-n="4"  data-label="Bandana"                       data-top="31"  data-left="13"  aria-label="Bandana"></div>
-    <div class="hotspot" data-n="5"  data-label="Mask"                          data-top="31"  data-left="21"  aria-label="Mask"></div>
-    <div class="hotspot" data-n="6"  data-label="Cap"                           data-top="32"  data-left="27"  aria-label="Cap"></div>
-    <div class="hotspot" data-n="7"  data-label="Carabiner"                     data-top="36"  data-left="34"  aria-label="Carabiner"></div>
-    <div class="hotspot" data-n="8"  data-label="A6 Notebook"                   data-top="39"  data-left="16"  aria-label="A6 Notebook"></div>
-    <div class="hotspot" data-n="9"  data-label="International Drivers Permit"  data-top="41"  data-left="23"  aria-label="International Drivers Permit"></div>
-    <div class="hotspot" data-n="10" data-label="Passport/Visa Photos"          data-top="41"  data-left="28"  aria-label="Passport/Visa Photos"></div>
-    <div class="hotspot" data-n="11" data-label="Wallet"                        data-top="44"  data-left="19"  aria-label="Wallet"></div>
-    <div class="hotspot" data-n="12" data-label="Coin Carrier"                  data-top="46"  data-left="25"  aria-label="Coin Carrier"></div>
-    <div class="hotspot" data-n="13" data-label="Passport"                      data-top="47"  data-left="30"  aria-label="Passport"></div>
-    <div class="hotspot" data-n="14" data-label="Uniball Vision Elite"          data-top="50"  data-left="15"  aria-label="Uniball Vision Elite"></div>
-    <div class="hotspot" data-n="15" data-label="PaperMate Flair"               data-top="51"  data-left="22"  aria-label="PaperMate Flair"></div>
-    <div class="hotspot" data-n="16" data-label="Combat Boots"                  data-top="65"  data-left="13"  aria-label="Combat Boots"></div>
-    <div class="hotspot" data-n="17" data-label="Barefoot Sandals"              data-top="67"  data-left="20"  aria-label="Barefoot Sandals"></div>
-    <div class="hotspot" data-n="18" data-label="Hygiene Kit"                   data-top="53"  data-left="38"  aria-label="Hygiene Kit"></div>
-    <div class="hotspot" data-n="19" data-label="REI Trail 25"                  data-top="25"  data-left="45"  aria-label="REI Trail 25"></div>
-    <div class="hotspot" data-n="20" data-label="MacBook Air"                   data-top="62"  data-left="48"  aria-label="MacBook Air"></div>
-    <div class="hotspot" data-n="21" data-label="Packable Tote"                 data-top="40"  data-left="53"  aria-label="Packable Tote"></div>
-    <div class="hotspot" data-n="22" data-label="Fjallraven Greenland Pocket"   data-top="48"  data-left="58"  aria-label="Fjallraven Greenland Pocket"></div>
-    <div class="hotspot" data-n="23" data-label="Clothing + Stuffsack"          data-top="70"  data-left="55"  aria-label="Clothing + Stuffsack"></div>
-    <div class="hotspot" data-n="24" data-label="Belt"                          data-top="72"  data-left="60"  aria-label="Belt"></div>
-    <div class="hotspot" data-n="25" data-label="Apple Watch S10"               data-top="28"  data-left="63"  aria-label="Apple Watch S10"></div>
-    <div class="hotspot" data-n="26" data-label="AirTag x2"                     data-top="30"  data-left="68"  aria-label="AirTag x2"></div>
-    <div class="hotspot" data-n="27" data-label="35W Adapter"                   data-top="34"  data-left="73"  aria-label="35W Adapter"></div>
-    <div class="hotspot" data-n="28" data-label="Chargers"                      data-top="38"  data-left="78"  aria-label="Chargers"></div>
-    <div class="hotspot" data-n="29" data-label="AirPods Pro"                   data-top="42"  data-left="83"  aria-label="AirPods Pro"></div>
-    <div class="hotspot" data-n="30" data-label="Anker 10k Powerbank"           data-top="46"  data-left="72"  aria-label="Anker 10k Powerbank"></div>
-    <div class="hotspot" data-n="31" data-label="Regional Adapter"              data-top="50"  data-left="77"  aria-label="Regional Adapter"></div>
-    <div class="hotspot" data-n="32" data-label="128gb Flash Drive"             data-top="54"  data-left="82"  aria-label="128gb Flash Drive"></div>
-    <div class="hotspot" data-n="33" data-label="Headphone Adapter"             data-top="58"  data-left="87"  aria-label="Headphone Adapter"></div>
-    <div class="hotspot" data-n="34" data-label="Headlamp"                      data-top="65"  data-left="90"  aria-label="Headlamp"></div>
+  <div class="image-container">
+    <img src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="Hotspot Image">
+    
+    <!-- Hotspots -->
+    <div class="hotspot" style="top:8%; left:9%;" data-target="description"><span class="tooltip">First Aid Kit</span></div>
+    <div class="hotspot" style="top:15%; left:20%;" data-target="description"><span class="tooltip">Umbrella</span></div>
+    <div class="hotspot" style="top:15%; left:30%;" data-target="description"><span class="tooltip">Case</span></div>
+    <div class="hotspot" style="top:26%; left:7%;" data-target="description"><span class="tooltip">Bandana</span></div>
+    <div class="hotspot" style="top:26%; left:13%;" data-target="description"><span class="tooltip">Mask</span></div>
+    <div class="hotspot" style="top:8%; left:55%;" data-target="description"><span class="tooltip">Cap</span></div>
+    <div class="hotspot" style="top:20%; left:61%;" data-target="description"><span class="tooltip">Carabiner</span></div>
+    <div class="hotspot" style="top:8%; left:70%;" data-target="description"><span class="tooltip">Notebook</span></div>
+    <div class="hotspot" style="top:8%; left:74%;" data-target="description"><span class="tooltip">Instructions</span></div>
+    <div class="hotspot" style="top:8%; left:79%;" data-target="description"><span class="tooltip">Photo Book</span></div>
+    <div class="hotspot" style="top:20%; left:69%;" data-target="description"><span class="tooltip">Wallet</span></div>
+    <div class="hotspot" style="top:20%; left:75%;" data-target="description"><span class="tooltip">Coin Pouch</span></div>
+    <div class="hotspot" style="top:8%; left:86%;" data-target="description"><span class="tooltip">Passport</span></div>
+    <div class="hotspot" style="top:26%; left:86%;" data-target="description"><span class="tooltip">Pen</span></div>
+    <div class="hotspot" style="top:30%; left:86%;" data-target="description"><span class="tooltip">Pencil</span></div>
+    <div class="hotspot" style="top:14%; left:94%;" data-target="description"><span class="tooltip">Boots</span></div>
+    <div class="hotspot" style="top:32%; left:94%;" data-target="description"><span class="tooltip">Sandals</span></div>
+    <div class="hotspot" style="top:44%; left:91%;" data-target="description"><span class="tooltip">Toiletry Bag</span></div>
+    <div class="hotspot" style="top:40%; left:63%;" data-target="description"><span class="tooltip">Backpack</span></div>
+    <div class="hotspot" style="top:58%; left:52%;" data-target="description"><span class="tooltip">Laptop</span></div>
+    <div class="hotspot" style="top:58%; left:42%;" data-target="description"><span class="tooltip">Bag</span></div>
+    <div class="hotspot" style="top:72%; left:36%;" data-target="description"><span class="tooltip">Pouch</span></div>
+    <div class="hotspot" style="top:72%; left:22%;" data-target="description"><span class="tooltip">Organizer</span></div>
+    <div class="hotspot" style="top:58%; left:12%;" data-target="description"><span class="tooltip">Belt</span></div>
+    <div class="hotspot" style="top:50%; left:45%;" data-target="description"><span class="tooltip">Watch</span></div>
+    <div class="hotspot" style="top:44%; left:48%;" data-target="description"><span class="tooltip">Earbuds</span></div>
+    <div class="hotspot" style="top:50%; left:50%;" data-target="description"><span class="tooltip">Cables</span></div>
+    <div class="hotspot" style="top:50%; left:54%;" data-target="description"><span class="tooltip">AirPods</span></div>
+    <div class="hotspot" style="top:50%; left:58%;" data-target="description"><span class="tooltip">Hard Drive</span></div>
+    <div class="hotspot" style="top:50%; left:62%;" data-target="description"><span class="tooltip">Headlamp</span></div>
+    <div class="hotspot" style="top:50%; left:66%;" data-target="description"><span class="tooltip">Adapter</span></div>
+    <div class="hotspot" style="top:50%; left:70%;" data-target="description"><span class="tooltip">Charger</span></div>
+    <div class="hotspot" style="top:50%; left:74%;" data-target="description"><span class="tooltip">SD Card</span></div>
+    <div class="hotspot" style="top:50%; left:78%;" data-target="description"><span class="tooltip">Light</span></div>
   </div>
 
-  <!-- Description list lives directly under the image -->
-<div class="descriptions">
-    <h2>Descriptions</h2>
+  <div id="description">
+    <h2>DESCRIPTION</h2>
     <p>
-		
-BAGS
-
 REI Trail 25:
 A 25L pack is my ideal size: Small enough to fit as a personal item even on the strictest budget airlines, while still large enough to fit ~7 days worth of clothes. Perfect carrying capacity while in transit and plenty inconspicuous enough to use as an EDC upon arrival. The hiking centric design of this pack means little in the way of organization in favor of reducing weight, but this has proven useful in managing budget airline weight restrictions. There are many bucket style, half zip loader backpacks in this category but the features that keep me tied to my Trail 25 are the hip belt, endlessly useful  and endlessly stretchy side pockets, and a stowable rain cover. Ive added shock cord to the pack’s exterior for versatility and Nite-Ize locking S-carabiners on the zipper for security.
 
@@ -270,68 +265,21 @@ Waterproof Stuff-Sack: 5L size model from Sea-to-Summit. This functions as a com
 Packable Tote: A simple packable nylon tote bag that I use for my dirty laundry. A convenient solution for keeping my clean and dirty clothes separate, I simply let my dirty laundry accumulate here until I just grab the whole bag and head off to a laundromat at the end of the week.
 
 
-
-    </p>
+</p>
   </div>
-</div>
 
-<script>
-/* Build tooltips and interaction. */
-(function(){
-  const photo = document.getElementById('photo');
-  const hotspots = Array.from(photo.querySelectorAll('.hotspot'));
-  const isMobile = () => matchMedia('(max-width: 720px)').matches;
-
-  hotspots.forEach(h => {
-    // position from data attributes (percentages)
-    const top = parseFloat(h.dataset.top);
-    const left = parseFloat(h.dataset.left);
-    if (!isNaN(top))  h.style.top  = top  + '%';
-    if (!isNaN(left)) h.style.left = left + '%';
-
-    // tooltip
-    const tip = document.createElement('div');
-    tip.className = 'tooltip';
-    tip.textContent = h.dataset.label || ('Item ' + h.dataset.n);
-    h.appendChild(tip);
-
-    // behavior: desktop hover shows tooltip; click scrolls
-    // mobile: tap once shows tooltip; tap again scrolls
-    let tappedOnce = false;
-
-    h.addEventListener('mouseenter', () => {
-      if (!isMobile()) h.classList.add('show');
-    });
-    h.addEventListener('mouseleave', () => {
-      if (!isMobile()) h.classList.remove('show');
-    });
-
-    h.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const target = document.getElementById('item-' + h.dataset.n);
-      if (isMobile()){
-        if (!tappedOnce){
-          h.classList.add('show');
-          tappedOnce = true;
-          // auto-cancel single tap state after a moment
-          setTimeout(()=>{ tappedOnce=false; }, 1600);
+  <script>
+    document.querySelectorAll('.hotspot').forEach(hotspot => {
+      hotspot.addEventListener('click', function() {
+        if (this.classList.contains('active')) {
+          document.getElementById(this.dataset.target).scrollIntoView({ behavior: 'smooth' });
+          this.classList.remove('active');
         } else {
-          if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-          h.classList.remove('show');
-          tappedOnce = false;
+          document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+          this.classList.add('active');
         }
-      } else {
-        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
-      }
+      });
     });
-  });
-
-  // tap anywhere else to hide any open tooltip on mobile
-  document.addEventListener('click', () => {
-    if (!isMobile()) return;
-    hotspots.forEach(h => h.classList.remove('show'));
-  });
-})();
-</script>
+  </script>
 </body>
 </html>
