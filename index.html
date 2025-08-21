@@ -3,83 +3,142 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>iajuar — kit outline editor</title>
+  <title>iajuar — kit outlines (viewer)</title>
 
   <!-- JetBrains Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg:#0b0b0b;
       --ink:#eaeaea;
       --ink-dim:#bdbdbd;
+      --ink-muted:#9a9a9a;
       --tip:#111;
       --accent:#ffffff;
+      --card:#101010;
+      --card-brd:#1b1b1b;
     }
     *{box-sizing:border-box}
     html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.55}
     .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
-    .imgStage{position:relative;user-select:none}
+    .imgStage{position:relative;user-select:none;display:inline-block}
     .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
 
-    /* Outline hotspot */
+    /* Outline rectangles */
     .outline{
       position:absolute;
-      border:2px solid rgba(255,255,255,.7);
-      border-radius:6px;
+      border:2px solid rgba(255,255,255,.78);
+      border-radius:8px;
       cursor:pointer;
+      transition:box-shadow .15s ease, border-color .15s ease, transform .06s ease;
+      pointer-events:auto;
     }
-    .outline:hover{border-color:rgba(255,255,255,1);}
+    .outline:hover{
+      border-color:#fff;
+      box-shadow:0 0 0 2px rgba(255,255,255,.14), 0 8px 24px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.35);
+    }
 
     /* Tooltip */
     .tip{
       position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
       background:var(--tip); color:var(--ink);
-      padding:6px 8px; border-radius:8px; font-size:12px;
+      padding:6px 10px; border-radius:10px; font-size:12px; font-weight:600;
       white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease;
-      box-shadow:0 4px 14px rgba(0,0,0,.35);
+      box-shadow:0 4px 14px rgba(0,0,0,.35); border:1px solid #1d1d1d;
     }
-    .outline:hover .tip{opacity:1;}
+    .outline:hover .tip{opacity:1}
 
-    /* Toolbar */
+    /* Header bar (viewer mode only) */
     .bar{
-      position:sticky; top:0; z-index:10; background:#111; border:1px solid #222;
-      padding:10px 12px; display:flex; gap:10px; align-items:center; justify-content:space-between
+      position:sticky; top:0; z-index:10; background:#111; border:1px solid #222; border-left:none;border-right:none;
+      padding:10px 12px; display:flex; gap:12px; align-items:center; justify-content:space-between
     }
-    .bar small{color:var(--ink-dim)}
-    .bar button{
-      background:#1b1b1b;color:#eee;border:1px solid #2c2c2c;border-radius:8px;padding:8px 10px;font-family:inherit;cursor:pointer
-    }
-    .bar button:hover{background:#242424}
-    .pill{display:inline-flex;gap:6px;align-items:center}
-    .pill b{color:#fff}
+    .pill{display:flex; gap:10px; align-items:center}
     .msg{font-size:.9rem;color:var(--ink-dim)}
+    .badge{
+      font-size:.8rem; color:#111; background:#ffe28a; border-radius:999px; padding:4px 8px; font-weight:700;
+    }
+    .ghost{
+      background:#151515;color:#ddd;border:1px solid #242424;border-radius:10px;padding:8px 12px;font-family:inherit;cursor:pointer
+    }
+    .ghost:hover{background:#1c1c1c}
+    .ghost:active{transform:translateY(1px)}
+
+    /* Description card */
+    #description{max-width:1000px;margin:24px auto 64px;background:var(--card);border:1px solid var(--card-brd);border-radius:16px; padding:18px}
+    #description header{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
+    #description h2{margin:0;font-size:1.05rem;color:#fff}
+    #descHelp{margin:0;color:var(--ink-muted);font-size:.9rem}
+    /* Simple rich text area to paste/adapt your document.
+       You can paste formatted text (underline, italics, bold, sizes) and it will keep structure,
+       but we force JetBrains Mono for consistency. */
+    #doc{
+      min-height:320px; background:#0f0f0f; border:1px solid #1d1d1d; border-radius:12px;
+      padding:18px; overflow:auto; outline:none; color:#eaeaea; font-family:"JetBrains Mono",monospace;
+    }
+    /* Some helpful typographic defaults */
+    #doc h1{font-size:1.4rem;margin:.8em 0 .4em}
+    #doc h2{font-size:1.25rem;margin:.8em 0 .4em; text-decoration:underline}
+    #doc h3{font-size:1.1rem;margin:.8em 0 .4em}
+    #doc p{margin:.6em 0}
+    #doc em{font-style:italic}
+    #doc strong{font-weight:800}
+    #doc u{text-decoration:underline}
+    /* small toolbar */
+    .rtb{display:flex; gap:8px; margin:10px 0 14px}
+    .rtb button{border:1px solid #2b2b2b;background:#141414;color:#eee;border-radius:8px;padding:6px 10px;font-family:inherit;cursor:pointer}
+    .rtb button:hover{background:#1b1b1b}
   </style>
 </head>
 <body>
 
+  <!-- Viewer header (no drawing editor) -->
   <div class="bar wrap" id="toolbar">
     <div class="pill">
-      <b>Outline editor</b>
-      <small id="modeHint" class="msg">Click-drag to draw a rectangle around each item. Hover to see label.</small>
+      <strong>Outline viewer</strong>
+      <small class="msg">Hover any rectangle to see its label. Image URL is absolute for reliability.</small>
     </div>
     <div class="pill">
-      <small id="itemLabel" class="msg"></small>
-      <button id="prevBtn">◀︎ Prev</button>
-      <button id="nextBtn">Next ▶︎</button>
-      <button id="saveBtn">Save</button>
-      <button id="resetBtn">Reset</button>
-      <button id="exportBtn">Export JSON</button>
+      <small class="msg" id="countMsg"></small>
+      <button id="exportBtn" class="ghost" title="Download outlines JSON">Export JSON</button>
+      <button id="importBtn" class="ghost" title="Paste/replace outlines JSON">Import JSON</button>
     </div>
   </div>
 
   <div class="wrap">
     <div class="imgStage" id="stage">
-      <img id="kit" src="IMG_4435.jpeg" alt="kit layout" />
+      <!-- Absolute URL so it *always* loads -->
+      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
+      <!-- outlines will be injected here -->
+    </div>
+  </div>
+
+  <div id="description" class="wrap">
+    <header>
+      <h2>DESCRIPTION</h2>
+      <p id="descHelp">Paste your “HyperMobility copy” content below. Formatting like <u>underlines</u>, <em>italics</em>, and <strong>bold</strong> are preserved and rendered in JetBrains Mono.</p>
+    </header>
+
+    <div class="rtb">
+      <button type="button" data-cmd="bold"><strong>B</strong></button>
+      <button type="button" data-cmd="italic"><em>I</em></button>
+      <button type="button" data-cmd="underline"><u>U</u></button>
+      <button type="button" data-cmd="formatBlock" data-value="h2">H2</button>
+      <button type="button" data-cmd="formatBlock" data-value="p">P</button>
+      <button type="button" id="clearDoc">Clear</button>
+    </div>
+
+    <!-- Paste your PDF text here; we keep it contenteditable to let you mirror your original layout. -->
+    <div id="doc" contenteditable="true">
+      <!-- If you pasted from PDF, keep headings underlined, use italics/bold where needed, and adjust sizes with H2/P buttons if you like. -->
+      <h2>Sample Underlined Title</h2>
+      <p><em>Replace this sample with the content from your PDF.</em> Keep your <u>underlined section titles</u>, <strong>bold emphasis</strong>, and <em>italics</em>. The font is JetBrains Mono throughout.</p>
     </div>
   </div>
 
 <script>
+/* ===== Labels (1..34) ===== */
 const ITEMS = [
   "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
   "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
@@ -89,87 +148,135 @@ const ITEMS = [
   "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
 ];
 
-const STORE_KEY = "iajuar_outlines_v1";
-let outlines = loadOutlines();
-let idx = firstUnplacedIndex(outlines);
+/* ===== Provided (partial) outline data from your export =====
+   NOTE: Your pasted JSON was truncated at item ~19 in our last message.
+   I preload what you shared and pad the rest with nulls.
+   You can click “Import JSON” to paste the full 34-item array at any time. */
+const PROVIDED = [
+  {"left":7.0578231292517,"top":9.265987379462945,"width":7.738095238095239,"height":12.587756440025128},
+  {"left":16.666666666666664,"top":9.965307181686562,"width":2.551020408163268,"height":24.825852978938457},
+  {"left":20.66326530612245,"top":9.265987379462945,"width":7.482993197278912,"height":26.399322533941596},
+  {"left":5.442176870748299,"top":22.7278935722676,"width":5.952380952380953,"height":13.986396044472368},
+  {"left":11.479591836734695,"top":23.07755347337941,"width":3.316326530612244,"height":9.440817330018845},
+  {"left":32.31292517006803,"top":10.140137132242467,"width":10.714285714285715,"height":19.580954462261317},
+  {"left":43.452380952380956,"top":20.629934165596744,"width":2.9761904761904745,"height":9.440817330018849},
+  {"left":45.66326530612245,"top":13.112246291692845,"width":2.3809523809523867,"height":7.692517824459806},
+  {"left":48.12925170068027,"top":11.713606687245608,"width":2.1258503401360542,"height":7.692517824459802},
+  {"left":50.425170068027214,"top":12.412926489469227,"width":4.2517006802721085,"height":17.13333515447865},
+  {"left":56.63265306122449,"top":8.916327478351135,"width":4.166666666666664,"height":12.238096538913322},
+  {"left":56.547619047619044,"top":21.67891386893217,"width":4.166666666666664,"height":10.489797033354279},
+  {"left":61.39455782312925,"top":9.09115742890704,"width":10.884353741496597,"height":15.385035648919603},
+  {"left":62.755102040816325,"top":26.5741524844975,"width":8.16326530612244,"height":2.2727893572267597},
+  {"left":62.84013605442177,"top":29.54626164394788,"width":8.163265306122447,"height":2.272789357226756},
+  {"left":75.17006802721087,"top":8.042177725571612,"width":22.619047619047635,"height":27.62313218783293},
+  {"left":75.93537414965986,"top":37.763269320075395,"width":18.027210884353735,"height":29.19660174283608},
+  {"left":76.10544217687075,"top":73.42857923347994,"width":15.901360544217681,"height":17.30816510503456},
+  {"left":53.91156462585034,"top":38.462589122299015,"width":20,"height":20}
+];
 
+/* ===== Initialization ===== */
+const STORE_KEY = "iajuar_outlines_viewer_v1";
 const stage = document.getElementById('stage');
 const img = document.getElementById('kit');
-const itemLabel = document.getElementById('itemLabel');
+const countMsg = document.getElementById('countMsg');
+const exportBtn = document.getElementById('exportBtn');
+const importBtn = document.getElementById('importBtn');
 
-function loadOutlines(){
-  const saved = localStorage.getItem(STORE_KEY);
-  if(saved){
-    try{
-      const arr = JSON.parse(saved);
-      if(Array.isArray(arr) && arr.length === ITEMS.length) return arr;
-    }catch(e){}
-  }
-  return new Array(ITEMS.length).fill(null);
-}
-function firstUnplacedIndex(arr){ const i=arr.findIndex(p=>!p); return i===-1?0:i; }
-function setLabel(){ itemLabel.textContent=`Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`; }
-function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(outlines)); }
-function resetAll(){
-  localStorage.removeItem(STORE_KEY);
-  outlines=new Array(ITEMS.length).fill(null);
-  idx=0; setLabel(); renderOutlines();
-}
-function exportJSON(){
-  const txt = JSON.stringify(outlines);
-  navigator.clipboard?.writeText(txt);
-  alert("Outline coordinates copied:\n\n"+txt);
+/* Build outlines array with exactly 34 slots */
+let outlines = new Array(ITEMS.length).fill(null);
+for(let i=0;i<Math.min(PROVIDED.length, outlines.length);i++){
+  outlines[i] = PROVIDED[i];
 }
 
-let startX,startY,drawing=false;
-img.addEventListener('mousedown',(e)=>{
-  const r=img.getBoundingClientRect();
-  startX=((e.clientX-r.left)/r.width)*100;
-  startY=((e.clientY-r.top)/r.height)*100;
-  drawing=true;
-});
-img.addEventListener('mousemove',(e)=>{
-  if(!drawing) return;
-  renderOutlines();
-  const r=img.getBoundingClientRect();
-  const curX=((e.clientX-r.left)/r.width)*100;
-  const curY=((e.clientY-r.top)/r.height)*100;
-  const x=Math.min(startX,curX), y=Math.min(startY,curY);
-  const w=Math.abs(startX-curX), h=Math.abs(startY-curY);
-  const o=document.createElement('div');
-  o.className='outline'; o.style.left=x+'%';o.style.top=y+'%';o.style.width=w+'%';o.style.height=h+'%';
-  o.innerHTML=`<span class="tip">${ITEMS[idx]}</span>`;
-  stage.appendChild(o);
-});
-img.addEventListener('mouseup',(e)=>{
-  if(!drawing) return; drawing=false;
-  const r=img.getBoundingClientRect();
-  const endX=((e.clientX-r.left)/r.width)*100;
-  const endY=((e.clientY-r.top)/r.height)*100;
-  outlines[idx]={left:Math.min(startX,endX),top:Math.min(startY,endY),
-    width:Math.abs(startX-endX),height:Math.abs(startY-endY)};
-  idx=(idx+1)%ITEMS.length; setLabel(); renderOutlines();
-});
+/* If you previously saved full JSON in localStorage, prefer that */
+const saved = localStorage.getItem(STORE_KEY);
+if(saved){
+  try{
+    const arr = JSON.parse(saved);
+    if(Array.isArray(arr) && arr.length === ITEMS.length){
+      outlines = arr;
+    }
+  }catch(e){}
+}
+
+function updateCountBadge(){
+  const placed = outlines.filter(Boolean).length;
+  const total = outlines.length;
+  countMsg.innerHTML =
+    (placed===total)
+      ? `Outlines loaded: ${placed}/${total}`
+      : `<span class="badge" title="Paste full JSON via Import JSON to complete">Incomplete: ${placed}/${total}</span>`;
+}
+
 function renderOutlines(){
-  [...stage.querySelectorAll('.outline')].forEach(n=>n.remove());
+  // remove old
+  [...stage.querySelectorAll('.outline')].forEach(n => n.remove());
+  // add for each outline
   outlines.forEach((o,i)=>{
     if(!o) return;
-    const d=document.createElement('div');
-    d.className='outline'; d.style.left=o.left+'%'; d.style.top=o.top+'%';
-    d.style.width=o.width+'%'; d.style.height=o.height+'%';
-    d.innerHTML=`<span class="tip">${ITEMS[i]}</span>`;
+    const d = document.createElement('div');
+    d.className = 'outline';
+    // Use percentages so it scales with image responsively
+    d.style.left   = o.left + '%';
+    d.style.top    = o.top + '%';
+    d.style.width  = o.width + '%';
+    d.style.height = o.height + '%';
+    d.setAttribute('aria-label', `${i+1}. ${ITEMS[i]}`);
+    d.innerHTML = `<span class="tip">${i+1}. ${ITEMS[i]}</span>`;
     stage.appendChild(d);
   });
 }
 
-// toolbar buttons
-document.getElementById('prevBtn').onclick=()=>{ idx=(idx-1+ITEMS.length)%ITEMS.length; setLabel(); };
-document.getElementById('nextBtn').onclick=()=>{ idx=(idx+1)%ITEMS.length; setLabel(); };
-document.getElementById('saveBtn').onclick=save;
-document.getElementById('resetBtn').onclick=resetAll;
-document.getElementById('exportBtn').onclick=exportJSON;
+/* Export/Import JSON (viewer-side only; no drawing editor) */
+exportBtn.addEventListener('click', ()=>{
+  const json = JSON.stringify(outlines, null, 2);
+  // download as file
+  const blob = new Blob([json], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'iajuar_outlines.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
 
-img.onload=()=>{ setLabel(); renderOutlines(); };
+importBtn.addEventListener('click', ()=>{
+  const txt = prompt("Paste the full 34-item outlines JSON array:");
+  if(!txt) return;
+  try{
+    const arr = JSON.parse(txt);
+    if(Array.isArray(arr) && arr.length === ITEMS.length){
+      outlines = arr;
+      localStorage.setItem(STORE_KEY, JSON.stringify(outlines));
+      renderOutlines();
+      updateCountBadge();
+      alert("Outlines imported and saved.");
+    }else{
+      alert("That JSON is not a 34-item array. Please check and try again.");
+    }
+  }catch(e){
+    alert("Invalid JSON. Please try again.");
+  }
+});
+
+img.addEventListener('load', ()=>{
+  renderOutlines();
+  updateCountBadge();
+});
+
+/* ===== Simple formatting toolbar for the description box ===== */
+document.querySelectorAll('.rtb button[data-cmd]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const cmd = btn.getAttribute('data-cmd');
+    const val = btn.getAttribute('data-value') || null;
+    document.execCommand(cmd, false, val);
+  });
+});
+document.getElementById('clearDoc').addEventListener('click', ()=>{
+  if(confirm("Clear the description content?")) document.getElementById('doc').innerHTML = "";
+});
 </script>
 </body>
 </html>
