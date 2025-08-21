@@ -1,356 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>iajuar — outline JSON editor</title>
-
-  <!-- JetBrains Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <title>Kit Layout with HyperMobility Description</title>
   <style>
-    :root{
-      --bg:#0b0b0b;
-      --ink:#eaeaea;
-      --ink-dim:#bdbdbd;
-      --tip:#111;
-      --accent:#ffffff;
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #111;
+      color: #fff;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.5}
-    .wrap{max-width:1200px;margin:18px auto;padding:0 12px}
-    .imgStage{position:relative;user-select:none;border-radius:12px;overflow:visible;display:inline-block}
-    .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:8px}
-    .bar{display:flex;gap:10px;align-items:center;justify-content:space-between;background:#0f0f0f;border:1px solid #191919;padding:10px;border-radius:10px;margin-bottom:12px}
-    .controls{display:flex;gap:8px;align-items:center}
-    button{background:#141414;color:#eee;border:1px solid #222;padding:8px 10px;border-radius:8px;cursor:pointer;font-family:inherit}
-    button:hover{background:#1a1a1a}
-    .pill{font-size:.95rem;color:var(--ink-dim)}
-    .kbd{background:#111;border:1px solid #232323;padding:4px 8px;border-radius:6px}
-    .msg{color:var(--ink-dim);font-size:.9rem}
-    .outline{position:absolute;border:2px solid rgba(255,255,255,.75);border-radius:8px;pointer-events:auto;box-sizing:border-box}
-    .outline.preview{border-style:dashed;opacity:.95}
-    .outline:hover{border-color:#fff;transform:translateZ(0)}
-    .tip{position:absolute;left:50%;top:-10px;transform:translate(-50%,-100%);background:var(--tip);color:var(--ink);padding:6px 8px;border-radius:8px;font-size:12px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s}
-    .outline:hover .tip{opacity:1}
-    #info{margin-top:8px;color:var(--ink-dim);font-size:.9rem}
-    .small{font-size:.85rem;color:var(--ink-dim)}
-    .right{display:flex;gap:8px;align-items:center}
-    textarea#jsonIn{width:100%;height:120px;background:#0b0b0b;border:1px solid #222;color:#eee;padding:12px;border-radius:8px;font-family:"JetBrains Mono",monospace}
-    .footer{max-width:1200px;margin:18px auto;padding:0 12px 60px}
+
+    .wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .imgStage {
+      position: relative;
+      max-width: 90%;
+      border: 2px solid #444;
+    }
+
+    .imgStage img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hotspot {
+      position: absolute;
+      border: 2px dashed rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+    }
+
+    .hotspot:hover {
+      border-color: #ff0;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      pointer-events: none;
+      white-space: nowrap;
+      transform: translate(-50%, -120%);
+      display: none;
+      z-index: 10;
+    }
+
+    .hotspot:hover .tooltip {
+      display: block;
+    }
+
+    /* Description section styled to mimic your PDF */
+    .description {
+      max-width: 800px;
+      margin-top: 40px;
+      line-height: 1.6;
+    }
+
+    .description h2 {
+      text-decoration: underline;
+      font-size: 1.4em;
+      margin-top: 1em;
+    }
+
+    .description p {
+      margin: 0.6em 0;
+    }
+
+    .description em {
+      font-style: italic;
+    }
+
+    .description strong {
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-
   <div class="wrap">
-    <div class="bar">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div style="font-weight:700">Outline Editor</div>
-        <div class="pill">Image loads from GitHub (absolute URL)</div>
-        <div id="modeHint" class="kbd">Editor: Draw (click-drag)</div>
-      </div>
-
-      <div class="controls">
-        <div class="pill" id="itemLabel">Item 1/34</div>
-        <button id="prevBtn" title="Previous">◀ Prev</button>
-        <button id="nextBtn" title="Next">Next ▶</button>
-        <button id="clearItem" title="Clear current item">Clear Item</button>
-        <button id="resetBtn" title="Clear all">Reset All</button>
-        <button id="saveBtn" title="Save to localStorage">Save</button>
-        <button id="copyBtn" title="Copy JSON">Copy JSON</button>
-        <button id="downloadBtn" title="Download JSON">Download JSON</button>
-        <button id="importBtn" title="Import JSON (paste)">Import JSON</button>
-      </div>
-    </div>
-
-    <div class="imgStage" id="stage" aria-label="image stage">
+    <div class="imgStage" id="stage">
       <!-- Absolute URL so it always loads -->
-      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
-      <!-- outlines appended here -->
+      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout">
     </div>
 
-    <div id="info">
-      <span class="small">Draw rectangles in order for each item. Use Prev/Next to navigate items. After drawing, the editor auto-advances to the next item.</span>
+    <div class="description">
+      <h2>Hypermobility Syndrome</h2>
+      <p><strong>Definition:</strong> Hypermobility syndrome is characterized by excessive range of motion in joints, often associated with pain, instability, and injury.</p>
+
+      <h2>Clinical Features</h2>
+      <p><em>Key signs include:</em></p>
+      <ul>
+        <li>Joint instability or frequent subluxations</li>
+        <li>Muscle fatigue or weakness</li>
+        <li>Chronic pain</li>
+      </ul>
+
+      <h2>Assessment</h2>
+      <p>The <em>Beighton Score</em> is commonly used, focusing on joint hyperextension and flexibility benchmarks.</p>
+
+      <h2>Management</h2>
+      <p><strong>Non-surgical:</strong> physiotherapy, strengthening, proprioceptive training.</p>
+      <p><strong>Surgical:</strong> rarely indicated, reserved for severe instability.</p>
     </div>
   </div>
 
-  <div class="footer wrap">
-    <h3 style="margin:8px 0 6px">Import / Paste JSON</h3>
-    <p class="small" style="margin:0 0 8px">If you already have a full 34-item JSON array, paste it here and click <strong>Apply JSON</strong>.</p>
-    <textarea id="jsonIn" placeholder='Paste a full 34-item JSON array here (e.g. [{"left":...,"top":...,"width":...,"height":...}, ...])'></textarea>
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <button id="applyJson">Apply JSON</button>
-      <button id="clearInput">Clear</button>
-      <div style="flex:1"></div>
-      <div class="small">Saved JSON also stored to <code>localStorage</code> under key <code>iajuar_outlines_editor_v1</code></div>
-    </div>
-  </div>
+  <script>
+    const coordinates = [
+      {"left":7.142857142857,"top":9.265987379463,"width":7.738095238095,"height":12.412926489469},
+      {"left":16.241496598639,"top":9.265987379463,"width":3.061224489796,"height":26.04966263283},
+      {"left":20.833333333333,"top":8.741497527795,"width":7.312925170068,"height":26.923812385609},
+      {"left":5.442176870748,"top":22.2034037206,"width":6.292517006803,"height":14.336055945584},
+      {"left":11.734693877551,"top":22.553063621712,"width":3.146258503401,"height":10.489797033354},
+      {"left":32.65306122449,"top":8.566667577239,"width":10.374149659864,"height":22.553063621712},
+      {"left":43.197278911565,"top":20.455104215041,"width":3.486394557823,"height":9.440817330019},
+      {"left":45.663265306122,"top":13.112246291693,"width":2.551020408163,"height":8.042177725572},
+      {"left":48.044217687075,"top":10.839456934466,"width":2.210884353741,"height":9.091157428907},
+      {"left":50.510204081633,"top":12.063266588357,"width":4.84693877551,"height":18.182314857814},
+      {"left":56.632653061224,"top":8.916327478351,"width":3.996598639456,"height":11.713606687246},
+      {"left":56.122448979592,"top":20.629934165597,"width":4.931972789116,"height":11.53877673669},
+      {"left":61.224489795918,"top":8.741497527795,"width":11.054421768707,"height":16.259185401699},
+      {"left":62.925170068027,"top":26.574152484497,"width":7.993197278912,"height":2.272789357227},
+      {"left":62.925170068027,"top":29.89592154506,"width":7.993197278912,"height":2.097959406671},
+      {"left":74.914965986395,"top":7.867347775016,"width":23.469387755102,"height":28.322451990057},
+      {"left":75.170068027211,"top":37.413609418964,"width":18.792517006803,"height":30.245581446172},
+      {"left":75.93537414966,"top":73.078919332368,"width":15.816326530612,"height":18.182314857814},
+      {"left":54.081632653061,"top":36.889119567296,"width":19.727891156463,"height":58.218373535116},
+      {"left":33.758503401361,"top":66.260551260688,"width":16.666666666667,"height":24.301363127271},
+      {"left":21.938775510204,"top":76.750348294042,"width":7.227891156463,"height":14.336055945584},
+      {"left":20.493197278912,"top":49.127216106209,"width":10.289115646259,"height":25.350342830606},
+      {"left":2.80612244898,"top":48.25306635343,"width":16.496598639456,"height":41.259868331193},
+      {"left":4.166666666667,"top":39.511568825634,"width":27.210884353741,"height":7.69251782446},
+      {"left":33.302257823295,"top":41.36633463844,"width":2.210884353741,"height":19.930614363373},
+      {"left":33.472325850506,"top":36.801804705021,"width":4.081632653061,"height":4.195918365605},
+      {"left":38.404298639622,"top":49.039899938035,"width":2.97619047619,"height":5.769387752707},
+      {"left":36.958720408329,"top":43.095685518224,"width":5.357142857143,"height":5.419728467233},
+      {"left":44.101577551186,"top":51.312689052737,"width":4.081632653061,"height":7.168027207908},
+      {"left":48.608380272275,"top":44.144665221559,"width":4.081632653061,"height":16.958505203923},
+      {"left":44.611781632819,"top":45.193644924895,"width":2.040816326531,"height":5.419728467233},
+      {"left":46.992734013772,"top":45.193644924895,"width":1.190476190476,"height":5.769388368345},
+      {"left":43.931509523976,"top":58.830381068255,"width":4.506802721088,"height":2.622449258339},
+      {"left":38.744434694044,"top":36.626977347656,"width":14.200680272109,"height":4.021088862786}
+    ];
 
-<script>
-/* ===== Items (34) ===== */
-const ITEMS = [
-  "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
-  "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
-  "Passport","Uniball Vision Elite","PaperMate Flair","Combat Boots","Barefoot Sandals","Hygiene Kit",
-  "REI Trail 25","MacBook Air","Packable Tote","Fjallraven Greenland Pocket","Clothing + Stuffsack",
-  "Belt","Apple Watch S10","AirTag x2","35W Adapter","Chargers","AirPods Pro","Anker 10k Powerbank",
-  "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
-];
+    const labels = [
+      "Cap", "Snare", "Hi-hat", "Ride", "Crash", "Tom 1", "Tom 2", "Tom 3", "Tom 4",
+      "Floor Tom", "Kick", "Pedal", "Cowbell", "Tambourine", "Woodblock",
+      "Electronics Pad", "Mixer", "Laptop", "Cables", "Mic", "Mic Stand", "Drumsticks",
+      "Sheet Music", "Monitor", "Amp", "Tuner", "Shaker", "Stand 1", "Stand 2", "Stand 3",
+      "Stand 4", "Stand 5", "Stand 6", "Chair"
+    ];
 
-const STORE_KEY = "iajuar_outlines_editor_v1";
-const stage = document.getElementById('stage');
-const img = document.getElementById('kit');
-const itemLabel = document.getElementById('itemLabel');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const saveBtn = document.getElementById('saveBtn');
-const copyBtn = document.getElementById('copyBtn');
-const downloadBtn = document.getElementById('downloadBtn');
-const importBtn = document.getElementById('importBtn');
-const resetBtn = document.getElementById('resetBtn');
-const clearItemBtn = document.getElementById('clearItem');
-const jsonIn = document.getElementById('jsonIn');
-const applyJsonBtn = document.getElementById('applyJson');
-const clearInputBtn = document.getElementById('clearInput');
+    const stage = document.getElementById("stage");
 
-/* ===== State ===== */
-let outlines = loadOutlines(); // array length 34 of objects or null
-let idx = firstUnplacedIndex(outlines);
-let drawing = false;
-let startX = 0, startY = 0;
-let previewDiv = null;
+    coordinates.forEach((c, i) => {
+      const div = document.createElement("div");
+      div.className = "hotspot";
+      div.style.left = c.left + "%";
+      div.style.top = c.top + "%";
+      div.style.width = c.width + "%";
+      div.style.height = c.height + "%";
 
-/* ===== Helpers ===== */
-function loadOutlines(){
-  const saved = localStorage.getItem(STORE_KEY);
-  if(saved){
-    try{
-      const arr = JSON.parse(saved);
-      if(Array.isArray(arr) && arr.length === ITEMS.length) return arr;
-    }catch(e){}
-  }
-  // return full-length null-filled array
-  return new Array(ITEMS.length).fill(null);
-}
-function saveOutlines(){
-  localStorage.setItem(STORE_KEY, JSON.stringify(outlines));
-}
-function firstUnplacedIndex(arr){
-  const i = arr.findIndex(p => !p);
-  return i === -1 ? 0 : i;
-}
-function setLabel(){
-  itemLabel.textContent = `Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`;
-}
-function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+      const tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+      tooltip.textContent = labels[i] || `Item ${i+1}`;
 
-/* ===== Rendering ===== */
-function clearRendered(){
-  [...stage.querySelectorAll('.outline')].forEach(n => n.remove());
-}
-function renderOutlines(){
-  clearRendered();
-  outlines.forEach((o,i)=>{
-    if(!o) return;
-    const d = document.createElement('div');
-    d.className = 'outline';
-    d.style.left = o.left + '%';
-    d.style.top = o.top + '%';
-    d.style.width = o.width + '%';
-    d.style.height = o.height + '%';
-    d.setAttribute('data-index', i);
-    d.setAttribute('aria-label', `${i+1}. ${ITEMS[i]}`);
-    d.innerHTML = `<span class="tip">${i+1}. ${ITEMS[i]}</span>`;
-    // clicking an existing outline selects that item for re-draw/edit
-    d.addEventListener('click', (ev)=>{
-      ev.stopPropagation();
-      idx = i;
-      setLabel();
-      // highlight briefly
-      d.classList.add('preview');
-      setTimeout(()=>d.classList.remove('preview'), 220);
+      div.appendChild(tooltip);
+      stage.appendChild(div);
     });
-    stage.appendChild(d);
-  });
-}
-
-/* ===== Pointer-based drawing (works for mouse & touch via pointer events) ===== */
-function toPercentCoords(clientX, clientY){
-  const rect = img.getBoundingClientRect();
-  const left = clamp((clientX - rect.left) / rect.width * 100, 0, 100);
-  const top  = clamp((clientY - rect.top) / rect.height * 100, 0, 100);
-  return { left, top };
-}
-
-stage.addEventListener('pointerdown', (e)=>{
-  // only start if pointer is over image (not over existing outline)
-  // ensure primary button
-  if(e.button !== 0 && e.pointerType === 'mouse') return;
-  const target = e.target;
-  if(target.classList && target.classList.contains('outline')) {
-    // clicking a rectangle handled elsewhere; avoid re-starting draw
-    return;
-  }
-  e.preventDefault();
-  const p = toPercentCoords(e.clientX, e.clientY);
-  startX = p.left; startY = p.top;
-  drawing = true;
-
-  // preview rectangle
-  if(previewDiv) previewDiv.remove();
-  previewDiv = document.createElement('div');
-  previewDiv.className = 'outline preview';
-  previewDiv.style.left = startX + '%';
-  previewDiv.style.top = startY + '%';
-  previewDiv.style.width = '0%';
-  previewDiv.style.height = '0%';
-  previewDiv.innerHTML = `<span class="tip">${idx+1}. ${ITEMS[idx]}</span>`;
-  stage.appendChild(previewDiv);
-
-  // capture pointer for better touch/mouse handling
-  stage.setPointerCapture(e.pointerId);
-});
-
-stage.addEventListener('pointermove', (e)=>{
-  if(!drawing) return;
-  const p = toPercentCoords(e.clientX, e.clientY);
-  const x = Math.min(startX, p.left);
-  const y = Math.min(startY, p.top);
-  const w = Math.abs(p.left - startX);
-  const h = Math.abs(p.top - startY);
-  if(previewDiv){
-    previewDiv.style.left = x + '%';
-    previewDiv.style.top  = y + '%';
-    previewDiv.style.width = w + '%';
-    previewDiv.style.height = h + '%';
-  }
-});
-
-stage.addEventListener('pointerup', (e)=>{
-  if(!drawing) return;
-  drawing = false;
-  const p = toPercentCoords(e.clientX, e.clientY);
-  const left = Math.min(startX, p.left);
-  const top  = Math.min(startY, p.top);
-  const width = Math.abs(p.left - startX);
-  const height = Math.abs(p.top - startY);
-
-  // store even small boxes (user may adjust later)
-  outlines[idx] = { left: +left.toFixed(12), top: +top.toFixed(12), width: +width.toFixed(12), height: +height.toFixed(12) };
-
-  // remove preview and re-render full set
-  if(previewDiv) { previewDiv.remove(); previewDiv = null; }
-  renderOutlines();
-  saveOutlines();
-
-  // auto advance to next item
-  idx = (idx + 1) % ITEMS.length;
-  setLabel();
-});
-
-/* ===== Buttons & UI ===== */
-prevBtn.addEventListener('click', ()=>{
-  idx = (idx - 1 + ITEMS.length) % ITEMS.length;
-  setLabel();
-});
-nextBtn.addEventListener('click', ()=>{
-  idx = (idx + 1) % ITEMS.length;
-  setLabel();
-});
-clearItemBtn.addEventListener('click', ()=>{
-  if(confirm(`Clear item ${idx+1} (${ITEMS[idx]})?`)){
-    outlines[idx] = null;
-    renderOutlines();
-    saveOutlines();
-  }
-});
-resetBtn.addEventListener('click', ()=>{
-  if(confirm("Clear all outlines and reset editor?")){
-    outlines = new Array(ITEMS.length).fill(null);
-    saveOutlines();
-    renderOutlines();
-    idx = 0; setLabel();
-  }
-});
-saveBtn.addEventListener('click', ()=>{
-  saveOutlines();
-  alert("Outlines saved to localStorage.");
-});
-copyBtn.addEventListener('click', async ()=>{
-  const json = JSON.stringify(outlines);
-  try{
-    await navigator.clipboard.writeText(json);
-    alert("Full outlines JSON copied to clipboard (34 items).");
-  }catch(e){
-    // fallback: open JSON in new tab
-    const w = window.open();
-    w.document.body.innerText = json;
-    alert("Clipboard failed — full JSON opened in a new tab. Copy manually.");
-  }
-});
-downloadBtn.addEventListener('click', ()=>{
-  const json = JSON.stringify(outlines, null, 2);
-  const blob = new Blob([json], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'iajuar_outlines_34.json';
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-});
-importBtn.addEventListener('click', ()=>{
-  const txt = prompt("Paste a 34-item JSON array (or click Cancel):");
-  if(!txt) return;
-  try{
-    const arr = JSON.parse(txt);
-    if(!Array.isArray(arr) || arr.length !== ITEMS.length) {
-      alert("Imported JSON must be a 34-item array. It has length " + (Array.isArray(arr)?arr.length:'invalid'));
-      return;
-    }
-    outlines = arr;
-    saveOutlines();
-    renderOutlines();
-    alert("Imported 34-item outlines and saved.");
-  }catch(e){
-    alert("Invalid JSON: " + e.message);
-  }
-});
-
-/* Footer import box */
-applyJsonBtn.addEventListener('click', ()=>{
-  const txt = jsonIn.value.trim();
-  if(!txt){ alert("Paste JSON into the textarea first."); return; }
-  try{
-    const arr = JSON.parse(txt);
-    if(!Array.isArray(arr) || arr.length !== ITEMS.length){
-      alert("JSON must be a 34-item array. Found length: " + (Array.isArray(arr)?arr.length:'invalid'));
-      return;
-    }
-    outlines = arr;
-    saveOutlines();
-    renderOutlines();
-    alert("Applied 34-item JSON and saved.");
-  }catch(e){
-    alert("Invalid JSON: " + e.message);
-  }
-});
-clearInputBtn.addEventListener('click', ()=> jsonIn.value = "");
-
-/* ===== Init ===== */
-img.addEventListener('load', ()=>{
-  setLabel();
-  renderOutlines();
-});
-window.addEventListener('keydown', (e)=>{
-  if(e.key === 'ArrowRight') nextBtn.click();
-  if(e.key === 'ArrowLeft') prevBtn.click();
-  if(e.key.toLowerCase() === 's' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); saveBtn.click(); }
-});
-
-/* initial render */
-if(img.complete) {
-  setLabel();
-  renderOutlines();
-}
-</script>
+  </script>
 </body>
 </html>
