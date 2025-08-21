@@ -21,7 +21,7 @@
     .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
     .imgStage{position:relative;user-select:none}
     .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
-
+    
     /* Outline hotspot */
     .outline{
       position:absolute;
@@ -30,7 +30,7 @@
       cursor:pointer;
     }
     .outline:hover{border-color:rgba(255,255,255,1);}
-
+    
     /* Tooltip */
     .tip{
       position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
@@ -41,9 +41,9 @@
     }
     .outline:hover .tip{opacity:1;}
 
-    /* Toolbar */
+    /* toolbar & other UI */
     .bar{
-      position:sticky; top:0; z-index:10; background:#111; border:1px solid #222;
+      position:sticky; top:0; z-index:10; background:#111; border:1px solid #222; border-left:none;border-right:none;
       padding:10px 12px; display:flex; gap:10px; align-items:center; justify-content:space-between
     }
     .bar small{color:var(--ink-dim)}
@@ -53,7 +53,11 @@
     .bar button:hover{background:#242424}
     .pill{display:inline-flex;gap:6px;align-items:center}
     .pill b{color:#fff}
+    .kbd{font-size:.85em;background:#181818;border:1px solid #2b2b2b;border-bottom-color:#222;border-radius:6px;padding:2px 6px}
     .msg{font-size:.9rem;color:var(--ink-dim)}
+    #description{max-width:900px;margin:24px auto 64px;background:#0f0f0f;border:1px solid #1d1d1d;border-radius:14px;padding:18px}
+    #description h2{margin:0 0 10px 0;font-size:1.05rem;color:#fff}
+    #description p{margin:0;color:#cfcfcf}
   </style>
 </head>
 <body>
@@ -75,8 +79,15 @@
 
   <div class="wrap">
     <div class="imgStage" id="stage">
-      <img id="kit" src="IMG_4435.jpeg" alt="kit layout" />
+      <!-- Absolute URL so it *always* loads -->
+      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
+      <!-- outlines will be injected here -->
     </div>
+  </div>
+
+  <div id="description" class="wrap">
+    <h2>DESCRIPTION</h2>
+    <p>Hover over any rectangle to see the label.</p>
   </div>
 
 <script>
@@ -90,12 +101,17 @@ const ITEMS = [
 ];
 
 const STORE_KEY = "iajuar_outlines_v1";
-let outlines = loadOutlines();
+let outlines = loadOutlines(); 
 let idx = firstUnplacedIndex(outlines);
 
 const stage = document.getElementById('stage');
 const img = document.getElementById('kit');
 const itemLabel = document.getElementById('itemLabel');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const saveBtn = document.getElementById('saveBtn');
+const resetBtn = document.getElementById('resetBtn');
+const exportBtn = document.getElementById('exportBtn');
 
 function loadOutlines(){
   const saved = localStorage.getItem(STORE_KEY);
@@ -107,69 +123,104 @@ function loadOutlines(){
   }
   return new Array(ITEMS.length).fill(null);
 }
-function firstUnplacedIndex(arr){ const i=arr.findIndex(p=>!p); return i===-1?0:i; }
-function setLabel(){ itemLabel.textContent=`Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`; }
+function firstUnplacedIndex(arr){
+  const i = arr.findIndex(p => !p);
+  return i === -1 ? 0 : i;
+}
+function setLabel(){
+  itemLabel.textContent = `Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`;
+}
 function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(outlines)); }
 function resetAll(){
   localStorage.removeItem(STORE_KEY);
-  outlines=new Array(ITEMS.length).fill(null);
-  idx=0; setLabel(); renderOutlines();
+  outlines = new Array(ITEMS.length).fill(null);
+  idx = 0;
+  setLabel();
+  renderOutlines();
 }
 function exportJSON(){
   const txt = JSON.stringify(outlines);
   navigator.clipboard?.writeText(txt);
-  alert("Outline coordinates copied:\n\n"+txt);
+  alert("Outline coordinates copied to clipboard.\n\n" + txt);
 }
 
-let startX,startY,drawing=false;
-img.addEventListener('mousedown',(e)=>{
-  const r=img.getBoundingClientRect();
-  startX=((e.clientX-r.left)/r.width)*100;
-  startY=((e.clientY-r.top)/r.height)*100;
-  drawing=true;
+let startX, startY, drawing = false;
+
+img.addEventListener('mousedown', (e)=>{
+  if(idx === null) return;
+  const rect = img.getBoundingClientRect();
+  startX = ((e.clientX - rect.left)/rect.width)*100;
+  startY = ((e.clientY - rect.top)/rect.height)*100;
+  drawing = true;
 });
-img.addEventListener('mousemove',(e)=>{
+
+img.addEventListener('mousemove', (e)=>{
   if(!drawing) return;
+  renderOutlines(); // clear temp overlay
+  const rect = img.getBoundingClientRect();
+  const currentX = ((e.clientX - rect.left)/rect.width)*100;
+  const currentY = ((e.clientY - rect.top)/rect.height)*100;
+
+  const x = Math.min(startX,currentX);
+  const y = Math.min(startY,currentY);
+  const w = Math.abs(startX-currentX);
+  const h = Math.abs(startY-currentY);
+
+  const outline = document.createElement('div');
+  outline.className = 'outline';
+  outline.style.left = x + '%';
+  outline.style.top = y + '%';
+  outline.style.width = w + '%';
+  outline.style.height = h + '%';
+  outline.innerHTML = `<span class="tip">${ITEMS[idx]}</span>`;
+  stage.appendChild(outline);
+});
+
+img.addEventListener('mouseup', (e)=>{
+  if(!drawing) return;
+  drawing = false;
+  const rect = img.getBoundingClientRect();
+  const endX = ((e.clientX - rect.left)/rect.width)*100;
+  const endY = ((e.clientY - rect.top)/rect.height)*100;
+
+  outlines[idx] = {
+    left: Math.min(startX,endX),
+    top: Math.min(startY,endY),
+    width: Math.abs(startX-endX),
+    height: Math.abs(startY-endY)
+  };
+  idx = (idx + 1) % ITEMS.length;
+  setLabel();
   renderOutlines();
-  const r=img.getBoundingClientRect();
-  const curX=((e.clientX-r.left)/r.width)*100;
-  const curY=((e.clientY-r.top)/r.height)*100;
-  const x=Math.min(startX,curX), y=Math.min(startY,curY);
-  const w=Math.abs(startX-curX), h=Math.abs(startY-curY);
-  const o=document.createElement('div');
-  o.className='outline'; o.style.left=x+'%';o.style.top=y+'%';o.style.width=w+'%';o.style.height=h+'%';
-  o.innerHTML=`<span class="tip">${ITEMS[idx]}</span>`;
-  stage.appendChild(o);
 });
-img.addEventListener('mouseup',(e)=>{
-  if(!drawing) return; drawing=false;
-  const r=img.getBoundingClientRect();
-  const endX=((e.clientX-r.left)/r.width)*100;
-  const endY=((e.clientY-r.top)/r.height)*100;
-  outlines[idx]={left:Math.min(startX,endX),top:Math.min(startY,endY),
-    width:Math.abs(startX-endX),height:Math.abs(startY-endY)};
-  idx=(idx+1)%ITEMS.length; setLabel(); renderOutlines();
-});
+
 function renderOutlines(){
   [...stage.querySelectorAll('.outline')].forEach(n=>n.remove());
   outlines.forEach((o,i)=>{
     if(!o) return;
-    const d=document.createElement('div');
-    d.className='outline'; d.style.left=o.left+'%'; d.style.top=o.top+'%';
-    d.style.width=o.width+'%'; d.style.height=o.height+'%';
-    d.innerHTML=`<span class="tip">${ITEMS[i]}</span>`;
-    stage.appendChild(d);
+    const outline = document.createElement('div');
+    outline.className = 'outline';
+    outline.style.left = o.left + '%';
+    outline.style.top = o.top + '%';
+    outline.style.width = o.width + '%';
+    outline.style.height = o.height + '%';
+    outline.innerHTML = `<span class="tip">${ITEMS[i]}</span>`;
+    stage.appendChild(outline);
   });
 }
 
-// toolbar buttons
-document.getElementById('prevBtn').onclick=()=>{ idx=(idx-1+ITEMS.length)%ITEMS.length; setLabel(); };
-document.getElementById('nextBtn').onclick=()=>{ idx=(idx+1)%ITEMS.length; setLabel(); };
-document.getElementById('saveBtn').onclick=save;
-document.getElementById('resetBtn').onclick=resetAll;
-document.getElementById('exportBtn').onclick=exportJSON;
+// Toolbar buttons
+prevBtn.addEventListener('click', ()=>{ idx = (idx-1+ITEMS.length)%ITEMS.length; setLabel(); });
+nextBtn.addEventListener('click', ()=>{ idx = (idx+1)%ITEMS.length; setLabel(); });
+saveBtn.addEventListener('click', save);
+resetBtn.addEventListener('click', resetAll);
+exportBtn.addEventListener('click', exportJSON);
 
-img.onload=()=>{ setLabel(); renderOutlines(); };
+img.addEventListener('load', ()=>{
+  setLabel();
+  renderOutlines();
+});
 </script>
+
 </body>
 </html>
