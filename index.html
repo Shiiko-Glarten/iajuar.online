@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>iajuar — kit outlines (viewer)</title>
+  <title>iajuar — outline JSON editor</title>
 
   <!-- JetBrains Mono -->
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
@@ -13,132 +13,81 @@
       --bg:#0b0b0b;
       --ink:#eaeaea;
       --ink-dim:#bdbdbd;
-      --ink-muted:#9a9a9a;
       --tip:#111;
       --accent:#ffffff;
-      --card:#101010;
-      --card-brd:#1b1b1b;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.55}
-    .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
-    .imgStage{position:relative;user-select:none;display:inline-block}
-    .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
-
-    /* Outline rectangles */
-    .outline{
-      position:absolute;
-      border:2px solid rgba(255,255,255,.78);
-      border-radius:8px;
-      cursor:pointer;
-      transition:box-shadow .15s ease, border-color .15s ease, transform .06s ease;
-      pointer-events:auto;
-    }
-    .outline:hover{
-      border-color:#fff;
-      box-shadow:0 0 0 2px rgba(255,255,255,.14), 0 8px 24px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.35);
-    }
-
-    /* Tooltip */
-    .tip{
-      position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
-      background:var(--tip); color:var(--ink);
-      padding:6px 10px; border-radius:10px; font-size:12px; font-weight:600;
-      white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease;
-      box-shadow:0 4px 14px rgba(0,0,0,.35); border:1px solid #1d1d1d;
-    }
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.5}
+    .wrap{max-width:1200px;margin:18px auto;padding:0 12px}
+    .imgStage{position:relative;user-select:none;border-radius:12px;overflow:visible;display:inline-block}
+    .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto;border-radius:8px}
+    .bar{display:flex;gap:10px;align-items:center;justify-content:space-between;background:#0f0f0f;border:1px solid #191919;padding:10px;border-radius:10px;margin-bottom:12px}
+    .controls{display:flex;gap:8px;align-items:center}
+    button{background:#141414;color:#eee;border:1px solid #222;padding:8px 10px;border-radius:8px;cursor:pointer;font-family:inherit}
+    button:hover{background:#1a1a1a}
+    .pill{font-size:.95rem;color:var(--ink-dim)}
+    .kbd{background:#111;border:1px solid #232323;padding:4px 8px;border-radius:6px}
+    .msg{color:var(--ink-dim);font-size:.9rem}
+    .outline{position:absolute;border:2px solid rgba(255,255,255,.75);border-radius:8px;pointer-events:auto;box-sizing:border-box}
+    .outline.preview{border-style:dashed;opacity:.95}
+    .outline:hover{border-color:#fff;transform:translateZ(0)}
+    .tip{position:absolute;left:50%;top:-10px;transform:translate(-50%,-100%);background:var(--tip);color:var(--ink);padding:6px 8px;border-radius:8px;font-size:12px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .12s}
     .outline:hover .tip{opacity:1}
-
-    /* Header bar (viewer mode only) */
-    .bar{
-      position:sticky; top:0; z-index:10; background:#111; border:1px solid #222; border-left:none;border-right:none;
-      padding:10px 12px; display:flex; gap:12px; align-items:center; justify-content:space-between
-    }
-    .pill{display:flex; gap:10px; align-items:center}
-    .msg{font-size:.9rem;color:var(--ink-dim)}
-    .badge{
-      font-size:.8rem; color:#111; background:#ffe28a; border-radius:999px; padding:4px 8px; font-weight:700;
-    }
-    .ghost{
-      background:#151515;color:#ddd;border:1px solid #242424;border-radius:10px;padding:8px 12px;font-family:inherit;cursor:pointer
-    }
-    .ghost:hover{background:#1c1c1c}
-    .ghost:active{transform:translateY(1px)}
-
-    /* Description card */
-    #description{max-width:1000px;margin:24px auto 64px;background:var(--card);border:1px solid var(--card-brd);border-radius:16px; padding:18px}
-    #description header{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px}
-    #description h2{margin:0;font-size:1.05rem;color:#fff}
-    #descHelp{margin:0;color:var(--ink-muted);font-size:.9rem}
-    /* Simple rich text area to paste/adapt your document.
-       You can paste formatted text (underline, italics, bold, sizes) and it will keep structure,
-       but we force JetBrains Mono for consistency. */
-    #doc{
-      min-height:320px; background:#0f0f0f; border:1px solid #1d1d1d; border-radius:12px;
-      padding:18px; overflow:auto; outline:none; color:#eaeaea; font-family:"JetBrains Mono",monospace;
-    }
-    /* Some helpful typographic defaults */
-    #doc h1{font-size:1.4rem;margin:.8em 0 .4em}
-    #doc h2{font-size:1.25rem;margin:.8em 0 .4em; text-decoration:underline}
-    #doc h3{font-size:1.1rem;margin:.8em 0 .4em}
-    #doc p{margin:.6em 0}
-    #doc em{font-style:italic}
-    #doc strong{font-weight:800}
-    #doc u{text-decoration:underline}
-    /* small toolbar */
-    .rtb{display:flex; gap:8px; margin:10px 0 14px}
-    .rtb button{border:1px solid #2b2b2b;background:#141414;color:#eee;border-radius:8px;padding:6px 10px;font-family:inherit;cursor:pointer}
-    .rtb button:hover{background:#1b1b1b}
+    #info{margin-top:8px;color:var(--ink-dim);font-size:.9rem}
+    .small{font-size:.85rem;color:var(--ink-dim)}
+    .right{display:flex;gap:8px;align-items:center}
+    textarea#jsonIn{width:100%;height:120px;background:#0b0b0b;border:1px solid #222;color:#eee;padding:12px;border-radius:8px;font-family:"JetBrains Mono",monospace}
+    .footer{max-width:1200px;margin:18px auto;padding:0 12px 60px}
   </style>
 </head>
 <body>
 
-  <!-- Viewer header (no drawing editor) -->
-  <div class="bar wrap" id="toolbar">
-    <div class="pill">
-      <strong>Outline viewer</strong>
-      <small class="msg">Hover any rectangle to see its label. Image URL is absolute for reliability.</small>
-    </div>
-    <div class="pill">
-      <small class="msg" id="countMsg"></small>
-      <button id="exportBtn" class="ghost" title="Download outlines JSON">Export JSON</button>
-      <button id="importBtn" class="ghost" title="Paste/replace outlines JSON">Import JSON</button>
-    </div>
-  </div>
-
   <div class="wrap">
-    <div class="imgStage" id="stage">
-      <!-- Absolute URL so it *always* loads -->
+    <div class="bar">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="font-weight:700">Outline Editor</div>
+        <div class="pill">Image loads from GitHub (absolute URL)</div>
+        <div id="modeHint" class="kbd">Editor: Draw (click-drag)</div>
+      </div>
+
+      <div class="controls">
+        <div class="pill" id="itemLabel">Item 1/34</div>
+        <button id="prevBtn" title="Previous">◀ Prev</button>
+        <button id="nextBtn" title="Next">Next ▶</button>
+        <button id="clearItem" title="Clear current item">Clear Item</button>
+        <button id="resetBtn" title="Clear all">Reset All</button>
+        <button id="saveBtn" title="Save to localStorage">Save</button>
+        <button id="copyBtn" title="Copy JSON">Copy JSON</button>
+        <button id="downloadBtn" title="Download JSON">Download JSON</button>
+        <button id="importBtn" title="Import JSON (paste)">Import JSON</button>
+      </div>
+    </div>
+
+    <div class="imgStage" id="stage" aria-label="image stage">
+      <!-- Absolute URL so it always loads -->
       <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
-      <!-- outlines will be injected here -->
+      <!-- outlines appended here -->
+    </div>
+
+    <div id="info">
+      <span class="small">Draw rectangles in order for each item. Use Prev/Next to navigate items. After drawing, the editor auto-advances to the next item.</span>
     </div>
   </div>
 
-  <div id="description" class="wrap">
-    <header>
-      <h2>DESCRIPTION</h2>
-      <p id="descHelp">Paste your “HyperMobility copy” content below. Formatting like <u>underlines</u>, <em>italics</em>, and <strong>bold</strong> are preserved and rendered in JetBrains Mono.</p>
-    </header>
-
-    <div class="rtb">
-      <button type="button" data-cmd="bold"><strong>B</strong></button>
-      <button type="button" data-cmd="italic"><em>I</em></button>
-      <button type="button" data-cmd="underline"><u>U</u></button>
-      <button type="button" data-cmd="formatBlock" data-value="h2">H2</button>
-      <button type="button" data-cmd="formatBlock" data-value="p">P</button>
-      <button type="button" id="clearDoc">Clear</button>
-    </div>
-
-    <!-- Paste your PDF text here; we keep it contenteditable to let you mirror your original layout. -->
-    <div id="doc" contenteditable="true">
-      <!-- If you pasted from PDF, keep headings underlined, use italics/bold where needed, and adjust sizes with H2/P buttons if you like. -->
-      <h2>Sample Underlined Title</h2>
-      <p><em>Replace this sample with the content from your PDF.</em> Keep your <u>underlined section titles</u>, <strong>bold emphasis</strong>, and <em>italics</em>. The font is JetBrains Mono throughout.</p>
+  <div class="footer wrap">
+    <h3 style="margin:8px 0 6px">Import / Paste JSON</h3>
+    <p class="small" style="margin:0 0 8px">If you already have a full 34-item JSON array, paste it here and click <strong>Apply JSON</strong>.</p>
+    <textarea id="jsonIn" placeholder='Paste a full 34-item JSON array here (e.g. [{"left":...,"top":...,"width":...,"height":...}, ...])'></textarea>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="applyJson">Apply JSON</button>
+      <button id="clearInput">Clear</button>
+      <div style="flex:1"></div>
+      <div class="small">Saved JSON also stored to <code>localStorage</code> under key <code>iajuar_outlines_editor_v1</code></div>
     </div>
   </div>
 
 <script>
-/* ===== Labels (1..34) ===== */
+/* ===== Items (34) ===== */
 const ITEMS = [
   "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
   "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
@@ -148,135 +97,260 @@ const ITEMS = [
   "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
 ];
 
-/* ===== Provided (partial) outline data from your export =====
-   NOTE: Your pasted JSON was truncated at item ~19 in our last message.
-   I preload what you shared and pad the rest with nulls.
-   You can click “Import JSON” to paste the full 34-item array at any time. */
-const PROVIDED = [
-  {"left":7.0578231292517,"top":9.265987379462945,"width":7.738095238095239,"height":12.587756440025128},
-  {"left":16.666666666666664,"top":9.965307181686562,"width":2.551020408163268,"height":24.825852978938457},
-  {"left":20.66326530612245,"top":9.265987379462945,"width":7.482993197278912,"height":26.399322533941596},
-  {"left":5.442176870748299,"top":22.7278935722676,"width":5.952380952380953,"height":13.986396044472368},
-  {"left":11.479591836734695,"top":23.07755347337941,"width":3.316326530612244,"height":9.440817330018845},
-  {"left":32.31292517006803,"top":10.140137132242467,"width":10.714285714285715,"height":19.580954462261317},
-  {"left":43.452380952380956,"top":20.629934165596744,"width":2.9761904761904745,"height":9.440817330018849},
-  {"left":45.66326530612245,"top":13.112246291692845,"width":2.3809523809523867,"height":7.692517824459806},
-  {"left":48.12925170068027,"top":11.713606687245608,"width":2.1258503401360542,"height":7.692517824459802},
-  {"left":50.425170068027214,"top":12.412926489469227,"width":4.2517006802721085,"height":17.13333515447865},
-  {"left":56.63265306122449,"top":8.916327478351135,"width":4.166666666666664,"height":12.238096538913322},
-  {"left":56.547619047619044,"top":21.67891386893217,"width":4.166666666666664,"height":10.489797033354279},
-  {"left":61.39455782312925,"top":9.09115742890704,"width":10.884353741496597,"height":15.385035648919603},
-  {"left":62.755102040816325,"top":26.5741524844975,"width":8.16326530612244,"height":2.2727893572267597},
-  {"left":62.84013605442177,"top":29.54626164394788,"width":8.163265306122447,"height":2.272789357226756},
-  {"left":75.17006802721087,"top":8.042177725571612,"width":22.619047619047635,"height":27.62313218783293},
-  {"left":75.93537414965986,"top":37.763269320075395,"width":18.027210884353735,"height":29.19660174283608},
-  {"left":76.10544217687075,"top":73.42857923347994,"width":15.901360544217681,"height":17.30816510503456},
-  {"left":53.91156462585034,"top":38.462589122299015,"width":20,"height":20}
-];
-
-/* ===== Initialization ===== */
-const STORE_KEY = "iajuar_outlines_viewer_v1";
+const STORE_KEY = "iajuar_outlines_editor_v1";
 const stage = document.getElementById('stage');
 const img = document.getElementById('kit');
-const countMsg = document.getElementById('countMsg');
-const exportBtn = document.getElementById('exportBtn');
+const itemLabel = document.getElementById('itemLabel');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const saveBtn = document.getElementById('saveBtn');
+const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
 const importBtn = document.getElementById('importBtn');
+const resetBtn = document.getElementById('resetBtn');
+const clearItemBtn = document.getElementById('clearItem');
+const jsonIn = document.getElementById('jsonIn');
+const applyJsonBtn = document.getElementById('applyJson');
+const clearInputBtn = document.getElementById('clearInput');
 
-/* Build outlines array with exactly 34 slots */
-let outlines = new Array(ITEMS.length).fill(null);
-for(let i=0;i<Math.min(PROVIDED.length, outlines.length);i++){
-  outlines[i] = PROVIDED[i];
+/* ===== State ===== */
+let outlines = loadOutlines(); // array length 34 of objects or null
+let idx = firstUnplacedIndex(outlines);
+let drawing = false;
+let startX = 0, startY = 0;
+let previewDiv = null;
+
+/* ===== Helpers ===== */
+function loadOutlines(){
+  const saved = localStorage.getItem(STORE_KEY);
+  if(saved){
+    try{
+      const arr = JSON.parse(saved);
+      if(Array.isArray(arr) && arr.length === ITEMS.length) return arr;
+    }catch(e){}
+  }
+  // return full-length null-filled array
+  return new Array(ITEMS.length).fill(null);
 }
-
-/* If you previously saved full JSON in localStorage, prefer that */
-const saved = localStorage.getItem(STORE_KEY);
-if(saved){
-  try{
-    const arr = JSON.parse(saved);
-    if(Array.isArray(arr) && arr.length === ITEMS.length){
-      outlines = arr;
-    }
-  }catch(e){}
+function saveOutlines(){
+  localStorage.setItem(STORE_KEY, JSON.stringify(outlines));
 }
-
-function updateCountBadge(){
-  const placed = outlines.filter(Boolean).length;
-  const total = outlines.length;
-  countMsg.innerHTML =
-    (placed===total)
-      ? `Outlines loaded: ${placed}/${total}`
-      : `<span class="badge" title="Paste full JSON via Import JSON to complete">Incomplete: ${placed}/${total}</span>`;
+function firstUnplacedIndex(arr){
+  const i = arr.findIndex(p => !p);
+  return i === -1 ? 0 : i;
 }
+function setLabel(){
+  itemLabel.textContent = `Item ${idx+1}/${ITEMS.length}: ${ITEMS[idx]}`;
+}
+function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
 
-function renderOutlines(){
-  // remove old
+/* ===== Rendering ===== */
+function clearRendered(){
   [...stage.querySelectorAll('.outline')].forEach(n => n.remove());
-  // add for each outline
+}
+function renderOutlines(){
+  clearRendered();
   outlines.forEach((o,i)=>{
     if(!o) return;
     const d = document.createElement('div');
     d.className = 'outline';
-    // Use percentages so it scales with image responsively
-    d.style.left   = o.left + '%';
-    d.style.top    = o.top + '%';
-    d.style.width  = o.width + '%';
+    d.style.left = o.left + '%';
+    d.style.top = o.top + '%';
+    d.style.width = o.width + '%';
     d.style.height = o.height + '%';
+    d.setAttribute('data-index', i);
     d.setAttribute('aria-label', `${i+1}. ${ITEMS[i]}`);
     d.innerHTML = `<span class="tip">${i+1}. ${ITEMS[i]}</span>`;
+    // clicking an existing outline selects that item for re-draw/edit
+    d.addEventListener('click', (ev)=>{
+      ev.stopPropagation();
+      idx = i;
+      setLabel();
+      // highlight briefly
+      d.classList.add('preview');
+      setTimeout(()=>d.classList.remove('preview'), 220);
+    });
     stage.appendChild(d);
   });
 }
 
-/* Export/Import JSON (viewer-side only; no drawing editor) */
-exportBtn.addEventListener('click', ()=>{
-  const json = JSON.stringify(outlines, null, 2);
-  // download as file
-  const blob = new Blob([json], {type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'iajuar_outlines.json';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+/* ===== Pointer-based drawing (works for mouse & touch via pointer events) ===== */
+function toPercentCoords(clientX, clientY){
+  const rect = img.getBoundingClientRect();
+  const left = clamp((clientX - rect.left) / rect.width * 100, 0, 100);
+  const top  = clamp((clientY - rect.top) / rect.height * 100, 0, 100);
+  return { left, top };
+}
+
+stage.addEventListener('pointerdown', (e)=>{
+  // only start if pointer is over image (not over existing outline)
+  // ensure primary button
+  if(e.button !== 0 && e.pointerType === 'mouse') return;
+  const target = e.target;
+  if(target.classList && target.classList.contains('outline')) {
+    // clicking a rectangle handled elsewhere; avoid re-starting draw
+    return;
+  }
+  e.preventDefault();
+  const p = toPercentCoords(e.clientX, e.clientY);
+  startX = p.left; startY = p.top;
+  drawing = true;
+
+  // preview rectangle
+  if(previewDiv) previewDiv.remove();
+  previewDiv = document.createElement('div');
+  previewDiv.className = 'outline preview';
+  previewDiv.style.left = startX + '%';
+  previewDiv.style.top = startY + '%';
+  previewDiv.style.width = '0%';
+  previewDiv.style.height = '0%';
+  previewDiv.innerHTML = `<span class="tip">${idx+1}. ${ITEMS[idx]}</span>`;
+  stage.appendChild(previewDiv);
+
+  // capture pointer for better touch/mouse handling
+  stage.setPointerCapture(e.pointerId);
 });
 
-importBtn.addEventListener('click', ()=>{
-  const txt = prompt("Paste the full 34-item outlines JSON array:");
-  if(!txt) return;
-  try{
-    const arr = JSON.parse(txt);
-    if(Array.isArray(arr) && arr.length === ITEMS.length){
-      outlines = arr;
-      localStorage.setItem(STORE_KEY, JSON.stringify(outlines));
-      renderOutlines();
-      updateCountBadge();
-      alert("Outlines imported and saved.");
-    }else{
-      alert("That JSON is not a 34-item array. Please check and try again.");
-    }
-  }catch(e){
-    alert("Invalid JSON. Please try again.");
+stage.addEventListener('pointermove', (e)=>{
+  if(!drawing) return;
+  const p = toPercentCoords(e.clientX, e.clientY);
+  const x = Math.min(startX, p.left);
+  const y = Math.min(startY, p.top);
+  const w = Math.abs(p.left - startX);
+  const h = Math.abs(p.top - startY);
+  if(previewDiv){
+    previewDiv.style.left = x + '%';
+    previewDiv.style.top  = y + '%';
+    previewDiv.style.width = w + '%';
+    previewDiv.style.height = h + '%';
   }
 });
 
-img.addEventListener('load', ()=>{
+stage.addEventListener('pointerup', (e)=>{
+  if(!drawing) return;
+  drawing = false;
+  const p = toPercentCoords(e.clientX, e.clientY);
+  const left = Math.min(startX, p.left);
+  const top  = Math.min(startY, p.top);
+  const width = Math.abs(p.left - startX);
+  const height = Math.abs(p.top - startY);
+
+  // store even small boxes (user may adjust later)
+  outlines[idx] = { left: +left.toFixed(12), top: +top.toFixed(12), width: +width.toFixed(12), height: +height.toFixed(12) };
+
+  // remove preview and re-render full set
+  if(previewDiv) { previewDiv.remove(); previewDiv = null; }
   renderOutlines();
-  updateCountBadge();
+  saveOutlines();
+
+  // auto advance to next item
+  idx = (idx + 1) % ITEMS.length;
+  setLabel();
 });
 
-/* ===== Simple formatting toolbar for the description box ===== */
-document.querySelectorAll('.rtb button[data-cmd]').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const cmd = btn.getAttribute('data-cmd');
-    const val = btn.getAttribute('data-value') || null;
-    document.execCommand(cmd, false, val);
-  });
+/* ===== Buttons & UI ===== */
+prevBtn.addEventListener('click', ()=>{
+  idx = (idx - 1 + ITEMS.length) % ITEMS.length;
+  setLabel();
 });
-document.getElementById('clearDoc').addEventListener('click', ()=>{
-  if(confirm("Clear the description content?")) document.getElementById('doc').innerHTML = "";
+nextBtn.addEventListener('click', ()=>{
+  idx = (idx + 1) % ITEMS.length;
+  setLabel();
 });
+clearItemBtn.addEventListener('click', ()=>{
+  if(confirm(`Clear item ${idx+1} (${ITEMS[idx]})?`)){
+    outlines[idx] = null;
+    renderOutlines();
+    saveOutlines();
+  }
+});
+resetBtn.addEventListener('click', ()=>{
+  if(confirm("Clear all outlines and reset editor?")){
+    outlines = new Array(ITEMS.length).fill(null);
+    saveOutlines();
+    renderOutlines();
+    idx = 0; setLabel();
+  }
+});
+saveBtn.addEventListener('click', ()=>{
+  saveOutlines();
+  alert("Outlines saved to localStorage.");
+});
+copyBtn.addEventListener('click', async ()=>{
+  const json = JSON.stringify(outlines);
+  try{
+    await navigator.clipboard.writeText(json);
+    alert("Full outlines JSON copied to clipboard (34 items).");
+  }catch(e){
+    // fallback: open JSON in new tab
+    const w = window.open();
+    w.document.body.innerText = json;
+    alert("Clipboard failed — full JSON opened in a new tab. Copy manually.");
+  }
+});
+downloadBtn.addEventListener('click', ()=>{
+  const json = JSON.stringify(outlines, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'iajuar_outlines_34.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+});
+importBtn.addEventListener('click', ()=>{
+  const txt = prompt("Paste a 34-item JSON array (or click Cancel):");
+  if(!txt) return;
+  try{
+    const arr = JSON.parse(txt);
+    if(!Array.isArray(arr) || arr.length !== ITEMS.length) {
+      alert("Imported JSON must be a 34-item array. It has length " + (Array.isArray(arr)?arr.length:'invalid'));
+      return;
+    }
+    outlines = arr;
+    saveOutlines();
+    renderOutlines();
+    alert("Imported 34-item outlines and saved.");
+  }catch(e){
+    alert("Invalid JSON: " + e.message);
+  }
+});
+
+/* Footer import box */
+applyJsonBtn.addEventListener('click', ()=>{
+  const txt = jsonIn.value.trim();
+  if(!txt){ alert("Paste JSON into the textarea first."); return; }
+  try{
+    const arr = JSON.parse(txt);
+    if(!Array.isArray(arr) || arr.length !== ITEMS.length){
+      alert("JSON must be a 34-item array. Found length: " + (Array.isArray(arr)?arr.length:'invalid'));
+      return;
+    }
+    outlines = arr;
+    saveOutlines();
+    renderOutlines();
+    alert("Applied 34-item JSON and saved.");
+  }catch(e){
+    alert("Invalid JSON: " + e.message);
+  }
+});
+clearInputBtn.addEventListener('click', ()=> jsonIn.value = "");
+
+/* ===== Init ===== */
+img.addEventListener('load', ()=>{
+  setLabel();
+  renderOutlines();
+});
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'ArrowRight') nextBtn.click();
+  if(e.key === 'ArrowLeft') prevBtn.click();
+  if(e.key.toLowerCase() === 's' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); saveBtn.click(); }
+});
+
+/* initial render */
+if(img.complete) {
+  setLabel();
+  renderOutlines();
+}
 </script>
 </body>
 </html>
