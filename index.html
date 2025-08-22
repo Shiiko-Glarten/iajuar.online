@@ -1,187 +1,91 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>iajuar — outlines viewer (with description area)</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>iajuar — kit viewer</title>
 
-<!-- JetBrains Mono -->
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+  <!-- JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
-<style>
-  :root{
-    --bg: #0b0b0b;
-    --ink: #eaeaea;
-    --muted: #9a9a9a;
-    --tip-bg: #0f0f0f;
-  }
-  html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace}
-  .wrap{max-width:1200px;margin:20px auto;padding:0 16px}
-  .bar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#0f0f0f;border:1px solid #191919;border-radius:10px;color:var(--muted)}
-  .bar .left{display:flex;gap:12px;align-items:center}
-  .kbd{background:#111;border:1px solid #222;padding:6px 8px;border-radius:6px;font-size:.9rem}
-  .imgStage{position:relative;margin-top:18px;display:block;max-width:100%;width:100%;text-align:center}
-  .imgStage img{display:block;max-width:100%;height:auto;border-radius:8px;margin:0 auto}
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --ink:#eaeaea;
+      --ink-dim:#bdbdbd;
+      --tip:#111;
+      --accent:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.55}
+    .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
+    .imgStage{position:relative;user-select:none}
+    .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
 
-  /* invisible hover regions (no visible dashed outlines) */
-  .hotspot{
-    position:absolute;
-    background:transparent;      /* not visible */
-    pointer-events:auto;
-  }
+    .outline{
+      position:absolute;
+      border:2px solid rgba(255,255,255,.0); /* invisible outlines */
+      cursor:pointer;
+    }
+    .outline:hover{border-color:rgba(255,255,255,1);}
+    .tip{
+      position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
+      background:var(--tip); color:var(--ink);
+      padding:6px 8px; border-radius:8px; font-size:12px;
+      white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease;
+      box-shadow:0 4px 14px rgba(0,0,0,.35);
+    }
+    .outline:hover .tip{opacity:1;}
 
-  /* tooltip shown on hover - centered above region */
-  .tooltip{
-    position:absolute;
-    left:50%;
-    top:-8px;
-    transform:translate(-50%,-100%);
-    background:var(--tip-bg);
-    color:var(--ink);
-    padding:6px 10px;
-    border-radius:8px;
-    font-size:13px;
-    white-space:nowrap;
-    pointer-events:none;
-    opacity:0;
-    transition:opacity .12s ease;
-    box-shadow:0 6px 18px rgba(0,0,0,.6);
-    border:1px solid #1a1a1a;
-    z-index:50;
-  }
-  .hotspot:hover .tooltip{opacity:1}
-
-  /* subtle visual cue when hovering (optional) - transparent by default;
-     user asked NOT to show outlines, so border is none by default.
-     We add a faint glow only while hovering (not visible otherwise). */
-  .hotspot:hover{
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.03), inset 0 0 0 1px rgba(255,255,255,0.02);
-  }
-
-  /* description area */
-  #descriptionCard{
-    margin-top:28px;
-    background:#0f0f0f;
-    border:1px solid #171717;
-    border-radius:12px;
-    padding:18px;
-    color:var(--ink);
-  }
-  #descriptionHeader{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
-  #descriptionHeader h2{margin:0;font-size:1.05rem}
-  #descHelp{color:var(--muted);font-size:.9rem;margin:0}
-
-  /* paste box & apply button */
-  #pasteBox{width:100%;min-height:260px;background:#070707;border:1px solid #151515;border-radius:8px;padding:12px;color:var(--ink);font-family:"JetBrains Mono",monospace;overflow:auto}
-  .controls{display:flex;gap:8px;margin-top:10px;align-items:center}
-  button{background:#141414;color:#eaeaea;border:1px solid #222;padding:8px 10px;border-radius:8px;cursor:pointer;font-family:inherit}
-  button:hover{background:#1b1b1b}
-
-  /* area where extracted/pasted document will be shown */
-  #documentView{
-    margin-top:16px;
-    background:#0b0b0b;
-    border:1px solid #151515;
-    border-radius:8px;
-    padding:18px;
-    min-height:200px;
-    color:var(--ink);
-    font-family:"JetBrains Mono",monospace;
-  }
-
-  /* keep common text styles but allow pasted HTML to keep its own markup.
-     We guarantee the font is JetBrains Mono, per your request. */
-  #documentView h1,#documentView h2,#documentView h3{margin:.6em 0}
-  #documentView p{margin:.45em 0}
-  #documentView u{text-decoration:underline}
-  #documentView em{font-style:italic}
-  #documentView strong{font-weight:700}
-</style>
+    #intro, #description{max-width:900px;margin:24px auto;background:#0f0f0f;border:1px solid #1d1d1d;
+      border-radius:14px;padding:18px}
+    #intro h2, #description h2{margin:0 0 10px 0;font-size:1.05rem;color:#fff}
+    #intro p, #description p{margin:0 0 1em 0;color:#cfcfcf}
+    a { color: #61dafb; text-decoration: underline; }
+    em { font-style: italic; }
+    strong { font-weight: bold; }
+    u { text-decoration: underline; }
+  </style>
 </head>
 <body>
+
+  <!-- INTRO ABOVE THE IMAGE -->
+  <div id="intro" class="wrap">
+    <p>
+      I am currently living a nomadic life that grants me the freedom to prioritize creative endeavors.  
+      On the horizon over the course of a year is a route through Asia and Eastern Europe, having started 
+      in Japan from where I previously lived in Minneapolis, Minnesota. Traveling with my girlfriend, we 
+      have already spent time in Tokyo, Taipei, and Hong Kong, currently enjoying Hanoi as we slowly work 
+      our way west. We visit locations anywhere from a week to a month at a time with other notable stays 
+      in Spain, Portugal, Morocco, and Mexico City since the start of 2025. This list of items has accompanied 
+      me to each of these locations.
+    </p>
+    <p>
+      I also have a small collection of clothing to cover colder temperature ranges that is currently in 
+      storage in Minneapolis. This allows me to keep what I carry in my pack minimal as I offload weight here 
+      and swap location relevant items in and out of rotation in my kit when returning stateside to visit family.
+    </p>
+    <p><strong>EVERYTHING THAT SERVES MY PURPOSES IN THIS SEASON OF LIFE:</strong></p>
+  </div>
+
+  <!-- IMAGE WITH OUTLINES -->
   <div class="wrap">
-    <div class="bar" role="banner">
-      <div class="left">
-        <div style="font-weight:700">Outline Viewer</div>
-        <div class="kbd">Image URL baked: GitHub absolute URL</div>
-      </div>
-      <div class="right" style="color:var(--muted)">
-        Hover the photo to see labels. Overlays are invisible by default (no dashed boxes).
-      </div>
-    </div>
-
-    <div class="imgStage" id="stage" aria-label="Image stage (outlines overlay)">
-      <!-- Absolute URL so it always loads -->
-      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout">
-
-      <!-- hotspots injected via script -->
-    </div>
-
-    <div id="descriptionCard">
-      <div id="descriptionHeader">
-        <h2>Photo description (HyperMobility copy)</h2>
-        <div id="descHelp">Paste the *complete* PDF content (HTML or rich text) into the box below and click Apply. I will insert it verbatim using JetBrains Mono.</div>
-      </div>
-
-      <!-- paste box: user can paste raw HTML or formatted text copied from PDF viewer/document -->
-      <div id="pasteBox" contenteditable="true" placeholder="Paste the full PDF content here (select all in your PDF viewer, copy, then paste)."></div>
-
-      <div class="controls">
-        <button id="applyBtn">Apply pasted document (embed below)</button>
-        <button id="clearBtn">Clear paste box</button>
-        <button id="uploadReminder" title="Upload PDF in chat">If you uploaded the PDF file in chat, please tell me now so I can extract it</button>
-        <div style="flex:1"></div>
-        <button id="exportOutlines">Copy outlines JSON</button>
-      </div>
-
-      <div id="documentView" aria-live="polite">
-        <!-- After you click Apply, the full PDF content will appear here with JetBrains Mono applied -->
-        <!-- Initially empty until you paste and Apply -->
-      </div>
+    <div class="imgStage" id="stage">
+      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
+      <!-- outlines injected here -->
     </div>
   </div>
 
-<script>
-/* ======= coordinates (exact 34 items you supplied) ======= */
-const coordinates = [
-  {"left":7.142857142857,"top":9.265987379463,"width":7.738095238095,"height":12.412926489469},
-  {"left":16.241496598639,"top":9.265987379463,"width":3.061224489796,"height":26.04966263283},
-  {"left":20.833333333333,"top":8.741497527795,"width":7.312925170068,"height":26.923812385609},
-  {"left":5.442176870748,"top":22.2034037206,"width":6.292517006803,"height":14.336055945584},
-  {"left":11.734693877551,"top":22.553063621712,"width":3.146258503401,"height":10.489797033354},
-  {"left":32.65306122449,"top":8.566667577239,"width":10.374149659864,"height":22.553063621712},
-  {"left":43.197278911565,"top":20.455104215041,"width":3.486394557823,"height":9.440817330019},
-  {"left":45.663265306122,"top":13.112246291693,"width":2.551020408163,"height":8.042177725572},
-  {"left":48.044217687075,"top":10.839456934466,"width":2.210884353741,"height":9.091157428907},
-  {"left":50.510204081633,"top":12.063266588357,"width":4.84693877551,"height":18.182314857814},
-  {"left":56.632653061224,"top":8.916327478351,"width":3.996598639456,"height":11.713606687246},
-  {"left":56.122448979592,"top":20.629934165597,"width":4.931972789116,"height":11.53877673669},
-  {"left":61.224489795918,"top":8.741497527795,"width":11.054421768707,"height":16.259185401699},
-  {"left":62.925170068027,"top":26.574152484497,"width":7.993197278912,"height":2.272789357227},
-  {"left":62.925170068027,"top":29.89592154506,"width":7.993197278912,"height":2.097959406671},
-  {"left":74.914965986395,"top":7.867347775016,"width":23.469387755102,"height":28.322451990057},
-  {"left":75.170068027211,"top":37.413609418964,"width":18.792517006803,"height":30.245581446172},
-  {"left":75.93537414966,"top":73.078919332368,"width":15.816326530612,"height":18.182314857814},
-  {"left":54.081632653061,"top":36.889119567296,"width":19.727891156463,"height":58.218373535116},
-  {"left":33.758503401361,"top":66.260551260688,"width":16.666666666667,"height":24.301363127271},
-  {"left":21.938775510204,"top":76.750348294042,"width":7.227891156463,"height":14.336055945584},
-  {"left":20.493197278912,"top":49.127216106209,"width":10.289115646259,"height":25.350342830606},
-  {"left":2.80612244898,"top":48.25306635343,"width":16.496598639456,"height":41.259868331193},
-  {"left":4.166666666667,"top":39.511568825634,"width":27.210884353741,"height":7.69251782446},
-  {"left":33.302257823295,"top":41.36633463844,"width":2.210884353741,"height":19.930614363373},
-  {"left":33.472325850506,"top":36.801804705021,"width":4.081632653061,"height":4.195918365605},
-  {"left":38.404298639622,"top":49.039899938035,"width":2.97619047619,"height":5.769387752707},
-  {"left":36.958720408329,"top":43.095685518224,"width":5.357142857143,"height":5.419728467233},
-  {"left":44.101577551186,"top":51.312689052737,"width":4.081632653061,"height":7.168027207908},
-  {"left":48.608380272275,"top":44.144665221559,"width":4.081632653061,"height":16.958505203923},
-  {"left":44.611781632819,"top":45.193644924895,"width":2.040816326531,"height":5.419728467233},
-  {"left":46.992734013772,"top":45.193644924895,"width":1.190476190476,"height":5.769388368345},
-  {"left":43.931509523976,"top":58.830381068255,"width":4.506802721088,"height":2.622449258339},
-  {"left":38.744434694044,"top":36.626977347656,"width":14.200680272109,"height":4.021088862786}
-];
+  <!-- FULL PDF-DERIVED CONTENT BELOW THE IMAGE -->
+  <div id="description" class="wrap">
+    <!-- Insert the cleaned HTML from your "HyperMobility+LINKS+INTROpdf-converted.html" here -->
+    <h2><u>Bags</u></h2>
+    <p>... rest of your PDF-derived content with <em>italics</em>, <strong>bold</strong>, and <a href="...">links</a> intact ...</p>
+  </div>
 
-/* ===== labels exactly from your numbered list (numbers removed) ===== */
-const labels = [
+<script>
+// COORDS + LABELS
+const ITEMS = [
   "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
   "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
   "Passport","Uniball Vision Elite","PaperMate Flair","Combat Boots","Barefoot Sandals","Hygiene Kit",
@@ -189,103 +93,22 @@ const labels = [
   "Belt","Apple Watch S10","AirTag x2","35W Adapter","Chargers","AirPods Pro","Anker 10k Powerbank",
   "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
 ];
+const COORDS = [{"left":7.142857142857,"top":9.265987379463,"width":7.738095238095,"height":12.412926489469},{"left":16.241496598639,"top":9.265987379463,"width":3.061224489796,"height":26.04966263283},{"left":20.833333333333,"top":8.741497527795,"width":7.312925170068,"height":26.923812385609},{"left":5.442176870748,"top":22.2034037206,"width":6.292517006803,"height":14.336055945584},{"left":11.734693877551,"top":22.553063621712,"width":3.146258503401,"height":10.489797033354},{"left":32.65306122449,"top":8.566667577239,"width":10.374149659864,"height":22.553063621712},{"left":43.197278911565,"top":20.455104215041,"width":3.486394557823,"height":9.440817330019},{"left":45.663265306122,"top":13.112246291693,"width":2.551020408163,"height":8.042177725572},{"left":48.044217687075,"top":10.839456934466,"width":2.210884353741,"height":9.091157428907},{"left":50.510204081633,"top":12.063266588357,"width":4.84693877551,"height":18.182314857814},{"left":56.632653061224,"top":8.916327478351,"width":3.996598639456,"height":11.713606687246},{"left":56.122448979592,"top":20.629934165597,"width":4.931972789116,"height":11.53877673669},{"left":61.224489795918,"top":8.741497527795,"width":11.054421768707,"height":16.259185401699},{"left":62.925170068027,"top":26.574152484497,"width":7.993197278912,"height":2.272789357227},{"left":62.925170068027,"top":29.89592154506,"width":7.993197278912,"height":2.097959406671},{"left":74.914965986395,"top":7.867347775016,"width":23.469387755102,"height":28.322451990057},{"left":75.170068027211,"top":37.413609418964,"width":18.792517006803,"height":30.245581446172},{"left":75.93537414966,"top":73.078919332368,"width":15.816326530612,"height":18.182314857814},{"left":54.081632653061,"top":36.889119567296,"width":19.727891156463,"height":58.218373535116},{"left":33.758503401361,"top":66.260551260688,"width":16.666666666667,"height":24.301363127271},{"left":21.938775510204,"top":76.750348294042,"width":7.227891156463,"height":14.336055945584},{"left":20.493197278912,"top":49.127216106209,"width":10.289115646259,"height":25.350342830606},{"left":2.80612244898,"top":48.25306635343,"width":16.496598639456,"height":41.259868331193},{"left":4.166666666667,"top":39.511568825634,"width":27.210884353741,"height":7.69251782446},{"left":33.302257823295,"top":41.36633463844,"width":2.210884353741,"height":19.930614363373},{"left":33.472325850506,"top":36.801804705021,"width":4.081632653061,"height":4.195918365605},{"left":38.404298639622,"top":49.039899938035,"width":2.97619047619,"height":5.769387752707},{"left":36.958720408329,"top":43.095685518224,"width":5.357142857143,"height":5.419728467233},{"left":44.101577551186,"top":51.312689052737,"width":4.081632653061,"height":7.168027207908},{"left":48.608380272275,"top":44.144665221559,"width":4.081632653061,"height":16.958505203923},{"left":44.611781632819,"top":45.193644924895,"width":2.040816326531,"height":5.419728467233},{"left":46.992734013772,"top":45.193644924895,"width":1.190476190476,"height":5.769388368345},{"left":43.931509523976,"top":58.830381068255,"width":4.506802721088,"height":2.622449258339},{"left":38.744434694044,"top":36.626977347656,"width":14.200680272109,"height":4.021088862786}];
 
 const stage = document.getElementById('stage');
-const kitImg = document.getElementById('kit');
-
-/* Create invisible hoverable hotspots and tooltips */
-function createHotspots(){
-  // remove any existing
-  Array.from(stage.querySelectorAll('.hotspot')).forEach(n => n.remove());
-
-  // create container-relative hotspots
-  coordinates.forEach((c, i) => {
-    const div = document.createElement('div');
-    div.className = 'hotspot';
-    // use percent coords so they scale responsively
-    div.style.left   = c.left + '%';
-    div.style.top    = c.top + '%';
-    div.style.width  = c.width + '%';
-    div.style.height = c.height + '%';
-    div.setAttribute('data-label', labels[i] || `Item ${i+1}`);
-
-    const tip = document.createElement('div');
-    tip.className = 'tooltip';
-    tip.textContent = labels[i] || `Item ${i+1}`;
-
-    // append tooltip inside hotspot so hover works
-    div.appendChild(tip);
-
-    // append to stage (stacked above the image)
-    stage.appendChild(div);
+function renderOutlines(){
+  COORDS.forEach((o,i)=>{
+    const outline = document.createElement('div');
+    outline.className = 'outline';
+    outline.style.left = o.left + '%';
+    outline.style.top = o.top + '%';
+    outline.style.width = o.width + '%';
+    outline.style.height = o.height + '%';
+    outline.innerHTML = `<span class="tip">${ITEMS[i]}</span>`;
+    stage.appendChild(outline);
   });
 }
-
-/* copy outlines JSON (user requested full JSON save/export earlier) */
-function copyOutlinesJSON(){
-  const text = JSON.stringify(coordinates);
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(()=>{
-      alert("Coordinates copied to clipboard (34-item array).");
-    }, (err)=>{
-      // fallback: open new tab with text to copy manually
-      const w = window.open();
-      w.document.body.innerText = text;
-      alert("Clipboard failed — JSON opened in a new tab for manual copy.");
-    });
-  } else {
-    const w = window.open();
-    w.document.body.innerText = text;
-    alert("Clipboard not available — JSON opened in a new tab for manual copy.");
-  }
-}
-
-/* Apply pasted HTML/text to the official document view area, preserving markup.
-   The user asked for full PDF contents to be included exactly — paste the PDF text or HTML
-   into pasteBox and click Apply; I will insert it verbatim here and use JetBrains Mono font. */
-document.getElementById('applyBtn').addEventListener('click', ()=>{
-  const box = document.getElementById('pasteBox');
-  const view = document.getElementById('documentView');
-  // detect if the pasted content looks like HTML (contains tags)
-  const raw = box.innerHTML.trim();
-  if(!raw){
-    alert("Paste your full PDF text/HTML into the box first, then click Apply.");
-    return;
-  }
-  // Insert as HTML verbatim (so formatting like u/em/strong stays)
-  view.innerHTML = raw;
-  // scroll to view
-  view.scrollIntoView({behavior:'smooth'});
-});
-
-document.getElementById('clearBtn').addEventListener('click', ()=>{
-  if(confirm("Clear the paste box?")) document.getElementById('pasteBox').innerHTML = "";
-});
-
-document.getElementById('exportOutlines').addEventListener('click', copyOutlinesJSON);
-
-/* Initialization: wait for image to load so percent positioning matches */
-if (kitImg.complete) {
-  createHotspots();
-} else {
-  kitImg.addEventListener('load', createHotspots);
-}
-
-/* Accessibility: allow tooltips to show on keyboard focus */
-document.addEventListener('focusin', (ev)=>{
-  const t = ev.target.closest && ev.target.closest('.hotspot');
-  if(t){
-    const tip = t.querySelector('.tooltip');
-    if(tip) tip.style.opacity = 1;
-  }
-});
-document.addEventListener('focusout', (ev)=>{
-  const t = ev.target.closest && ev.target.closest('.hotspot');
-  if(t){
-    const tip = t.querySelector('.tooltip');
-    if(tip) tip.style.opacity = 0;
-  }
-});
+renderOutlines();
 </script>
 </body>
 </html>
