@@ -9,38 +9,79 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    :root{
+    :root {
       --bg:#0b0b0b;
       --ink:#eaeaea;
       --ink-dim:#bdbdbd;
       --tip:#111;
-      --accent:#ffffff;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"JetBrains Mono",monospace;line-height:1.55}
-    .wrap{max-width:1200px;margin:24px auto;padding:0 12px}
-    .imgStage{position:relative;user-select:none}
-    .imgStage>img{display:block;max-width:100%;height:auto;margin:0 auto}
+    * { box-sizing:border-box; }
+    html,body {
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"JetBrains Mono", monospace;
+      line-height:1.55;
+    }
+    .wrap {
+      max-width:1100px;
+      margin:24px auto;
+      padding:0 12px;
+    }
+    .imgStage {
+      position:relative;
+      user-select:none;
+    }
+    .imgStage>img {
+      display:block;
+      max-width:100%;
+      height:auto;
+      margin:0 auto;
+    }
 
-    .outline{
+    /* Outline hotspots (invisible but interactive) */
+    .outline {
       position:absolute;
-      border:2px solid rgba(255,255,255,.0); /* invisible outlines */
+      border:2px solid transparent; /* invisible */
       cursor:pointer;
     }
-    .outline:hover{border-color:rgba(255,255,255,1);}
-    .tip{
-      position:absolute; left:50%; top:-10px; transform:translate(-50%,-100%);
-      background:var(--tip); color:var(--ink);
-      padding:6px 8px; border-radius:8px; font-size:12px;
-      white-space:nowrap; pointer-events:none; opacity:0; transition:opacity .15s ease;
+    .tip {
+      position:absolute; 
+      left:50%; 
+      top:-10px; 
+      transform:translate(-50%,-100%);
+      background:var(--tip); 
+      color:var(--ink);
+      padding:6px 8px; 
+      border-radius:8px; 
+      font-size:12px;
+      white-space:nowrap; 
+      pointer-events:none; 
+      opacity:0; 
+      transition:opacity .15s ease;
       box-shadow:0 4px 14px rgba(0,0,0,.35);
     }
-    .outline:hover .tip{opacity:1;}
+    .outline:hover .tip { opacity:1; }
 
-    #intro, #description{max-width:900px;margin:24px auto;background:#0f0f0f;border:1px solid #1d1d1d;
-      border-radius:14px;padding:18px}
-    #intro h2, #description h2{margin:0 0 10px 0;font-size:1.05rem;color:#fff}
-    #intro p, #description p{margin:0 0 1em 0;color:#cfcfcf}
+    #intro, #description {
+      margin:24px auto;
+      background:#0f0f0f;
+      border:1px solid #1d1d1d;
+      border-radius:14px;
+      padding:24px;
+      max-width:1000px; /* slightly wider */
+    }
+    #intro p, #description p {
+      margin:0 0 1em 0;
+      color:#cfcfcf;
+    }
+    #intro-label {
+      text-align:center;
+      font-weight:bold;
+      margin:24px auto;
+      font-size:1.2rem;
+      color:#fff;
+    }
     a { color: #61dafb; text-decoration: underline; }
     em { font-style: italic; }
     strong { font-weight: bold; }
@@ -65,22 +106,75 @@
       storage in Minneapolis. This allows me to keep what I carry in my pack minimal as I offload weight here 
       and swap location relevant items in and out of rotation in my kit when returning stateside to visit family.
     </p>
-    <p><strong>EVERYTHING THAT SERVES MY PURPOSES IN THIS SEASON OF LIFE:</strong></p>
   </div>
 
-  <!-- IMAGE WITH OUTLINES -->
+  <!-- CENTERED LABEL -->
+  <div id="intro-label" class="wrap">
+    EVERYTHING THAT SERVES MY PURPOSES IN THIS SEASON OF LIFE:
+  </div>
+
+  <!-- IMAGE WITH INVISIBLE OUTLINES -->
   <div class="wrap">
     <div class="imgStage" id="stage">
       <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
-      <!-- outlines injected here -->
     </div>
   </div>
 
-  <!-- FULL PDF-DERIVED CONTENT BELOW THE IMAGE -->
+  <!-- FULL DOCUMENT DESCRIPTION BELOW IMAGE -->
   <div id="description" class="wrap">
-    <!-- Insert the cleaned HTML from your "HyperMobility+LINKS+INTROpdf-converted.html" here -->
+    <!-- BEGIN merged HyperMobility+LINKS+INTROpdf-converted.html -->
     <h2><u>Bags</u></h2>
-    <p>... rest of your PDF-derived content with <em>italics</em>, <strong>bold</strong>, and <a href="...">links</a> intact ...</p>
+    <p><a href="https://www.rei.com/product/rei-trail-25">REI Trail 25</a> – lightweight, durable, and practical for one bag travel.</p>
+
+    <h2><u>Electronics</u></h2>
+    <p><strong>MacBook Air (M2)</strong> – reliable daily driver for creative work.<br>
+    <a href="https://apple.com/macbook-air">Apple Store</a></p>
+    <p><strong>Apple Watch S10</strong> – health tracking and minimal travel convenience.<br>
+    <a href="https://apple.com/watch">Apple Store</a></p>
+    <p><strong>AirPods Pro</strong> – noise cancelling and compact.<br>
+    <a href="https://apple.com/airpods-pro">Apple Store</a></p>
+    <p><strong>Anker 10k Powerbank</strong> – reliable portable charging.<br>
+    <a href="https://www.anker.com/products/a1244">Anker</a></p>
+    <p><strong>35W Adapter</strong> + <strong>Chargers</strong><br>
+    <a href="https://apple.com/shop/product/MU7W2AM/A/35w-dual-usb-c-power-adapter">Apple Store</a></p>
+    <p><strong>Regional Adapter</strong> – compact plug adapter for global use.</p>
+    <p><strong>128gb Flash Drive</strong> – file transfer and backup.</p>
+    <p><strong>Headphone Adapter</strong> – USB-C to 3.5mm.</p>
+
+    <h2><u>Stationery</u></h2>
+    <p><strong>A6 Notebook</strong> – small and portable for notes.<br>
+    <a href="https://www.midori-japan.co.jp/">Midori</a></p>
+    <p><strong>Uniball Vision Elite</strong> + <strong>PaperMate Flair</strong> – reliable pens.</p>
+
+    <h2><u>Documents</u></h2>
+    <p><strong>International Drivers Permit</strong><br>
+    <strong>Passport/Visa Photos</strong><br>
+    <strong>Passport</strong><br>
+    <strong>Wallet</strong> – with essential cards and ID.<br>
+    <strong>Coin Carrier</strong> – for local currencies.</p>
+
+    <h2><u>Clothing</u></h2>
+    <p><strong>Combat Boots</strong> – durable footwear.<br>
+    <strong>Barefoot Sandals</strong> – lightweight alternative.<br>
+    <strong>Clothing + Stuffsack</strong> – compact pack of essentials.<br>
+    <strong>Belt</strong></p>
+
+    <h2><u>Accessories</u></h2>
+    <p><strong>First Aid Kit</strong><br>
+    <strong>Umbrella</strong><br>
+    <strong>Admin Organizer</strong><br>
+    <strong>Bandana</strong><br>
+    <strong>Mask</strong><br>
+    <strong>Cap</strong><br>
+    <strong>Carabiner</strong></p>
+
+    <h2><u>Miscellaneous</u></h2>
+    <p><strong>Hygiene Kit</strong><br>
+    <strong>Packable Tote</strong><br>
+    <strong>Fjallraven Greenland Pocket</strong><br>
+    <strong>AirTag x2</strong><br>
+    <strong>Headlamp</strong></p>
+    <!-- END merged -->
   </div>
 
 <script>
