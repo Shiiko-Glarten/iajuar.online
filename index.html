@@ -44,36 +44,56 @@
       color:#fff;
       text-decoration:none;
       font-weight:bold;
-      margin-left: 25px;
+      margin: 10px 0;
+      transition: color 0.3s ease;
     }
 
     /* Hamburger styling */
     #hamburger {
-      display: none;
+      display: flex;
       flex-direction: column;
       cursor: pointer;
       gap: 4px;
+      z-index: 1100;
     }
     #hamburger span {
       display: block;
       width: 25px;
       height: 3px;
       background: #fff;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    #hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    #hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
     }
 
-    /* Mobile navbar styles */
-    @media screen and (max-width: 768px) {
-      #nav-links {
-        display: none;
-        flex-direction: column;
-        background: #000;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        padding: 10px;
-        border-radius: 8px;
-      }
-      #hamburger { display: flex; }
+    /* Navbar menu container */
+    #nav-links {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;  /* vertical centering */
+      align-items: center;      /* horizontal centering */
+      position: absolute;
+      top: 60px;
+      right: 10px;
+      background: #000;
+      padding: 15px 25px;
+      border-radius: 10px;
+      max-height: 0;
+      opacity: 0;
+      width: 154px;             /* shrunk width */
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+    }
+    #nav-links.open {
+      max-height: 500px;       /* large enough to fit menu items */
+      opacity: 1;
     }
 
     /* About content container */
@@ -166,13 +186,25 @@
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
 
+    // Toggle menu on click or hover
+    function openMenu() {
+      hamburger.classList.add('open');
+      navLinks.classList.add('open');
+    }
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    }
+
     hamburger.addEventListener('click', () => {
-      if (navLinks.style.display === "flex") {
-        navLinks.style.display = "none";
-      } else {
-        navLinks.style.display = "flex";
-      }
+      navLinks.classList.toggle('open');
+      hamburger.classList.toggle('open');
     });
+
+    hamburger.addEventListener('mouseenter', openMenu);
+    hamburger.addEventListener('mouseleave', closeMenu);
+    navLinks.addEventListener('mouseenter', openMenu);
+    navLinks.addEventListener('mouseleave', closeMenu);
   </script>
 
   <!-- About Content -->
@@ -197,42 +229,17 @@
         <p style="margin:0.2rem 0;">* ar → “ahr” as in far</p>
       </div>
 
-     <div class="contact">
-  Contact me: 
-  <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02; text-decoration:underline; cursor:pointer;">
-    iajuar.online@gmail.com
-  </a>
-</div>
-
+      <div class="contact">
+        Contact me: 
+        <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02; text-decoration:underline; cursor:pointer;">iajuar.online@gmail.com</a>
+      </div>
     </div>
   </div>
 
- <footer>
-  <p>Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2025</p>
-</footer>
-
-<style>
-  footer {
-    text-align: center;
-    margin: 50px 0 20px 0;
-    font-size: 0.9rem;
-    color: #888;
-  }
-  footer p strong { color: #fff; }
-
-  /* Mobile footer adjustments */
-  @media screen and (max-width: 768px) {
-    footer {
-      margin: 40px 15px 20px 15px;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-    footer p {
-      word-wrap: break-word;
-    }
-  }
-</style>
-
+  <!-- Footer -->
+  <footer>
+    <p>Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2025</p>
+  </footer>
 
 </body>
 </html>
