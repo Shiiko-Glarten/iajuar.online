@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iajuar | Electronics</title>
+  <!-- JetBrains Mono font -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #111;
+      color: #fff;
+    }
+    nav a:hover {
+      color: #ff7b02 !important;
+    }
+    nav a.active {
+      color: #ff7b02 !important;
+    }
+    /* Tooltip styles */
+    .imgStage {
+      position: relative;
+      margin: 20px auto 0 auto;
+      display: block;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .imgStage img {
+      display: block;
+      width: 100%;
+      height: auto;
+      pointer-events: none;
+      border-radius: 8px;
+      background: #050505;
+    }
+    .hotspot {
+      position: absolute;
+      left: 0; top: 0;
+      width: 0; height: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      outline: none;
+    }
+    .hotspot .tooltip {
+      position: absolute;
+      left: 50%;
+      top: -10px;
+      transform: translate(-50%, -100%);
+      background: #0f0f0f;
+      color: #eaeaea;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity .12s ease, transform .12s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,.6);
+      z-index: 40;
+      pointer-events: none;
+    }
+    .hotspot:hover .tooltip,
+    .hotspot:focus .tooltip {
+      opacity: 1;
+      transform: translate(-50%, -120%);
+    }
+    .hotspot .tooltip::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -6px;
+      border-width: 6px 6px 0 6px;
+      border-style: solid;
+      border-color: #0f0f0f transparent transparent transparent;
+    }
+    /* Numbered list container */
+    .label-list {
+      margin-top: 2rem;
+      background: #181818;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav style="position:fixed; top:0; left:0; width:100%; background-color:#000; display:flex; justify-content:space-between; align-items:center; padding:12px 20px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.6); box-sizing:border-box;">
+    <a href="index.html">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
+    </a>
+    <div style="display:flex; gap:25px; flex-wrap:wrap; justify-content:flex-end; overflow-x:auto;">
+      <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
+      <a href="life.html" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
+      <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
+      <a href="synthesizers.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
+      <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
+    </div>
+  </nav>
+
+  <!-- Electronics Content -->
+<div style="max-width:900px; margin:100px auto 40px auto; padding:0 20px;">
+  <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+    <h1 style="text-align:center; margin-bottom:1rem; color:#ff7b02;">Electronics</h1>
+
+    <!-- Inserted Image -->
+    <div style="text-align:center; margin-bottom:1.5rem;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IAJUAR_LABS.jpeg" 
+           alt="iajuar labs" 
+           style="width:85%; max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+      <p style="margin-top:8px; font-size:13px; color:#ccc; font-family:'JetBrains Mono', monospace;">iajuar labs</p>
+    </div>
+
+    <p style="line-height:1.5; text-align:left;">
+      My first experience with electronics came in the form of circuit bending: purposefully interfering 
+      with existing circuitry with intention to create zany results.
+    </p>
+      <p style="line-height:1.5; text-align:left;">
+        After becoming comfortable with pre-existing circuits, I began testing my own on breadboards. 
+        Upon accidentally frying the motherboard of an 80s Casio keyboard, I decided that I wanted to use the case of the newly dead Casio
+        to house all new analog circuitry of my own making:
+      </p>
+
+      <!-- Before Section -->
+      <h3 style="text-align:center; margin-top:2rem;">Before</h3>
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_4852.JPG" alt="Before Casio PT-180" style="display:block; margin:15px auto; max-width:100%; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
+
+      <!-- After Section -->
+      <h3 style="text-align:center; margin-top:2rem;">After</h3>
+      <div class="imgStage" id="stage">
+        <img id="kit" src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/resample.png" alt="resample layout">
+      </div>
+
+
+<!-- Numbered List -->
+<div class="label-list" style="font-family: 'JetBrains Mono', monospace;">
+
+ <!-- Oscillators Section -->
+<p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">
+  Oscillators
+</p>
+<div style="display:flex; gap:40px; flex-wrap:wrap;">
+  <!-- Left column -->
+  <ol style="margin:0; padding-left:20px; line-height:1.2; font-size:13px; flex:1;">
+    <li style="margin-bottom:2px;">Saw Oscillator</li>
+    <li style="margin-bottom:2px;">Saw Oscillator Fine Tune</li>
+    <li style="margin-bottom:2px;">Saw Oscillator Output</li>
+    <li style="margin-bottom:2px;">Saw LFO</li>
+    <li style="margin-bottom:2px;">Saw LFO Fine Tune</li>
+    <li style="margin-bottom:2px;">Saw LFO Output</li>
+    <li style="margin-bottom:2px;">Saw LFO Switch</li>
+    <li style="margin-bottom:2px;">Saw LFO Indicator LED</li>
+  </ol>
+  <!-- Right column -->
+  <ol start="9" style="margin:0; padding-left:20px; line-height:1.2; font-size:13px; flex:1;">
+    <li style="margin-bottom:2px;">Square Oscillator</li>
+    <li style="margin-bottom:2px;">Square Oscillator Fine Tune</li>
+    <li style="margin-bottom:2px;">Square Oscillator Output</li>
+    <li style="margin-bottom:2px;">Square LFO</li>
+    <li style="margin-bottom:2px;">Square LFO Fine Tune</li>
+    <li style="margin-bottom:2px;">Square LFO Output</li>
+    <li style="margin-bottom:2px;">Square LFO Switch</li>
+    <li style="margin-bottom:2px;">Square LFO Indicator LED</li>
+  </ol>
+</div>
+
+<!-- Saw/Square Oscillator description with video -->
+<div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+  <p style="flex:1; font-size:13px; line-height:1.4;">
+    There are 4 oscillators placed on the bottom left control 
+    panel: 2 sawtooth, and 2 square wave. 
+    Both oscillator waveforms have an LFO which can be activated via switch and an LED indicator light 
+    to monitor the rate of oscillation. Each oscillator present is modulated via 2 linked potentiometers - 
+    one for coarse control and one for fine tuning.
+  </p>
+  <div style="flex-shrink:0; text-align:center;">
+    <iframe width="320" height="180" src="https://www.youtube.com/embed/yrjxO_5Z2pM" frameborder="0" allowfullscreen></iframe>
+    <p style="font-size:12px; margin-top:4px;">Demo: Saw oscillator with and without LFO sync</p>
+  </div>
+</div>
+
+  <!-- Scrolling image gallery (Oscillators) -->
+  <div style="overflow-x:auto; white-space:nowrap; padding:10px 0; margin:20px 0;">
+    <div style="display:inline-flex; gap:10px;">
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/BREADBOARDS.jpeg" 
+             alt="Oscillator Protos" style="height:140px; cursor:pointer;" onclick="openLightbox(0)">
+        <p style="font-size:12px; margin-top:4px;">Oscillator Protos</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WIRES%3E1.jpeg" 
+             alt="Integration" style="height:140px; cursor:pointer;" onclick="openLightbox(1)">
+        <p style="font-size:12px; margin-top:4px;">Integration</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/OSCILALTORS.jpeg" 
+             alt="Circuit Testing" style="height:140px; cursor:pointer;" onclick="openLightbox(2)">
+        <p style="font-size:12px; margin-top:4px;">Circuit Testing</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/CONTROL.ARMS.jpeg" 
+             alt="Partially Committed Designs" style="height:140px; cursor:pointer;" onclick="openLightbox(3)">
+        <p style="font-size:12px; margin-top:4px;">Partially Committed Designs</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/DRILLS.jpeg" 
+             alt="Onboard Hardware Unwired" style="height:140px; cursor:pointer;" onclick="openLightbox(4)">
+        <p style="font-size:12px; margin-top:4px;">Onboard Hardware Unwired</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/COMPLETE2CLOSE.jpeg" 
+             alt="Onboard Hardware Wired" style="height:140px; cursor:pointer;" onclick="openLightbox(5)">
+        <p style="font-size:12px; margin-top:4px;">Onboard Hardware Wired</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox modal -->
+  <div id="lightbox" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+    <span style="position:absolute; top:20px; right:40px; color:white; font-size:40px; cursor:pointer;" onclick="closeLightbox()">&times;</span>
+    <span style="position:absolute; top:50%; left:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlide(-1)">&#10094;</span>
+    <span style="position:absolute; top:50%; right:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlide(1)">&#10095;</span>
+    <img id="lightbox-img" src="" alt="" style="max-width:90%; max-height:80%;">
+    <p id="lightbox-caption" style="color:white; text-align:center; margin-top:10px; font-size:14px;"></p>
+  </div>
+
+  <script>
+    const images = [
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/BREADBOARDS.jpeg", caption: "Oscillator Protos"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WIRES%3E1.jpeg", caption: "Integration"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/OSCILALTORS.jpeg", caption: "Circuit Testing"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/CONTROL.ARMS.jpeg", caption: "Partially Committed Designs"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/DRILLS.jpeg", caption: "Onboard Hardware Unwired"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/COMPLETE2CLOSE.jpeg", caption: "Onboard Hardware Wired"}
+    ];
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      document.getElementById("lightbox").style.display = "flex";
+      updateLightbox();
+    }
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+    function changeSlide(n) {
+      currentIndex = (currentIndex + n + images.length) % images.length;
+      updateLightbox();
+    }
+    function updateLightbox() {
+      const img = document.getElementById("lightbox-img");
+      const caption = document.getElementById("lightbox-caption");
+      img.src = images[currentIndex].src;
+      caption.innerText = images[currentIndex].caption;
+    }
+  </script>
+
+
+
+     <!-- Sensors Section -->
+  <p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">
+    Sensors
+  </p>
+  <div style="display:flex; gap:40px; flex-wrap:wrap; margin-top:10px;">
+    <!-- Left column: Ringlight Inputs -->
+    <ol start="17" style="margin:0; padding-left:20px; line-height:1.2; font-size:13px; flex:1;">
+      <li style="margin-bottom:2px;">Ringlight Input: Red</li>
+      <li style="margin-bottom:2px;">Ringlight Input: Green</li>
+      <li style="margin-bottom:2px;">Ringlight Input: Blue</li>
+    </ol>
+
+    <!-- Right column: Sensors -->
+    <ol start="20" style="margin:0; padding-left:20px; line-height:1.2; font-size:13px; flex:1;">
+      <li style="margin-bottom:2px;">Proximity Sensor Output</li>
+      <li style="margin-bottom:2px;">Color Sensor Output: Red</li>
+      <li style="margin-bottom:2px;">Color Sensor Output: Green</li>
+      <li style="margin-bottom:2px;">Color Sensor Output: Blue</li>
+    </ol>
+  </div>
+
+  <!-- Sensor & ringlight description with first video -->
+  <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+    <p style="flex:1; font-size:13px; line-height:1.4;">
+      The analog circuitry of the oscillators meets a digital element here where a proximity sensor and LED ringlight are present (not listed above). 
+      The sensor (ADPS-9960) measures not only proximity but also digitally quantifies the amount of Red, Green, and Blue light present. 
+      Both sensor and ringlight are driven by an Arduino Uno microprocessor—unique about these microprocessors are their ability to take digital measurements 
+      and output specified corresponding analog voltages.
+    </p>
+    <div style="flex-shrink:0; text-align:center;">
+      <iframe width="320" height="180" src="https://www.youtube.com/embed/5qqnIxqn6D0" frameborder="0" allowfullscreen></iframe>
+      <p style="font-size:12px; margin-top:4px;">Demo: Proximity sensor modulation of oscillator amplitude</p>
+    </div>
+  </div>
+
+  <!-- Sensor & ringlight description with second video -->
+  <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+    <p style="flex:1; font-size:13px; line-height:1.4;">
+      Conversely, the output of the oscillators can be patched into the inputs for the red, green, or blue portions of the ringlight. 
+      The microprocessor will measure the analog voltage being received from the oscillator and translate that voltage into a digital measurement (0–255) 
+      to modulate the intensity of an RGB color.
+    </p>
+    <div style="flex-shrink:0; text-align:center;">
+      <iframe width="320" height="180" src="https://www.youtube.com/embed/14KB64NRWwQ" frameborder="0" allowfullscreen></iframe>
+      <p style="font-size:12px; margin-top:4px;">Demo: Square wave LFO modulating ringlight intensity</p>
+    </div>
+  </div>
+
+  <!-- Scrolling image gallery -->
+  <div style="overflow-x:auto; white-space:nowrap; padding:10px 0; margin:20px 0;">
+    <div style="display:inline-flex; gap:10px;">
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/ARDUINO1.jpeg" 
+             alt="microprocessor" style="height:140px; cursor:pointer;" onclick="openLightbox(0)">
+        <p style="font-size:12px; margin-top:4px;">microprocessor</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/REF%3EDATA.jpeg" 
+             alt="live sensor data" style="height:140px; cursor:pointer;" onclick="openLightbox(1)">
+        <p style="font-size:12px; margin-top:4px;">live sensor data</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/COMPLETE1.jpeg" 
+             alt="sensors raised above keyboard" style="height:140px; cursor:pointer;" onclick="openLightbox(2)">
+        <p style="font-size:12px; margin-top:4px;">sensors raised above keyboard</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/LED.TESTARDUINO.jpeg" 
+             alt="live data testing with LED" style="height:140px; cursor:pointer;" onclick="openLightbox(3)">
+        <p style="font-size:12px; margin-top:4px;">live data testing with LED</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/ARDUINO2.jpeg" 
+             alt="microprocessor soldering points" style="height:140px; cursor:pointer;" onclick="openLightbox(4)">
+        <p style="font-size:12px; margin-top:4px;">microprocessor soldering points</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/OVERLAY2.jpeg" 
+             alt="sensor placement" style="height:140px; cursor:pointer;" onclick="openLightbox(5)">
+        <p style="font-size:12px; margin-top:4px;">sensor placement</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox modal -->
+  <div id="lightbox" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+    <span style="position:absolute; top:20px; right:40px; color:white; font-size:40px; cursor:pointer;" onclick="closeLightbox()">&times;</span>
+    <span style="position:absolute; top:50%; left:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlide(-1)">&#10094;</span>
+    <span style="position:absolute; top:50%; right:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlide(1)">&#10095;</span>
+    <img id="lightbox-img" src="" alt="" style="max-width:90%; max-height:80%;">
+    <p id="lightbox-caption" style="color:white; text-align:center; margin-top:10px; font-size:14px;"></p>
+  </div>
+
+  <script>
+    const images = [
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/ARDUINO1.jpeg", caption: "microprocessor"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/REF%3EDATA.jpeg", caption: "live sensor data"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/COMPLETE1.jpeg", caption: "sensors raised above keyboard"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/LED.TESTARDUINO.jpeg", caption: "live data testing with LED"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/ARDUINO2.jpeg", caption: "microprocessor soldering points"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/OVERLAY2.jpeg", caption: "sensor placement"}
+    ];
+    let currentIndex = 0;
+
+    function openLightbox(index) {
+      currentIndex = index;
+      document.getElementById("lightbox").style.display = "flex";
+      updateLightbox();
+    }
+    function closeLightbox() {
+      document.getElementById("lightbox").style.display = "none";
+    }
+    function changeSlide(n) {
+      currentIndex = (currentIndex + n + images.length) % images.length;
+      updateLightbox();
+    }
+    function updateLightbox() {
+      const img = document.getElementById("lightbox-img");
+      const caption = document.getElementById("lightbox-caption");
+      img.src = images[currentIndex].src;
+      caption.innerText = images[currentIndex].caption;
+    }
+  </script>
+
+  <!-- Outboard Connectivity Section -->
+
+
+  <!-- Outboard Connectivity Section -->
+<p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">
+  Outboard Connectivity
+</p>
+  
+  <!-- Numbered list for Outboard Connectivity -->
+<ol start="24" style="margin:0; padding-left:20px; line-height:1.2; font-size:13px;">
+  <li style="margin-bottom:2px;">Outboard Jumper to 1/8th Audio</li>
+  <li style="margin-bottom:2px;">1/8th Audio to Outboard Jumper</li>
+  <li style="margin-bottom:2px;">Outboard Jumper Connection points</li>
+</ol>
+<div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+  <!-- Left: descriptive text -->
+  <p style="flex:1; font-size:13px; line-height:1.4;">
+    Built into the central control panel, there are two quarter inch jacks which serve as points of flexibility for integrating works in progress. 
+    Using the bottom of the two quarter inch jacks as an input, it is possible to use a jumper cable to connect the output of one of the oscillators of the bottom left control panel, 
+    and run the analog voltage into this jack. From here we can use the smaller holes placed beneath the jack to connect jumper wires acting as a positive and ground 
+    (and negative if necessary) that can then power a breadboard. This allows for the integration of outboard circuitry like extra oscillators and sequencers 
+    that is still in development on breadboards.
+  </p>
+  
+  <!-- Right: video with caption -->
+  <div style="flex-shrink:0; text-align:center;">
+    <iframe width="320" height="180" src="https://www.youtube.com/embed/1PwuIubvILo" frameborder="0" allowfullscreen></iframe>
+    <p style="font-size:12px; margin-top:4px;">Demo: Controlling an outboard LED(yellow)
+      <br>
+      on a breadboard using square LFO (green LED)</p>
+  </div>
+</div>
+
+   <!-- Scrolling image gallery (Outboard Connectivity) -->
+  <div style="overflow-x:auto; white-space:nowrap; padding:10px 0; margin:20px 0;">
+    <div style="display:inline-flex; gap:10px;">
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WIRES2.jpeg" 
+             alt="Internal Onboard" style="height:140px; cursor:pointer;" onclick="openOutboardLightbox(0)">
+        <p style="font-size:12px; margin-top:4px;">Internal Onboard</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/PROGRESS.jpeg" 
+             alt="Central Control Panel Outboard" style="height:140px; cursor:pointer;" onclick="openOutboardLightbox(1)">
+        <p style="font-size:12px; margin-top:4px;">Central Control Panel Outboard</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WIRES3.jpeg" 
+             alt="Internal Onboard #2" style="height:140px; cursor:pointer;" onclick="openOutboardLightbox(2)">
+        <p style="font-size:12px; margin-top:4px;">Internal Onboard #2</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox modal (Outboard Connectivity) -->
+  <div id="outboard-lightbox" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+    <span style="position:absolute; top:20px; right:40px; color:white; font-size:40px; cursor:pointer;" onclick="closeOutboardLightbox()">&times;</span>
+    <span style="position:absolute; top:50%; left:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeOutboardSlide(-1)">&#10094;</span>
+    <span style="position:absolute; top:50%; right:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeOutboardSlide(1)">&#10095;</span>
+    <img id="outboard-lightbox-img" src="" alt="" style="max-width:90%; max-height:80%;">
+    <p id="outboard-lightbox-caption" style="color:white; text-align:center; margin-top:10px; font-size:14px;"></p>
+  </div>
+
+  <script>
+    const outboardImages = [
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WIRES2.jpeg", caption: "Internal Onboard"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/PROGRESS.jpeg", caption: "Central Control Panel Outboard"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WIRES3.jpeg", caption: "Internal Onboard #2"}
+    ];
+    let outboardIndex = 0;
+
+    function openOutboardLightbox(index) {
+      outboardIndex = index;
+      document.getElementById("outboard-lightbox").style.display = "flex";
+      updateOutboardLightbox();
+    }
+    function closeOutboardLightbox() {
+      document.getElementById("outboard-lightbox").style.display = "none";
+    }
+    function changeOutboardSlide(n) {
+      outboardIndex = (outboardIndex + n + outboardImages.length) % outboardImages.length;
+      updateOutboardLightbox();
+    }
+    function updateOutboardLightbox() {
+      const img = document.getElementById("outboard-lightbox-img");
+      const caption = document.getElementById("outboard-lightbox-caption");
+      img.src = outboardImages[outboardIndex].src;
+      caption.innerText = outboardImages[outboardIndex].caption;
+    }
+  </script>
+  
+  
+  
+ <!-- Granular Section -->
+        <p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">Granular</p>
+        <ol start="27" style="margin:0; padding-left:20px; line-height:1.4; font-size:13px;">
+          <li>Granular Pitch Tuner (Chromatic)</li>
+          <li>Grain Size 1</li>
+          <li>Grain Size 2</li>
+          <li>Grain Resonance 1</li>
+          <li>Grain Resonance 2</li>
+          <li>Granular Output</li>
+        </ol>
+        <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+          <p style="flex:1; font-size:13px; line-height:1.4;">
+            This is a digital oscillator that is written in C, controlled by a separate microprocessor which also outputs analog voltages. 
+            The tuning here is set to a chromatic scale as the pitch potentiometer sweeps through the control range. 
+            There are also grain size and resonance parameters which act as a filter to affect the character of this oscillator's sound.
+          </p>
+          <div style="flex-shrink:0; text-align:center;">
+            <iframe width="320" height="180" src="https://www.youtube.com/embed/13woXAMIY-o" frameborder="0" allowfullscreen></iframe>
+            <p style="font-size:12px; margin-top:4px;">Demo: Granular Oscillator</p>
+          </div>
+        </div>
+<!-- Scrolling image gallery (Granular) -->
+  <div style="overflow-x:auto; white-space:nowrap; padding:10px 0; margin:20px 0;">
+    <div style="display:inline-flex; gap:10px;">
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/GRANULAR.OUTBOARD.jpeg" 
+             alt="Digital Granular Synth Proto" style="height:140px; cursor:pointer;" onclick="openGranularLightbox(0)">
+        <p style="font-size:12px; margin-top:4px;">Digital Granular Synth Proto</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/GRANULAR%3Eimplement.jpeg" 
+             alt="Granular Hardware Onboard Unwired" style="height:140px; cursor:pointer;" onclick="openGranularLightbox(1)">
+        <p style="font-size:12px; margin-top:4px;">Granular Hardware Onboard Unwired</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/potenti.JPG" 
+             alt="Potentiometers" style="height:140px; cursor:pointer;" onclick="openGranularLightbox(2)">
+        <p style="font-size:12px; margin-top:4px;">Potentiometers</p>
+      </div>
+      <div style="text-align:center;">
+        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/GRANULARINT.JPG" 
+             alt="Internals Mounted on License Plate Control Panel" style="height:140px; cursor:pointer;" onclick="openGranularLightbox(3)">
+        <p style="font-size:12px; margin-top:4px;">Internals Mounted on License Plate Control Panel</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox modal (Granular) -->
+  <div id="granular-lightbox" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+    <span style="position:absolute; top:20px; right:40px; color:white; font-size:40px; cursor:pointer;" onclick="closeGranularLightbox()">&times;</span>
+    <span style="position:absolute; top:50%; left:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeGranularSlide(-1)">&#10094;</span>
+    <span style="position:absolute; top:50%; right:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeGranularSlide(1)">&#10095;</span>
+    <img id="granular-lightbox-img" src="" alt="" style="max-width:90%; max-height:80%;">
+    <p id="granular-lightbox-caption" style="color:white; text-align:center; margin-top:10px; font-size:14px;"></p>
+  </div>
+
+  <script>
+    const granularImages = [
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/GRANULAR.OUTBOARD.jpeg", caption: "Digital Granular Synth Proto"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/GRANULAR%3Eimplement.jpeg", caption: "Granular Hardware Onboard Unwired"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/potenti.JPG", caption: "Potentiometers"},
+      {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/GRANULARINT.JPG", caption: "Internals Mounted on License Plate Control Panel"}
+    ];
+    let granularIndex = 0;
+
+    function openGranularLightbox(index) {
+      granularIndex = index;
+      document.getElementById("granular-lightbox").style.display = "flex";
+      updateGranularLightbox();
+    }
+    function closeGranularLightbox() {
+      document.getElementById("granular-lightbox").style.display = "none";
+    }
+    function changeGranularSlide(n) {
+      granularIndex = (granularIndex + n + granularImages.length) % granularImages.length;
+      updateGranularLightbox();
+    }
+    function updateGranularLightbox() {
+      const img = document.getElementById("granular-lightbox-img");
+      const caption = document.getElementById("granular-lightbox-caption");
+      img.src = granularImages[granularIndex].src;
+      caption.innerText = granularImages[granularIndex].caption;
+    }
+  </script>
+        <!-- Keyboard Section -->
+<p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">Keyboard</p>
+<ol start="33" style="margin:0; padding-left:20px; line-height:1.4; font-size:13px;">
+  <li>Keyboard Input</li>
+  <li>Keyboard</li>
+  <li>Keyboard On/Off</li>
+</ol>
+
+<!-- Split layout for text + image -->
+<div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+  <!-- Left side: text -->
+  <p style="flex:1; font-size:13px; line-height:1.4; margin:0;">
+    The keyboard on this unit is fully functional but is not active by default. 
+    To route voltage through the keys, you must patch one of the onboard oscillators 
+    (or an outboard one if desired) into the input jack. 
+    The keyboard operates as a chain of resistors in series acting as a ladder 
+    for scaling voltages depending on which key is pressed.
+  </p>
+
+  <!-- Right side: image + caption -->
+  <div style="flex-shrink:0; text-align:center;">
+    <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/RESISTOR.LADDER.jpeg" 
+         alt="Resistor Ladder Keyboard" 
+         style="max-width:320px; height:auto; border-radius:6px;">
+    <p style="font-size:12px; margin-top:4px;">Resistor Ladder Keyboard</p>
+  </div>
+</div>
+       <!-- Display Monitor Section -->
+<p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">Display Monitor</p>
+<ol start="36" style="margin:0; padding-left:20px; line-height:1.4; font-size:13px;">
+  <li>Proximity/Color Sensor Monitor</li>
+</ol>
+
+<!-- Split layout for text + image -->
+<div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start; margin:10px 0;">
+  <!-- Left side: text -->
+  <p style="flex:1; font-size:13px; line-height:1.4; margin:0;">
+    This monitor is powered by a microprocessor that receives inputs from the separate microprocessor which drives the sensors. 
+    Displayed on this screen are the values for Proximity, Red, Green, and Blue, currently being read by the ADPS-9960. 
+    The monitor serves not only as a point of reference for value levels, but also as a troubleshooting tool.
+  </p>
+
+  <!-- Right side: image + caption -->
+  <div style="flex-shrink:0; text-align:center;">
+    <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/LCD.TEST.jpeg" 
+         alt="LCD Monitor Test" 
+         style="max-width:320px; height:auto; border-radius:6px;">
+    <p style="font-size:12px; margin-top:4px;">LCD Monitor Test</p>
+  </div>
+</div>
+  
+  <p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:18px;">
+  Auxiliary Designs
+</p>
+  <p> Developed in tandem with the synthesizer above, these designs connect with its analog capabilities and expand its functions offboard.
+    <p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:14px;">
+  CRT Oscilloscope
+</p>
+  <p>
+    In developing oscillaltors - a common troubleshooting method is using an oscilloscope to tune and inspect waveforms. These oscilloscopes can be expensive and inconvenient, but luckily with some tweaks to the circuitry, a DIY alternative can be make using the hardware of a Cathode Ray Tube found in an old TV: 
+  </p>
+  
+  <!-- Scrolling image gallery (CRT Oscilloscope) -->
+<div style="overflow-x:auto; white-space:nowrap; padding:10px 0; margin:20px 0;">
+  <div style="display:inline-flex; gap:10px;">
+    <div style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WAVES1.jpeg" 
+           alt="Soundwave DEMO 1" style="height:140px; cursor:pointer;" onclick="openLightboxCRT(0)">
+      <p style="font-size:12px; margin-top:4px;">Soundwave DEMO 1</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_8141.jpeg" 
+           alt="CRT Internal Modifications" style="height:140px; cursor:pointer;" onclick="openLightboxCRT(1)">
+      <p style="font-size:12px; margin-top:4px;">CRT Internal Modifications</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WAVES2.jpeg" 
+           alt="Soundwave DEMO 2" style="height:140px; cursor:pointer;" onclick="openLightboxCRT(2)">
+      <p style="font-size:12px; margin-top:4px;">Soundwave DEMO 2</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/OPEN%2BwavesTEST.jpeg" 
+           alt="Saw Wave OSC Test" style="height:140px; cursor:pointer;" onclick="openLightboxCRT(3)">
+      <p style="font-size:12px; margin-top:4px;">Saw Wave OSC Test</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WAVES3.jpeg" 
+           alt="Soundwave DEMO 3" style="height:140px; cursor:pointer;" onclick="openLightboxCRT(4)">
+      <p style="font-size:12px; margin-top:4px;">Soundwave DEMO 3</p>
+    </div>
+    <div style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/EXAMPLEwaves.jpeg" 
+           alt="Complete TV" style="height:140px; cursor:pointer;" onclick="openLightboxCRT(5)">
+      <p style="font-size:12px; margin-top:4px;">Complete TV</p>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox modal for CRT gallery -->
+<div id="lightboxCRT" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+  <span style="position:absolute; top:20px; right:40px; color:white; font-size:40px; cursor:pointer;" onclick="closeLightboxCRT()">&times;</span>
+  <span style="position:absolute; top:50%; left:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlideCRT(-1)">&#10094;</span>
+  <span style="position:absolute; top:50%; right:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlideCRT(1)">&#10095;</span>
+  <img id="lightboxCRT-img" src="" alt="" style="max-width:90%; max-height:80%;">
+  <p id="lightboxCRT-caption" style="color:white; text-align:center; margin-top:10px; font-size:14px;"></p>
+</div>
+
+<script>
+  const imagesCRT = [
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WAVES1.jpeg", caption: "Soundwave DEMO 1"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_8141.jpeg", caption: "CRT Internal Modifications"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WAVES2.jpeg", caption: "Soundwave DEMO 2"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/OPEN%2BwavesTEST.jpeg", caption: "Saw Wave OSC Test"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/WAVES3.jpeg", caption: "Soundwave DEMO 3"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/EXAMPLEwaves.jpeg", caption: "Complete TV"}
+  ];
+  let currentIndexCRT = 0;
+
+  function openLightboxCRT(index) {
+    currentIndexCRT = index;
+    document.getElementById("lightboxCRT").style.display = "flex";
+    updateLightboxCRT();
+  }
+  function closeLightboxCRT() {
+    document.getElementById("lightboxCRT").style.display = "none";
+  }
+  function changeSlideCRT(n) {
+    currentIndexCRT = (currentIndexCRT + n + imagesCRT.length) % imagesCRT.length;
+    updateLightboxCRT();
+  }
+  function updateLightboxCRT() {
+    const img = document.getElementById("lightboxCRT-img");
+    const caption = document.getElementById("lightboxCRT-caption");
+    img.src = imagesCRT[currentIndexCRT].src;
+    caption.innerText = imagesCRT[currentIndexCRT].caption;
+  }
+</script>
+
+  <!-- Video Section -->
+<div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin:20px 0;">
+
+  <div style="flex:1 1 300px; text-align:center;">
+    <iframe width="100%" height="200" src="https://www.youtube.com/embed/VyR8NW0dodo" 
+            title="Square Wave OSC Demo" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+    <p style="font-size:12px; margin-top:6px;">Square Wave OSC Demo</p>
+  </div>
+
+  <div style="flex:1 1 300px; text-align:center;">
+    <iframe width="100%" height="200" src="https://www.youtube.com/embed/2wCtJIvkauY" 
+            title="Track Visualizer Demo" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+    <p style="font-size:12px; margin-top:6px;">Track Visualizer Demo</p>
+  </div>
+
+</div>
+  
+  <p>
+    Playing tracks through this oscilloscope makes for an incredibly dynamic visualizer - seeing the analog representation of sound in real time. Used here for visual accompaniment for the "Void.Loop+" track off NanoLoop FX:
+  </p>
+  <!-- Full-width Video -->
+<div style="text-align:center; margin:20px 0;">
+  <iframe width="90%" height="400" src="https://www.youtube.com/embed/eTYgNUX6niY" 
+          title="Void.Loop Visualizer" frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen></iframe>
+  <p style="font-size:12px; margin-top:6px;">Void.Loop+ Visualizer</p>
+</div>
+  <p>
+  </p>
+  
+  <p>
+  </p>
+  
+  
+  
+   <p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:18px;">
+  Step Sequencer
+</p>
+  <p>
+    A fully analog 16 step sequencer constructed around the CD-4017 decade counter IC and NE-555 timer IC. This project can cutoff and loop at only 8 steps or be patched so that the first CD-4017 cascades to a second and count to a full 16 steps. Originally meant to be included within the synth but internal spacial scarcity forced this project to remain outboard. 
+  </p>
+
+<!-- Step Sequencer Media -->
+<div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:20px; margin:20px 0;">
+  <!-- Rotated Photo on the left -->
+  <div style="flex:1; min-width:300px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <img src="https://github.com/Shiiko-Glarten/iajuar.online/blob/main/images/SEQUENCER.JPG?raw=true" 
+         alt="Step Sequencer" 
+         style="max-height:250px; transform:rotate(90deg); border-radius:6px; object-fit:contain;">
+  </div>
+
+  <!-- Video on the right -->
+  <div style="flex:1; min-width:300px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <div style="transform:scale(0.63); transform-origin:center center; display:inline-block;">
+      <iframe width="400" height="300" src="https://www.youtube.com/embed/8VTOOggenvM" 
+              title="Step Sequencer Demo" frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen></iframe>
+    </div>
+  </div>
+</div> <!-- ✅ CLOSE Step Sequencer flex container here -->
+
+<!-- Circuit Bending Section -->
+<p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:18px;">
+  Circuit Bending
+</p>
+<p>
+  Circuit bending is the creative customization of electronic devices by short-circuiting or rewiring their internal components. 
+  This process uncovers hidden sonic textures, glitches, and unpredictable behaviors that can entirely transform the sound of simple toys or consumer electronics. On this Casio I have removed part of the casing so that the main logic board is exposed and have also added two potentiometers and one switch. the potentiometers and switch are grounded internally into the natve circuitry but their positive end is hooked to an alligator clip which can be attached to different pins on the now exposed logic chip in differing combinations. Attached to the right pins, the registers of the board can be flooded with corrupted data at the flip of a switch and then tuned with the potentiometers. Pictured below is the Casio along with a Yamaha keyboard which also received the same preparation
+</p>
+<!-- Circuit Bending Section Media -->
+<div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:20px; margin:20px 0;">
+
+  <!-- Photo on the left -->
+  <div style="flex:1; min-width:300px; text-align:center;">
+    <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/rotatedSA21%2BYAMAHA%20copy.jpeg" 
+         alt="Circuit Bent Casio and Yamaha" 
+         style="max-width:100%; height:auto; border-radius:6px; object-fit:contain;">
+    <p style="font-size:12px; margin-top:6px;">Circuit Bent Casio and Yamaha</p>
+  </div>
+
+  <!-- Video on the right -->
+  <div style="flex:1; min-width:300px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <iframe width="400" height="300" src="https://www.youtube.com/embed/MryOxBvix0Q" 
+            title="Circuit Bent Casio Demo" frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen></iframe>
+    <p style="font-size:12px; margin-top:6px;">Circuit Bent Casio DEMO</p>
+  </div>
+
+</div>
+   
+  
+</div> </div>
+  </div>
+<script>
+const coords = [
+  {"left":6,"top":39.859882,"width":4.615385,"height":9.439528,"label":"Saw Oscillator"},
+  {"left":13.282051,"top":40.154867,"width":4.615385,"height":9.144543,"label":"Saw Oscillator Fine Tune"},
+  {"left":18,"top":40.744838,"width":3.589744,"height":9.144543,"label":"Saw Oscillator Output"},
+  {"left":6,"top":51.954277,"width":4.820513,"height":10.619469,"label":"Saw LFO"},
+  {"left":13.282051,"top":52.839233,"width":4.410256,"height":8.849558,"label":"Saw LFO Fine Tune"},
+  {"left":17.794872,"top":52.839233,"width":3.794872,"height":8.849558,"label":"Saw LFO Output"},
+  {"left":2,"top":53.134218,"width":3.794872,"height":9.439528,"label":"Saw LFO Switch"},
+  {"left":10.923077,"top":53.724189,"width":2.461538,"height":8.849558,"label":"Saw LFO Indicator LED"},
+  {"left":5.897436,"top":66.113569,"width":3.794872,"height":11.20944,"label":"Square Oscillator"},
+  {"left":12.974359,"top":66.113569,"width":4.307692,"height":9.144543,"label":"Square Oscillator Fine Tune"},
+  {"left":17.487179,"top":66.408555,"width":3.692308,"height":9.439528,"label":"Square Oscillator Output"},
+  {"left":5.589744,"top":79.682891,"width":4.102564,"height":8.849558,"label":"Square LFO"},
+  {"left":12.871795,"top":77.912979,"width":4.410256,"height":10.324484,"label":"Square LFO Fine Tune"},
+  {"left":17.384615,"top":78.797935,"width":3.487179,"height":10.324484,"label":"Square LFO Output"},
+  {"left":1.384615,"top":79.387906,"width":4,"height":8.849558,"label":"Square LFO Switch"},
+  {"left":9.692308,"top":79.977876,"width":3.282051,"height":7.964602,"label":"Square LFO Indicator LED"},
+  {"left":7.230769,"top":12.721239,"width":3.179487,"height":7.964602,"label":"Ringlight Input: Red"},
+  {"left":10.205128,"top":11.541298,"width":4,"height":9.144543,"label":"Ringlight Input: Green"},
+  {"left":14.102564,"top":11.541298,"width":3.487179,"height":8.849558,"label":"Ringlight Input: Blue"},
+  {"left":2.717949,"top":20.390855,"width":4.102564,"height":9.734513,"label":"Proximity Sensor Output"},
+  {"left":6.923077,"top":21.275811,"width":3.794872,"height":10.029499,"label":"Color Sensor Output: Red"},
+  {"left":10.717949,"top":22.160767,"width":3.897436,"height":8.554572,"label":"Color Sensor Output: Green"},
+  {"left":14.615385,"top":21.275811,"width":3.282051,"height":8.849558,"label":"Color Sensor Output: Blue"},
+  {"left":24.051282,"top":9.771386,"width":5.025641,"height":10.619469,"label":"Outboard Jumper to 1/8th Audio"},
+  {"left":23.948718,"top":23.340708,"width":5.333333,"height":12.389381,"label":"1/8th Audio to Outboard Jumper"},
+  {"left":23.74359,"top":36.320059,"width":7.794872,"height":3.834808,"label":"Outboard Jumper Connection points"},
+  {"left":50.512821,"top":17.735988,"width":4.205128,"height":10.619469,"label":"Granular Pitch Tuner (Chromatic)"},
+  {"left":55.74359,"top":11.246313,"width":3.794872,"height":10.029499,"label":"Grain Size 1"},
+  {"left":61.282051,"top":10.951327,"width":3.897436,"height":10.324484,"label":"Grain Size 2"},
+  {"left":55.74359,"top":22.455752,"width":3.897436,"height":10.029499,"label":"Grain Resonance 1"},
+  {"left":61.179487,"top":22.160767,"width":4,"height":10.914454,"label":"Grain Resonance 2"},
+  {"left":66.615385,"top":8.886431,"width":3.794872,"height":13.274336,"label":"Granular Output"},
+  {"left":66.615385,"top":23.340708,"width":4.307692,"height":12.094395,"label":"Keyboard Input"},
+  {"left":22.205128,"top":47.824484,"width":72.512821,"height":45.427729,"label":"Keyboard"},
+  {"left":90.205128,"top":34.845133,"width":3.487179,"height":7.079646,"label":"Keyboard On/Off"},
+  {"left":76.358974,"top":13.90118,"width":15.076923,"height":15.929204,"label":"Proximity/Color Sensor Monitor"}
+];
+
+const stage = document.getElementById('stage');
+const img = document.getElementById('kit');
+
+function createHotspots(){
+  coords.forEach((c, i) => {
+    const el = document.createElement('button');
+    el.className = 'hotspot';
+    el.setAttribute('aria-label', (i+1) + ". " + c.label);
+    el.style.left = c.left + '%';
+    el.style.top = c.top + '%';
+    el.style.width = c.width + '%';
+    el.style.height = c.height + '%';
+
+    const tip = document.createElement('div');
+    tip.className = 'tooltip';
+    tip.textContent = (i+1) + ". " + c.label;
+
+    el.appendChild(tip);
+    stage.appendChild(el);
+  });
+}
+
+if(img.complete) createHotspots();
+else img.addEventListener('load', createHotspots);
+</script>
+
+  <!-- Footer -->
+  <footer style="text-align:center; margin:50px 0 20px 0; font-size:0.9rem; color:#888;">
+    <p>Rendered in Detail via <strong style="color:#fff;">++ iajuar.online ++</strong> © 2025</p>
+  </footer>
+
+</body>
+</html>
