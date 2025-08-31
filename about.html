@@ -20,41 +20,27 @@
       color: #fff;
     }
 
-    /* Navbar link hover + active colors */
+    /* Navbar hover + active */
     nav a:hover, nav a.active {
       color: #ff7b02 !important;
     }
 
-    /* Navbar general styles */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #000;
+    /* Desktop navbar */
+    .desktop-nav {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 20px;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-      box-sizing: border-box;
-    }
-    #nav-links a {
-      color:#fff;
-      text-decoration:none;
-      font-weight:bold;
-      margin: 10px 0;
-      transition: color 0.3s ease;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      overflow-x: auto;
     }
 
-    /* Hamburger styling */
+    /* Hamburger */
     #hamburger {
-      display: flex;
+      display: none;
       flex-direction: column;
       cursor: pointer;
       gap: 4px;
-      z-index: 1100;
+      z-index: 1001;
     }
     #hamburger span {
       display: block;
@@ -64,39 +50,55 @@
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
     #hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
+      transform: rotate(45deg) translate(5px,5px);
     }
     #hamburger.open span:nth-child(2) {
       opacity: 0;
     }
     #hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
+      transform: rotate(-45deg) translate(5px,-5px);
     }
 
-    /* Navbar menu container */
+    /* Mobile menu */
     #nav-links {
-      display: flex;
+      display: none;
       flex-direction: column;
-      justify-content: center;  /* vertical centering */
-      align-items: center;      /* horizontal centering */
+      background: #000;
       position: absolute;
       top: 60px;
-      right: 10px;
-      background: #000;
-      padding: 15px 25px;
-      border-radius: 10px;
-      max-height: 0;
-      opacity: 0;
-      width: 154px;             /* shrunk width */
-      overflow: hidden;
-      transition: max-height 0.4s ease, opacity 0.4s ease;
+      right: 20px;
+      padding: 15px 35px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+    #nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 0;
+      transition: color 0.3s ease;
+    }
+    #nav-links a:hover {
+      color: #ff7b02;
+    }
+    #nav-links a.active {
+      color: #ff7b02;
     }
     #nav-links.open {
-      max-height: 500px;       /* large enough to fit menu items */
-      opacity: 1;
+      display: flex;
     }
 
-    /* About content container */
+    /* Mobile responsive */
+    @media screen and (max-width: 768px) {
+      .desktop-nav { display: none; }
+      #hamburger { display: flex; }
+    }
+
+    /* About content */
     .about-container {
       max-width: 900px;
       margin: 100px auto 40px auto;
@@ -135,35 +137,44 @@
       font-weight: bold;
     }
 
-    /* Footer styles */
+    /* Footer */
     footer {
+      margin-top: 0px;
+      padding: 10px 5px;
       text-align: center;
-      margin: 50px 0 20px 0;
       font-size: 0.9rem;
-      color: #888;
+      color: #aaa;
+     
     }
-    footer p strong { color: #fff; }
+    footer p strong { color:#fff; font-weight:bold; }
 
     /* Mobile footer adjustments */
     @media screen and (max-width: 768px) {
       footer {
-        margin: 40px 15px 20px 15px;
+        padding: 0px 15px 10px 15px;
         font-size: 0.85rem;
         line-height: 1.4;
-      }
-      footer p {
-        word-wrap: break-word;
       }
     }
   </style>
 </head>
+
 <body>
 
   <!-- Navbar -->
-  <nav>
+  <nav style="position:fixed; top:0; left:0; width:100%; background-color:#000; display:flex; justify-content:space-between; align-items:center; padding:12px 20px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.6); box-sizing:border-box;">
     <a href="index.html">
       <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
     </a>
+
+    <!-- Desktop Links -->
+    <div class="desktop-nav">
+      <a href="about.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
+      <a href="life.html" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
+      <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
+      <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
+      <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
+    </div>
 
     <!-- Hamburger Icon -->
     <div id="hamburger">
@@ -172,7 +183,7 @@
       <span></span>
     </div>
 
-    <!-- Links -->
+    <!-- Mobile Links -->
     <div id="nav-links">
       <a href="about.html" class="active">About</a>
       <a href="life.html">Life</a>
@@ -186,25 +197,11 @@
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
 
-    // Toggle menu on click or hover
-    function openMenu() {
-      hamburger.classList.add('open');
-      navLinks.classList.add('open');
-    }
-    function closeMenu() {
-      hamburger.classList.remove('open');
-      navLinks.classList.remove('open');
-    }
-
+    // Click toggles menu
     hamburger.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
       hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
     });
-
-    hamburger.addEventListener('mouseenter', openMenu);
-    hamburger.addEventListener('mouseleave', closeMenu);
-    navLinks.addEventListener('mouseenter', openMenu);
-    navLinks.addEventListener('mouseleave', closeMenu);
   </script>
 
   <!-- About Content -->
@@ -231,14 +228,15 @@
 
       <div class="contact">
         Contact me: 
-        <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02; text-decoration:underline; cursor:pointer;">iajuar.online@gmail.com</a>
+        <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02; text-decoration:underline;">iajuar.online@gmail.com</a>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
-    <p>Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2025</p>
+    <p>
+      Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2025
+    </p>
   </footer>
 
 </body>
