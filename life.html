@@ -96,30 +96,468 @@
 </head>
 <body>
 
-  <!-- NAVBAR (inline HTML) -->
-  <nav style="position:fixed; top:0; left:0; width:100%; background-color:#000; display:flex; justify-content:space-between; align-items:center; padding:12px 30px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.6); font-family:'JetBrains Mono', monospace;">
-    <a href="index.html">
-      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
-    </a>
-<div style="display:flex; gap:25px;">
-  <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-     onmouseover="this.style.color='#ff7b02';" 
-     onmouseout="this.style.color='#fff';">About</a>
-  <a href="life.html" style="color:#ff7b02; text-decoration:none; font-weight:bold;" 
-     onmouseover="this.style.color='#fff';" 
-     onmouseout="this.style.color='#ff7b02';">Life</a>
-  <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-     onmouseover="this.style.color='#ff7b02';" 
-     onmouseout="this.style.color='#fff';">Music</a>
-  <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-     onmouseover="this.style.color='#ff7b02';" 
-     onmouseout="this.style.color='#fff';">Electronics</a>
-  <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-     onmouseover="this.style.color='#ff7b02';" 
-     onmouseout="this.style.color='#fff';">Leather</a>
-</div>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>iajuar | Life</title>
 
-  </nav>
+  <!-- JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- FAVICONS -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/apple-touch-icon.png">
+  <link rel="manifest" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/site.webmanifest">
+
+  <style>
+    :root {
+      --bg:#0b0b0b;
+      --ink:#eaeaea;
+      --ink-dim:#bdbdbd;
+      --tip:#111;
+      --accent:#ffffff;
+    }
+    * { box-sizing:border-box; }
+    html,body {
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"JetBrains Mono", monospace;
+      line-height:1.55;
+    }
+    .wrap {
+      max-width:1100px; /* wider box */
+      margin:24px auto;
+      padding:0 12px;
+    }
+    .imgStage {
+      position:relative;
+      user-select:none;
+    }
+    .imgStage>img {
+      display:block;
+      max-width:100%;
+      height:auto;
+      margin:0 auto;
+    }
+
+    /* Outline hotspots (invisible but interactive) */
+    .outline {
+      position:absolute;
+      border:2px solid transparent; /* always invisible */
+      cursor:pointer;
+    }
+    .tip {
+      position:absolute; 
+      left:50%; 
+      top:-10px; 
+      transform:translate(-50%,-100%);
+      background:var(--tip); 
+      color:var(--ink);
+      padding:6px 8px; 
+      border-radius:8px; 
+      font-size:12px;
+      white-space:nowrap; 
+      pointer-events:none; 
+      opacity:0; 
+      transition:opacity .15s ease;
+      box-shadow:0 4px 14px rgba(0,0,0,.35);
+    }
+    .outline:hover .tip { opacity:1; }
+
+    #intro, #description {
+      margin:24px auto;
+      background:#0f0f0f;
+      border:1px solid #1d1d1d;
+      border-radius:14px;
+      padding:24px;
+    }
+    #intro p, #description p {
+      margin:0 0 1em 0;
+      color:#cfcfcf;
+    }
+    #intro-label {
+      text-align:center;
+      font-weight:bold;
+      margin:24px auto;
+      font-size:1.2rem;
+      color:#fff;
+    }
+    a { color: #61dafb; text-decoration: underline; }
+    em { font-style: italic; }
+    strong { font-weight: bold; }
+    u { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (inline HTML) -->
+  <!-- NAVBAR -->
+<!-- NAVBAR (Life page, About-style hamburger) -->
+<nav style="position:fixed; top:0; left:0; width:100%; background-color:#000; display:flex; justify-content:space-between; align-items:center; padding:12px 30px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.6); font-family:'JetBrains Mono', monospace;">
+  <!-- Logo -->
+  <a href="index.html">
+    <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
+  </a>
+
+  <!-- Desktop links -->
+  <div id="nav-links" style="display:flex; gap:25px;">
+    <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
+       onmouseover="this.style.color='#ff7b02';" 
+       onmouseout="this.style.color='#fff';">About</a>
+    <a href="life.html" style="color:#ff7b02; text-decoration:none; font-weight:bold;" 
+       onmouseover="this.style.color='#fff';" 
+       onmouseout="this.style.color='#ff7b02';">Life</a>
+    <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
+       onmouseover="this.style.color='#ff7b02';" 
+       onmouseout="this.style.color='#fff';">Music</a>
+    <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
+       onmouseover="this.style.color='#ff7b02';" 
+       onmouseout="this.style.color='#fff';">Electronics</a>
+    <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
+       onmouseover="this.style.color='#ff7b02';" 
+       onmouseout="this.style.color='#fff';">Leather</a>
+  </div>
+
+  <!-- Hamburger -->
+  <div id="hamburger" style="display:none; flex-direction:column; cursor:pointer; gap:4px; z-index:1001;">
+    <span style="width:25px; height:3px; background:#fff; transition: transform 0.4s ease, opacity 0.4s ease;"></span>
+    <span style="width:25px; height:3px; background:#fff; transition: transform 0.4s ease, opacity 0.4s ease;"></span>
+    <span style="width:25px; height:3px; background:#fff; transition: transform 0.4s ease, opacity 0.4s ease;"></span>
+  </div>
+</nav>
+
+<!-- Mobile styles -->
+<style>
+  @media (max-width: 768px) {
+    #nav-links {
+      display: none;
+      flex-direction: column;
+      background: #000;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      padding: 15px 35px; /* matches About */
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      z-index: 1000;
+    }
+    #nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 0; /* matches About vertical spacing */
+      transition: color 0.3s ease;
+    }
+    #nav-links a:hover {
+      color: #ff7b02;
+    }
+    #nav-links a.active {
+      color: #ff7b02;
+    }
+    #hamburger {
+      display: flex !important;
+    }
+  }
+
+  /* Hamburger animation when open */
+  #hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px,5px);
+  }
+  #hamburger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  #hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px,-5px);
+  }
+
+  #nav-links.open {
+    display: flex !important;
+  }
+</style>
+
+<!-- Toggle Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("hamburger");
+    const navLinks = document.getElementById("nav-links");
+
+    hamburger.addEventListener("click", () => {
+      hamburger.classList.toggle("open");
+      navLinks.classList.toggle("open");
+    });
+  });
+</script>
+
+
+  <!-- spacer to prevent content being hidden under navbar -->
+  <div style="height:70px;"></div>
+<!-- INTRO ABOVE THE IMAGE -->
+  <div id="intro" class="wrap">
+    <p>
+      I am currently living a nomadic lifestlye that grants me the freedom to prioritize creative endeavors.  
+      On the horizon over the course of 9 months is a route through Asia, Europe, and Central America. Traveling with my girlfriend, we 
+      have already spent time in Tokyo, Taipei, and Hong Kong, while currently enjoying Da Nang as we slowly work 
+      our way west. We visit locations anywhere from a week to a month at a time with other notable stays 
+      in Spain, Portugal, Morocco, and Mexico since the start of 2025. This list of items has accompanied 
+      me to each of these locations.
+    </p>
+    <p>
+      I also have a small collection of clothing to cover colder temperature ranges that is currently in 
+      storage in Minneapolis. This allows me to keep what I carry in my pack minimal as I offload weight
+      and swap location relevant items in and out of my kit when returning stateside to visit friends and family.
+    </p>
+  </div>
+
+  <!-- CENTERED LABEL -->
+  <div id="intro-label" class="wrap">
+    EVERYTHING THAT SERVES MY PURPOSES IN THIS SEASON OF LIFE:
+  </div>
+
+  <!-- IMAGE WITH INVISIBLE OUTLINES -->
+  <div class="wrap">
+    <div class="imgStage" id="stage">
+      <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
+    </div>
+  </div>
+
+  <!-- FULL PDF CONTENT BELOW THE IMAGE -->
+  <div id="description" class="wrap">
+    <!-- PASTE full content from your HyperMobility+LINKS+INTROpdf-converted.html here -->
+    <h2><u>BAGS</u></h2>
+<p><a href="https://www.rei.com/product/227955/rei-co-op-trail-25-pack">REI Trail 25:</a>  A 25L pack is my ideal size: Small enough to fit as a personal item even on the strictest budget airlines (RyanAir, EasyJet, AirAsia etc), while still large enough to fit ~7 days worth of clothes. Perfect carrying capacity while in transit and plenty inconspicuous enough to use as an EDC upon arrival. The hiking centric design of this pack means little in the way of organization in favor of reducing weight, but this has proven useful in managing budget airline weight restrictions. There are many bucket style, half zip loader backpacks in this category but the features that keep me tied to my Trail 25 are the hip belt, endlessly useful and endlessly stretchy side pockets, and a stowable rain cover. Ive added shock cord to the pack’s exterior for versatility and Nite-Ize locking S-carabiners on the zippers for security.</p>
+
+<p><a href="https://www.fjallraven.com/us/en-us/bags-gear/backpacks-bags/travel-bags/greenland-pocket/?v=F23156::7323450463823">Fjallraven Greenland Pocket:</a>  Inevitably, there are times when carrying a backpack is overkill. A small crossbody pouch is all that is needed for the essentials - My wallet, notebook/pens, phone, earbuds, and passport all live organized within these pockets. Wise to keep mission critical items out of clothing pockets and behind a zipper for security. This keeps essentials organized and adds modularity. Bonus points for being able to wear this simultaneously with my backpack — hanging forward on my abdomen for easy access to my wallet and passport in airports.</p>
+    
+    <h2><u>CLOTHING</u></h2>
+<p>The philosophy I maintain regarding clothing keeps things as minimal as possible without having to worry about laundry too often - I’ve found roughly a weeks worth of clothes is a good balance. Shorter trips may require less clothing, but while living somewhere for a few weeks, I am grateful to avoid washing things every few days. My uniform is formulaically black bottoms and a gray or other neutral tone top. The list of articles here varies slightly between climates, but the core remains unchanged:</p>
+    
+<p><a href="https://www.uniqlo.com/us/en/products/E465191-000/00?srsltid=AfmBOopH_jXO32b_DhgEzLGB07mEgmVnQBM_jC8M0GxWx73zNwDKLw1g&colorDisplayCode=54&sizeDisplayCode=003">2x Gray T-Shirts:</a>  Synthetic compositions (65poly/35nylon) aren’t usually my first choice (usually favoring natural blends) but in the current peak of southeastern Asia’s summer, nothing else dries quickly enough/wicks sweat efficiently. These are from Uniqlo’s DRY-EX collection - the ubiquity of Uniqlo means these are cheap and easily replaceable if needed. Merino wool is fantastic for odor control but can be delicate and I’m not a fan of babying my clothing. Polyester isn’t fussy in this regard- tough and cheap- so its the tool for the job here.</p>
+
+<p><a href="https://www.uniqlo.com/us/en/products/E464938-000/00?colorDisplayCode=57&sizeDisplayCode=003">2x Collared Shirts:</a>  50/50 modal/cotton blends in a beige color. Nothing beats the minimalism and utility of a plain old t-shirt but a classier variety is a welcome addition. These were also acquired from Uniqlo and while I was hesitant about the cotton percentage holding onto sweat, Ive found them versatile enough and they’ve earned their stay.</p>
+
+<p><a href="https://arcteryx.jp/products/levon-lt-pant-mens?srsltid=AfmBOopGuoxJAFWAeGh_0m6iG4Umo2np8P1TqQAJODepX35uL9nc4UOw">1x Black Pants:</a>  While in Tokyo, I recently replaced the pair of Dickie’s 874s that had been traveling with me for a pair of Arc’teryx Levon LT pants. I optimized for weight and packability here because they are often in my pack during the daytime. The 100% nylon composition keeps things light and quick drying while still being plenty tough. These are patterned as a standard 5 pocket jean sans any of Arc’teryx usual branding to keep things low profile; plenty technical without looking like I’m headed on a hike. As far as I can tell - this nylon ‘LT’ variation of the Levon pant can only be purchased in Japan as other regional versions of the Levon pant are mostly cotton.</p>
+
+<p><a href="https://arcteryx.jp/products/gamma-quick-dry-short-9-m?srsltid=AfmBOoqJij5SykP7umyfCr91DAucSCT8GupAApk-9BlSrd4y9kb531AP">1x Black Shorts:</a>  My most worn item recently here in Asia: These are Arc’teryx Gamma Quick Dry shorts. The 100% nylon material is unbeatable, refusing to hold moisture and have loads of pockets without visually reading as odious cargo shorts. Being fully nylon they do not stretch, making them feel far more robust and secure than a pair of running shorts while adding hardly any more bulk. Each of the 5 pockets (two slash pockets at the waist, two on the thighs, and one on the rear) have a zipper which makes them look slightly more technical than casual but this is bearable for the utility. My only gripe is that these feature an integrated waist belt which, while perfectly functional, deprives me of the option of clipping things to my belt loops (of which there are none) and ability to choose my own belts. These also seem to be an Asia-exclusive for now, but other Gamma model shorts with less pockets seem to be available elsewhere.</p>
+
+<p><a href="https://www.rei.com/product/165397/rei-co-op-merino-wool-liner-crew-socks">Socks:</a>  I have tried many over the years but return to the functional balance of REI’s merino wool sock liners while traveling. These are marketed as a next to skin layer to wear underneath another more padded pair of socks to protect your feet from blisters and control odor during longer through hikes, however I’ve found that their thinner profile makes them perfect for packability. I bring 3 pairs and usually wear each pair for at least two days before there is any odor no matter how hot and sweaty my feet get. Could probably do with just 2 pairs, but I’m always wearing a pair in transit anyway so 3 pairs it is for now. Durable, as the merino wool’s fragility is strengthened by weaving with nylon, and dry very quickly.</p>
+
+<p><a href="https://www.uniqlo.com/us/en/products/E454326-000/00?colorDisplayCode=09&sizeDisplayCode=005">Underwear:</a>  I packed 7x polyester boxers here - A mix of Uniqlo’s classic Airism boxers, and some similar Nike pairs which will eventually be retired and replaced by more Uniqlo pairs. These all pack ultra small and the polyester composition wicks moisture and stops chafing during long haul days. 7 might be excessive but underwear is the one thing I never skimp on, particularly in hot and humid climates. Being stuck wearing dirty undergarments is so uniquely demoralizing that carrying a few extra pairs is well worth its weight in my opinion, especially here in southeast Asia.</p>
+
+<p><a>Belt:</a>  Recently, I found a generic nylon belt that features my favorite clasp: the <a href="https://www.google.com/imgres?q=cobra buckle&imgurl=https://austrialpin.net/wp-content/uploads/2016/07/FY45KVV-Rendered-scaled.jpg&imgrefurl=https://austrialpin.net/product/cobra-original-dual-adjustable/?srsltid=AfmBOoqJbYsX9Xiw3BC1njXPwW7WkhW9t1Ts__xbBaB9uduPL8QZnu-V&docid=ZYn4fX0UmhN78M&tbnid=FZqIkcuXglTVyM&vet=12ahUKEwi2-cnU3puPAxWHiq8BHUxxAHUQM3oECBkQAA..i&w=2560&h=2560&hcb=2&ved=2ahUKEwi2-cnU3puPAxWHiq8BHUxxAHUQM3oECBkQAA">Cobra Buckle.</a> I’ve been enamored by the immensely satisfying mechanics of these parachute style buckles since first interacting with one on a <a href="https://www.sfbags.com/collections/vitesse/products/vitesse-cycling-musette">messenger bag I purchased from Waterfield SF.</a> Not quite as aesthetically versatile as a leather belt, but perfect for adventurous contexts with the nylon offering an additional edge over leather when facing wet conditions.</p>
+
+<p><a>Sleepwear:</a>  Roughly one fourth of any 24 hours is spent asleep, so I'm willing to justify having one ultralight T-shirt and pair of thin running shorts that only see use for these hours. Comforting, knowing that I always have clean clothes to change into at the end of the day, and hygienic, keeping all the grime of the day out of my bed.</p>
+   
+    <h2><u>OUTERWEAR</u></h2>
+
+<p><a href="https://www.uniqlo.com/us/en/products/E469292-000/00?colorDisplayCode=09&sizeDisplayCode=003">Packable Jacket:</a>  On this leg of my travels, the need for jackets and other long sleeves is pretty minimal. It’s too hot and humid here for heavier rain shells or jackets to be desirable when facing the all too frequent precipitation, so that is not currently part of my kit. Instead I opted to just bring a packable windbreaker from Uniqlo. Unbranded as everything they do, and exactly as functional as needed. Recently it has been saving me while I'm working in over-air conditioned cafes. This one features an oversized hood for privacy and takes up minimal space. There is nothing particular about this one from Uniqlo, as there are many similar jackets that serve this function perfectly, but these packable windbreakers have permanently lived in my daily carry packs for about 10 years after I fell in love with their endless functionality on a tour of western Europe.</p>
+
+<p><a>Cap:</a>  I rarely go out without a hat. Endlessly thankful to have it when I need it, and takes up practically nothing when I don’t. This one is a no brainer, from fighting the sun and rain to simple bad hair days. This is a light and minimal quick drying hat from a brand of skateboards that I used to ride. Bonus that it can be combined with a bandana to make a makeshift sun cape for my neck.</p>
+
+  <h2><u>FOOTWEAR</u></h2>
+
+<p><a href="https://workwear.org/merrell-mqc-2-tactical-boots-review/">Combat Boots:</a>  5 years ago, I stumbled across a pair of mil-spec boots deeply discounted. After lacing them up I realized their potential and they left the store with me that day, becoming a mainstay ever since. The military aesthetics can be a bit much for certain contexts, but their adventure-readiness is unbeatable. My pair is from Merrell - their MQC-2 model. These uniquely forgo the clunkiness associated with boots and feel more akin to a sneaker, remaining quite light while offering all the desirable ankle support of boots. Being a desert boot, these are designed to be breathable in hot conditions which the nylon mesh upper achieves spectacularly. Truly the most comfortable footwear I've ever owned; perfect combination of factors making them tough enough for anything (most recently climbing Mt. Fuji) and comfortable enough to walk 20+ miles while forgetting you’re wearing anything at all. This exact model seems to be discontinued but Merrell currently offers a very similar looking boot.</p>
+
+<p><a href="https://xeroshoes.com/shop/sandals/ztrail-men/">Barefoot Sandals:</a>  This is a recent addition to my load out as I'm not typically someone who reaches for sandals at all, but the summer climate in Asia made this option a necessity. I opted for a pair of Xero Z-Trail EV sandals after seeing them at REI. Ive held my interest in the barefoot shoe community at arms length, enticed by all the benefits promised and praises sung by its members, but not entirely motivated to try for myself until now. Initially chosen for their packability, It has been an unexpected delight to try running in these and strengthen some of my previously neglected foot musculature. Bonus points here that they can double as shower shoes very easily, replacing the typical cheap thong style flip flops that have accompanied me on some previous trips.</p>
+
+    <h2><u>TECH</u></h2>
+
+<p>Over the past 10 years my tech has been slowly and surely dominated by Apple’s solutions. At this point my entire working ecosystem is Apple products, something which works gracefully and integrates painlessly. Having tried a fair amount of equivalent tech options, I can confidently say that no system has been able to rival this cross device seamlessness.</p>
+
+<p><a>iPhone 15:</a>  Arguably the most important item on this list. Great camera which instantly syncs to my cloud storage as do my notes. True mobile control center for navigation, communication apps, mobile payments, and everything else imaginable. I have been with T-Mobile for years and my plan offers unlimited roaming data and texts abroad - throttled after a certain number of MBs usage. With my plan, I’m usually able to avoid purchasing local sims or E-sims, and while international calls aren’t included or cheap, I typically use WhatsApp to talk. Covered through AppleCare for accidental damage as well as theft and loss.</p>
+
+<p><a>AirPods Pro:</a>  This is the second most important item on this list for me; I am listening to something — music, podcasts, droning noise — almost 100% of the time when I am not with anyone. The active noise cancelling feature of the pro models is an absolute necessity on planes and in other noisy public spaces. The space these take up in my bag is virtually nonexistent, and considering their endless utility, the benefits pay for themselves 10x over. Pairs instantly with my phone, computer, and watch, transitioning between each seamlessly. My only gripe here is that I wish they could last for longer than 4 hours before needing to briefly return to their case and charge, but this is forgivable for the miraculous convenience they otherwise offer.</p>
+
+<p><a>M3 MacBook Air 13”:</a>  Earlier this year, I traded in a 16” MacBook Pro for this model of Air. I have always been someone who uses Pros, but with Apple’s new generation of silicon processors, I can truly say that the Air is powerful enough. The decision to downgrade was one I was hesitant about, but don’t regret for the space and weight that I save. While the Pro was a true powerhouse with a gorgeous screen and fantastic speakers, it was admittedly a brick to lug around.</p>
+
+<p><a>Apple Watch S10:</a>  The newest item in this category as I’m not particularly inclined towards smartwatches and have worn Casios for years, I was finally convinced by the ability to have live maps, control my music, and translation features at a glance on my wrist. Being able to keep my phone in my bag while walking around is both convenient and secure, and I’ve also come to appreciate tracking my steps and route as I get lost on my walks and runs. I wear mine with the matching black titanium milanese loop sold by Apple which is the only saving grace regarding aesthetic appeal, while remaining hyper functional as I find the rubber bands too sporty and visually uninteresting. Hygienic, tough as nails, secure clasp — this is as good as it gets. Despite the endless functionality, I will still never be won over by the aesthetics of smartwatches, ever favoring the charm of my beloved and ultra slim Casio A700-W and recently reissued A500 in this regard.</p>
+
+<p><a>AirTag (x2):</a>  These are for peace of mind more than anything else, one permanently lives hidden in my backpack, and the other in my pouch of essentials. There are a number of equivalent devices at comparable price points, but these integrate most seamlessly into my current ecosystem.</p>
+
+
+    <h2><u>CHARGING</u></h2>
+
+<p><a href="https://www.bestbuy.com/product/anker-power-bank-10000mah-22-5w-black/JJ858RCW2K">Anker A1388 PowerBank:</a>  Mobile charging is essential when my phone is working double time navigating all day and I inevitably find my phone getting low. This model from Anker won for two prominent features: First the digital display which indicates the battery’s percentage, and second, the attached usb-c cable which functions as a removable lanyard. All my devices charge via usb-c and having one permanently attached to my power source is ultra convenient to save digging one out from my pouch of cables. This model is 10k mAh and while I briefly considered a larger 20k capacity model, I ultimately decided that 10k was the correct balance of functionality for its size.</p>
+
+<p><a href="https://www.apple.com/shop/product/MU2Y3AM/A/35w-dual-usb-c-port-power-adapter">35W Dual USB-C Adapter:</a>  This adapter now comes in the box with MacBook Airs and is actually quite compact. It earned its place on this trip for the dual charging capabilities, able to service my laptop and phone simultaneously. Inside, a protocol controlled converter chip regulates and appropriately adjusts the voltage output for device safety.</p>
+
+<p><a>1m Braided USB-C to USB-C:</a>  Charges my phone, laptop, or earbuds.</p>
+
+<p><a>1m Braided USB-C to Mag:</a>  Apple’s proprietary watch charger. The fastest charging option currently available which can deliver 50% of my watch’s battery in just 30 minutes.</p>
+
+<p><a>3m Braided USB-C to MagSafe:</a>  This might be redundant because I can technically charge my laptop using the 1m cable, but the additional length buys me valuable distance from whatever outlet on which I’m reliant. This one also came in the box with my laptop which means it wasn’t an additional purchase or errand.</p>
+
+<p><a>Regional Adapter:</a>  My 35W adapter features the North American Type-A prong configuration meaning that it often needs to be adapted when traveling internationally. Finding a cheap regional adapter is simple and far more cost effective than any other option. I often only have one regionally specific adapter at a time, although I’ve been meaning to add a global multi adapter to my kit.</p>
+
+<p><a href="https://www.muji.eu/products/textured-nylon-zip-pouch-medium-20297?gad_source=1&gad_campaignid=21748413273&gbraid=0AAAAA-Qna2QVrZIQjUhFwrwwXJiCkfcWH&gclid=EAIaIQobChMIw724hfKejwMVVcZEBx3JdwQpEAQYAiABEgJJv_D_BwE">Zip Pouch:</a>  All of my cables and adapters live in a simple zippered pouch from Muji with no organization other than one unsealed outer pocket which rarely gets used. Minimal and uncomplicated.</p>
+
+    <h2><u>ADMIN</u></h2>
+
+<p><a>Leather Wallet:</a>  My daily carry is an ultra minimal custom leather wallet made entirely
+by me, a model which I have also given to friends and family. Ideal for holding ~4
+cards, a tiny bit of cash/receipts, and nothing else. Perfect for travel because it
+encourages me to carry cash separate from my cards so I can’t lose both at once. I
+was previously a bifold wallet user for 10+ years but fell in love with my more modular
+system and the minimal size of carrying just my cards.</p>
+
+<p><em>With me daily:</em></p>
+<ul>
+  <li>Capital One Quicksilver - Primary card, no international fees or annual fees</li>
+  <li>Apple Card - Secondary card, no international fees or annual fees</li>
+  <li>US Bank Debit - Linked to my checking account for ATM withdrawals</li>
+  <li>Local transit card or library card</li>
+</ul>
+
+<p><a href="https://www.muji.com/sg/products/cmdty/detail/4550002869106">Muji Passport Organizer:</a>  This soft-shell organizer was marketed as a passport wallet,
+but is a bit larger than it needs to be for exclusively my passport. I find the extra
+organizational space it oﬀers perfect for my miscellaneous admin items. This acts as a
+mobile filing cabinet for my important documents and other small items while
+minimizing bulk.</p>
+
+<p><em>Documents:</em></p>
+<ul>
+  <li>International Drivers Permit</li>
+  <li>2x printed passport photos - In case of lost passport</li>
+  <li>Printed copy of passport info page - See above</li>
+  <li>6x printed visa photos - For visa applications, also have a digital version filed</li>
+  <li>Proof of vaccination records - Required for entry into certain countries</li>
+</ul>
+
+<p><em>Additional Cards:</em></p>
+<ul>
+  <li>US Drivers License - Required to drive in tandem with IDP</li>
+  <li>Global Entry Card - Skip customs lines when retuning stateside</li>
+  <li>HSA Card - For use on prescriptions and at drug stores</li>
+  <li>Student ID - Old but undated, for discounted entry to museums</li>
+  <li>Transit Cards - Only keep ones that can be reloaded like Suica etc.</li>
+  <li>US Bank Altitude Connect - Credit card for fights/accommodations. 5x on
+  both with purchase protections. Kept locked as a backup when not in use.</li>
+</ul>
+
+<p><a>First Aid Kit:</a>  Fit into a repurposed cigarette case</p>
+<ul>
+  <li>10x various sized bandages</li>
+  <li>Alcohol pads and antiseptic ointment</li>
+  <li>2x doses Ibuprofen</li>
+  <li>2x doses Asprin</li>
+  <li>2x doses Pepto Bismol</li>
+  <li>1x dose Tums</li>
+  <li>1 course of Azithromycin antibiotics</li>
+</ul>
+
+<p><em>Small Items:</em></p>
+<ul>
+  <li>128gb Flash Drive - For physical backup of important projects</li>
+  <li>USB-C Headphone Adapter</li>
+  <li>Rubber Bands / Paperclips - Weigh nothing and versatile in a pinch</li>
+  <li>Thin stack of Post-Its - To do lists and reminders</li>
+  <li>Reusable cloth face mask</li>
+</ul>
+
+    <h2><u>HYGIENE</u></h2>
+
+<p>
+  This section is the least streamlined, but I make an effort to maintain some semblance of a regular routine for quality of life. 
+  Travel sized versions of all the usual suspects, housed in a zippered pouch from 
+  <a href="https://www.rei.com/product/195311/rei-co-op-travel-kit-large?color=RUSTIC%20GOLD">REI</a>. Notable on this list is the 
+  <a href="https://eu.wahl.com/shop/micro-groomsman-trimmer-05640-616?srsltid=AfmBOooB2EFIPOKfAoDguxnh4dm7iih_nTfM6dvjiRJyqCSWt5FLb-0T">Wahl Micro Groomsman trimmer</a> 
+  which also features a nose hair trimming attachment — the smallest trimmer of this kind I’ve been able to find, 
+  often on sale for just $10.
+</p>
+
+<p><em>Daily:</em></p>
+<ul>
+  <li>Face Wash</li>
+  <li>Lotion</li>
+  <li>Toothbrush + Toothpaste</li>
+  <li>Deodorant</li>
+  <li>Conditioner</li>
+  <li>Comb</li>
+  <li>Mouthguard</li>
+</ul>
+
+<p><em>Shaving:</em></p>
+<ul>
+  <li>5 Blade Razor + Replacement Head</li>
+  <li>Shaving Cream</li>
+  <li><a href="https://eu.wahl.com/shop/micro-groomsman-trimmer-05640-616?srsltid=AfmBOooB2EFIPOKfAoDguxnh4dm7iih_nTfM6dvjiRJyqCSWt5FLb-0T">Wahl Micro Groomsman</a></li>
+  <li>Tweezers</li>
+  <li>Nail Clippers</li>
+</ul>
+
+    <h2><u>MISCELLANEOUS</u></h2>
+
+<p><a>Coin Carrier:</a>  I use cash more frequently when abroad, meaning I also accumulate more coins. 
+A custom triangular design - One single piece of leather with a snap closure which I’ve made in many colors 
+and given to friends. Solves my organizational needs elegantly.</p>
+
+<p><a href="https://www.muji.com/my/products/cmdty/detail/4550182109467">A6 Notebook:</a>  From Muji, these come with 30 pages at a time to keep things compact.</p>
+
+<p><a href="https://www.unibrands.co/products/vision-rollerball-pens?variant=39362319777998">UniBall Vision Micro:</a>  Rollerball pen writing at .5mm which I’ve come to prefer over its related .7 model, 
+although I love both. Quick drying ink, good for sketching and customs forms — my go to travel pen because they 
+absolutely never leak on planes. Increasingly difficult to find the .5 Micro, making it all the more coveted.</p>
+
+<p><a href="https://www.officedepot.com/a/products/193749/Paper-Mate-Flair-Porous-Point-Pens/">PaperMate Flair:</a>  Felt tip pen which has a similar writing profile to a Sharpie — 
+great for labeling and to do lists. Unbothered by changing plane cabin pressures, so also non leaking.</p>
+
+<p><a href="https://www.rei.com/product/202774/black-diamond-spot-400-headlamp">Headlamp:</a>  A rechargeable model from Black Diamond. Useful when staying in more remote areas, 
+but doesn’t come with me on every trip.</p>
+
+<p><a>Packable Umbrella:</a>  Only weighs a few grams, and worth its weight in gold when protection is needed from the rain or sun. 
+Could be sturdier, but this is a tradeoff for the compact nature.</p>
+
+<p><a>Bandana:</a>  Usually worn tied to a carabiner which is clipped around one of my belt loops. 
+Endlessly functional as a towel to dry my hands, protection from the sun, or a mask to cover my eyes for sleep.</p>
+
+<p><a>Waterproof Stuff-Sack:</a>  8L size model from Sea-to-Summit. 
+This functions as a compressible packing cube and keeps my washed clothes clean, dry, and organized.</p>
+
+<p><a>Packable Tote:</a>  A simple packable nylon tote bag that I use for my dirty laundry. 
+A convenient solution for keeping my clean and dirty clothes separate, I simply let my dirty laundry accumulate here 
+until I just grab the whole bag and head off to a laundromat at the end of the week.</p>
+
+  </div>
+
+<script>
+// COORDS + LABELS
+const ITEMS = [
+  "First Aid Kit","Umbrella","Admin Organizer","Bandana","Mask","Cap","Carabiner",
+  "A6 Notebook","International Drivers Permit","Passport/Visa Photos","Wallet","Coin Carrier",
+  "Passport","Uniball Vision Elite","PaperMate Flair","Combat Boots","Barefoot Sandals","Hygiene Kit",
+  "REI Trail 25","MacBook Air","Packable Tote","Fjallraven Greenland Pocket","Clothing + Stuffsack",
+  "Belt","Apple Watch S10","AirTag x2","35W Adapter","Chargers","AirPods Pro","Anker 10k Powerbank",
+  "Regional Adapter","128gb Flash Drive","Headphone Adapter","Headlamp"
+];
+const COORDS = [{"left":7.142857142857,"top":9.265987379463,"width":7.738095238095,"height":12.412926489469},{"left":16.241496598639,"top":9.265987379463,"width":3.061224489796,"height":26.04966263283},{"left":20.833333333333,"top":8.741497527795,"width":7.312925170068,"height":26.923812385609},{"left":5.442176870748,"top":22.2034037206,"width":6.292517006803,"height":14.336055945584},{"left":11.734693877551,"top":22.553063621712,"width":3.146258503401,"height":10.489797033354},{"left":32.65306122449,"top":8.566667577239,"width":10.374149659864,"height":22.553063621712},{"left":43.197278911565,"top":20.455104215041,"width":3.486394557823,"height":9.440817330019},{"left":45.663265306122,"top":13.112246291693,"width":2.551020408163,"height":8.042177725572},{"left":48.044217687075,"top":10.839456934466,"width":2.210884353741,"height":9.091157428907},{"left":50.510204081633,"top":12.063266588357,"width":4.84693877551,"height":18.182314857814},{"left":56.632653061224,"top":8.916327478351,"width":3.996598639456,"height":11.713606687246},{"left":56.122448979592,"top":20.629934165597,"width":4.931972789116,"height":11.53877673669},{"left":61.224489795918,"top":8.741497527795,"width":11.054421768707,"height":16.259185401699},{"left":62.925170068027,"top":26.574152484497,"width":7.993197278912,"height":2.272789357227},{"left":62.925170068027,"top":29.89592154506,"width":7.993197278912,"height":2.097959406671},{"left":74.914965986395,"top":7.867347775016,"width":23.469387755102,"height":28.322451990057},{"left":75.170068027211,"top":37.413609418964,"width":18.792517006803,"height":30.245581446172},{"left":75.93537414966,"top":73.078919332368,"width":15.816326530612,"height":18.182314857814},{"left":54.081632653061,"top":36.889119567296,"width":19.727891156463,"height":58.218373535116},{"left":33.758503401361,"top":66.260551260688,"width":16.666666666667,"height":24.301363127271},{"left":21.938775510204,"top":76.750348294042,"width":7.227891156463,"height":14.336055945584},{"left":20.493197278912,"top":49.127216106209,"width":10.289115646259,"height":25.350342830606},{"left":2.80612244898,"top":48.25306635343,"width":16.496598639456,"height":41.259868331193},{"left":4.166666666667,"top":39.511568825634,"width":27.210884353741,"height":7.69251782446},{"left":33.302257823295,"top":41.36633463844,"width":2.210884353741,"height":19.930614363373},{"left":33.472325850506,"top":36.801804705021,"width":4.081632653061,"height":4.195918365605},{"left":38.404298639622,"top":49.039899938035,"width":2.97619047619,"height":5.769387752707},{"left":36.958720408329,"top":43.095685518224,"width":5.357142857143,"height":5.419728467233},{"left":44.101577551186,"top":51.312689052737,"width":4.081632653061,"height":7.168027207908},{"left":48.608380272275,"top":44.144665221559,"width":4.081632653061,"height":16.958505203923},{"left":44.611781632819,"top":45.193644924895,"width":2.040816326531,"height":5.419728467233},{"left":46.992734013772,"top":45.193644924895,"width":1.190476190476,"height":5.769388368345},{"left":43.931509523976,"top":58.830381068255,"width":4.506802721088,"height":2.622449258339},{"left":38.744434694044,"top":36.626977347656,"width":14.200680272109,"height":4.021088862786}];
+
+const stage = document.getElementById('stage');
+function renderOutlines(){
+  COORDS.forEach((o,i)=>{
+    const outline = document.createElement('div');
+    outline.className = 'outline';
+    outline.style.left = o.left + '%';
+    outline.style.top = o.top + '%';
+    outline.style.width = o.width + '%';
+    outline.style.height = o.height + '%';
+    outline.innerHTML = `<span class="tip">${ITEMS[i]}</span>`;
+    stage.appendChild(outline);
+  });
+}
+renderOutlines();
+</script>
+
+ <!-- Footer -->
+  <footer style="text-align:center; margin:50px 0 20px 0; font-size:0.9rem; color:#888;">
+    <p>Rendered in Detail via <strong style="color:#fff;">++ iajuar.online ++</strong> © 2025</p>
+  </footer>
+
+</body>
+</html>
 
   <!-- spacer to prevent content being hidden under navbar -->
   <div style="height:70px;"></div>
