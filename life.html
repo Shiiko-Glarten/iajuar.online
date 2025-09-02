@@ -6,7 +6,7 @@
   <title>iajuar | Life</title>
 
   <!-- JetBrains Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 
   <!-- FAVICONS -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/favicon-32x32.png">
@@ -18,9 +18,7 @@
     :root {
       --bg:#0b0b0b;
       --ink:#eaeaea;
-      --ink-dim:#bdbdbd;
       --tip:#111;
-      --accent:#ffffff;
     }
     * { box-sizing:border-box; }
     html,body {
@@ -30,28 +28,13 @@
       font-family:"JetBrains Mono", monospace;
       line-height:1.55;
     }
-    .wrap {
-      max-width:1100px; /* wider box */
-      margin:24px auto;
-      padding:0 12px;
-    }
-    .imgStage {
-      position:relative;
-      user-select:none;
-    }
-    .imgStage>img {
-      display:block;
-      max-width:100%;
-      height:auto;
-      margin:0 auto;
-    }
+    .wrap { max-width:1100px; margin:24px auto; padding:0 12px; }
 
-    /* Outline hotspots (invisible but interactive) */
-    .outline {
-      position:absolute;
-      border:2px solid transparent; /* invisible but clickable */
-      cursor:pointer;
-    }
+    /* Image stage */
+    .imgStage { position:relative; user-select:none; }
+    .imgStage>img { display:block; max-width:100%; height:auto; margin:0 auto; }
+
+    .outline { position:absolute; border:2px solid transparent; cursor:pointer; }
     .tip {
       position:absolute;
       left:50%;
@@ -77,23 +60,10 @@
       border-radius:14px;
       padding:24px;
     }
-    #intro p, #description p {
-      margin:0 0 1em 0;
-      color:#cfcfcf;
-    }
-    #intro-label {
-      text-align:center;
-      font-weight:bold;
-      margin:24px auto;
-      font-size:1.2rem;
-      color:#fff;
-    }
-    a { color: #61dafb; text-decoration: underline; }
-    em { font-style: italic; }
-    strong { font-weight: bold; }
-    u { text-decoration: underline; }
+    #intro p, #description p { margin:0 0 1em 0; color:#cfcfcf; }
+    #intro-label { text-align:center; font-weight:bold; margin:24px auto; font-size:1.2rem; color:#fff; }
 
-    /* ---------- NAVBAR (About-style) ---------- */
+    /* ---------- NAVBAR (inline, pixel-perfect) ---------- */
     nav {
       position:fixed;
       top:0; left:0;
@@ -102,35 +72,13 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      padding:12px 20px; /* matches about.html */
+      padding:12px 20px;
       z-index:1000;
       box-shadow:0 2px 6px rgba(0,0,0,0.6);
       box-sizing:border-box;
       font-family:'JetBrains Mono', monospace;
     }
 
-    nav a.logo-link { display:inline-flex; align-items:center; }
-    nav img.logo { height:36px; display:block; }
-
-    /* Desktop nav container */
-    .desktop-nav {
-      display:flex;
-      gap:25px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      overflow-x:auto;
-    }
-
-    .desktop-nav a {
-      color:#fff;
-      text-decoration:none;
-      font-weight:bold;
-      transition: color .3s ease;
-    }
-    .desktop-nav a:hover,
-    .desktop-nav a.active { color:#ff7b02 !important; }
-
-    /* Hamburger (hidden on desktop) */
     #hamburger {
       display:none;
       flex-direction:column;
@@ -145,17 +93,14 @@
       background:#fff;
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
-    #hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(5px,5px);
-    }
-    #hamburger.open span:nth-child(2) {
-      opacity:0;
-    }
-    #hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px,-5px);
-    }
+    #hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    #hamburger.open span:nth-child(2) { opacity:0; }
+    #hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
-    /* Mobile dropdown menu (matches About) */
+    .desktop-nav { display:flex; gap:25px; flex-wrap:wrap; justify-content:flex-end; overflow-x:auto; }
+    .desktop-nav a:hover,
+    .desktop-nav a.active { color:#ff7b02 !important; }
+
     #nav-links {
       display:none;
       flex-direction:column;
@@ -163,7 +108,7 @@
       position:absolute;
       top:60px;
       right:20px;
-      padding:15px 35px; /* IMPORTANT: matches about spacing */
+      padding:15px 35px;
       border-radius:8px;
       font-family:'JetBrains Mono', monospace;
       font-size:1rem;
@@ -171,43 +116,34 @@
       transition: all 0.4s ease;
       z-index:1000;
     }
-    #nav-links a {
-      color:#fff;
-      text-decoration:none;
-      font-weight:bold;
-      padding:10px 0; /* vertical spacing matches About */
-      transition: color 0.3s ease;
-    }
-    #nav-links a:hover { color:#ff7b02; }
+    #nav-links a { color:#fff; text-decoration:none; font-weight:bold; padding:10px 0; transition: color 0.3s ease; }
+    #nav-links a:hover,
     #nav-links a.active { color:#ff7b02; }
     #nav-links.open { display:flex; }
 
-    /* Responsive rules */
     @media screen and (max-width:768px) {
       .desktop-nav { display:none; }
       #hamburger { display:flex; }
-      /* ensure nav-links hidden until open; on tiny screens we rely on .open to show it */
     }
 
-    /* small utility */
     .spacer { height:70px; }
   </style>
 </head>
 <body>
 
-  <!-- Navbar (single, About-style) -->
+  <!-- Navbar -->
   <nav role="navigation" aria-label="Main">
-    <a class="logo-link" href="index.html">
-      <img class="logo" src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo">
+    <a href="index.html" style="display:inline-flex; align-items:center;">
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px; display:block;">
     </a>
 
     <!-- Desktop Links -->
-    <div class="desktop-nav" id="desktop-nav">
-      <a href="about.html">About</a>
-      <a href="life.html" class="active">Life</a>
-      <a href="music.html">Music</a>
-      <a href="synths.html">Electronics</a>
-      <a href="leather.html">Leather</a>
+    <div class="desktop-nav">
+      <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
+      <a href="life.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
+      <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
+      <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
+      <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
     </div>
 
     <!-- Hamburger Icon -->
@@ -217,17 +153,16 @@
       <span></span>
     </div>
 
-    <!-- Mobile Links (same items, spacing matches About) -->
-    <div id="nav-links" aria-hidden="true">
-      <a href="about.html">About</a>
-      <a href="life.html" class="active">Life</a>
-      <a href="music.html">Music</a>
-      <a href="synths.html">Electronics</a>
-      <a href="leather.html">Leather</a>
+    <!-- Mobile Links -->
+    <div id="nav-links">
+      <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
+      <a href="life.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
+      <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
+      <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
+      <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
     </div>
   </nav>
 
-  <!-- spacer to prevent content being hidden under navbar -->
   <div class="spacer"></div>
 
   <!-- INTRO ABOVE THE IMAGE -->
@@ -237,8 +172,7 @@
       On the horizon is a route through Asia, Europe, and Central America. Traveling with my girlfriend, we 
       have already spent time in Tokyo, Taipei, and Hong Kong, while currently enjoying Da Nang as we slowly work 
       our way west. We visit locations anywhere from a week to a month at a time with other notable stays 
-      in Spain, Portugal, Morocco, and Mexico since the start of 2025. This list of items has accompanied 
-      me to each of these locations.
+      in Spain, Portugal, Morocco, and Mexico since the start of 2025.
     </p>
     <p>
       I also have a small collection of clothing to cover colder temperature ranges that is currently in 
@@ -247,7 +181,6 @@
     </p>
   </div>
 
-  <!-- CENTERED LABEL -->
   <div id="intro-label" class="wrap">
     EVERYTHING THAT SERVES MY PURPOSES IN THIS SEASON OF LIFE:
   </div>
@@ -258,6 +191,8 @@
       <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
     </div>
   </div>
+
+  <!-- FULL PDF CONTENT BELOW THE IMAGE -->
 
   <!-- FULL PDF CONTENT BELOW THE IMAGE -->
   <div id="description" class="wrap">
