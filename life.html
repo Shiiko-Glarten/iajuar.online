@@ -49,120 +49,22 @@
     /* Outline hotspots (invisible but interactive) */
     .outline {
       position:absolute;
-      border:2px solid transparent; /* always invisible */
+      border:2px solid transparent; /* invisible but clickable */
       cursor:pointer;
     }
     .tip {
-      position:absolute; 
-      left:50%; 
-      top:-10px; 
-      transform:translate(-50%,-100%);
-      background:var(--tip); 
-      color:var(--ink);
-      padding:6px 8px; 
-      border-radius:8px; 
-      font-size:12px;
-      white-space:nowrap; 
-      pointer-events:none; 
-      opacity:0; 
-      transition:opacity .15s ease;
-      box-shadow:0 4px 14px rgba(0,0,0,.35);
-    }
-    .outline:hover .tip { opacity:1; }
-
-    #intro, #description {
-      margin:24px auto;
-      background:#0f0f0f;
-      border:1px solid #1d1d1d;
-      border-radius:14px;
-      padding:24px;
-    }
-    #intro p, #description p {
-      margin:0 0 1em 0;
-      color:#cfcfcf;
-    }
-    #intro-label {
-      text-align:center;
-      font-weight:bold;
-      margin:24px auto;
-      font-size:1.2rem;
-      color:#fff;
-    }
-    a { color: #61dafb; text-decoration: underline; }
-    em { font-style: italic; }
-    strong { font-weight: bold; }
-    u { text-decoration: underline; }
-  </style>
-</head>
-<body>
-
- <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>iajuar | Life</title>
-
-  <!-- JetBrains Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- FAVICONS -->
-  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/apple-touch-icon.png">
-  <link rel="manifest" href="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/site.webmanifest">
-
-  <style>
-    :root {
-      --bg:#0b0b0b;
-      --ink:#eaeaea;
-      --ink-dim:#bdbdbd;
-      --tip:#111;
-      --accent:#ffffff;
-    }
-    * { box-sizing:border-box; }
-    html,body {
-      margin:0;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:"JetBrains Mono", monospace;
-      line-height:1.55;
-    }
-    .wrap {
-      max-width:1100px; /* wider box */
-      margin:24px auto;
-      padding:0 12px;
-    }
-    .imgStage {
-      position:relative;
-      user-select:none;
-    }
-    .imgStage>img {
-      display:block;
-      max-width:100%;
-      height:auto;
-      margin:0 auto;
-    }
-
-    /* Outline hotspots (invisible but interactive) */
-    .outline {
       position:absolute;
-      border:2px solid transparent; /* always invisible */
-      cursor:pointer;
-    }
-    .tip {
-      position:absolute; 
-      left:50%; 
-      top:-10px; 
+      left:50%;
+      top:-10px;
       transform:translate(-50%,-100%);
-      background:var(--tip); 
+      background:var(--tip);
       color:var(--ink);
-      padding:6px 8px; 
-      border-radius:8px; 
+      padding:6px 8px;
+      border-radius:8px;
       font-size:12px;
-      white-space:nowrap; 
-      pointer-events:none; 
-      opacity:0; 
+      white-space:nowrap;
+      pointer-events:none;
+      opacity:0;
       transition:opacity .15s ease;
       box-shadow:0 4px 14px rgba(0,0,0,.35);
     }
@@ -190,118 +92,149 @@
     em { font-style: italic; }
     strong { font-weight: bold; }
     u { text-decoration: underline; }
-  </style>
-</head>
-<body>
 
-  <!-- NAVBAR (inline HTML) -->
-  <!-- NAVBAR -->
-<!-- NAVBAR (Life page, About-style hamburger) -->
-<nav style="position:fixed; top:0; left:0; width:100%; background-color:#000; display:flex; justify-content:space-between; align-items:center; padding:12px 30px; z-index:1000; box-shadow:0 2px 6px rgba(0,0,0,0.6); font-family:'JetBrains Mono', monospace;">
-  <!-- Logo -->
-  <a href="index.html">
-    <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
-  </a>
+    /* ---------- NAVBAR (About-style) ---------- */
+    nav {
+      position:fixed;
+      top:0; left:0;
+      width:100%;
+      background-color:#000;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 20px; /* matches about.html */
+      z-index:1000;
+      box-shadow:0 2px 6px rgba(0,0,0,0.6);
+      box-sizing:border-box;
+      font-family:'JetBrains Mono', monospace;
+    }
 
-  <!-- Desktop links -->
-  <div id="nav-links" style="display:flex; gap:25px;">
-    <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-       onmouseover="this.style.color='#ff7b02';" 
-       onmouseout="this.style.color='#fff';">About</a>
-    <a href="life.html" style="color:#ff7b02; text-decoration:none; font-weight:bold;" 
-       onmouseover="this.style.color='#fff';" 
-       onmouseout="this.style.color='#ff7b02';">Life</a>
-    <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-       onmouseover="this.style.color='#ff7b02';" 
-       onmouseout="this.style.color='#fff';">Music</a>
-    <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-       onmouseover="this.style.color='#ff7b02';" 
-       onmouseout="this.style.color='#fff';">Electronics</a>
-    <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;" 
-       onmouseover="this.style.color='#ff7b02';" 
-       onmouseout="this.style.color='#fff';">Leather</a>
-  </div>
+    nav a.logo-link { display:inline-flex; align-items:center; }
+    nav img.logo { height:36px; display:block; }
 
-  <!-- Hamburger -->
-  <div id="hamburger" style="display:none; flex-direction:column; cursor:pointer; gap:4px; z-index:1001;">
-    <span style="width:25px; height:3px; background:#fff; transition: transform 0.4s ease, opacity 0.4s ease;"></span>
-    <span style="width:25px; height:3px; background:#fff; transition: transform 0.4s ease, opacity 0.4s ease;"></span>
-    <span style="width:25px; height:3px; background:#fff; transition: transform 0.4s ease, opacity 0.4s ease;"></span>
-  </div>
-</nav>
+    /* Desktop nav container */
+    .desktop-nav {
+      display:flex;
+      gap:25px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      overflow-x:auto;
+    }
 
-<!-- Mobile styles -->
-<style>
-  @media (max-width: 768px) {
+    .desktop-nav a {
+      color:#fff;
+      text-decoration:none;
+      font-weight:bold;
+      transition: color .3s ease;
+    }
+    .desktop-nav a:hover,
+    .desktop-nav a.active { color:#ff7b02 !important; }
+
+    /* Hamburger (hidden on desktop) */
+    #hamburger {
+      display:none;
+      flex-direction:column;
+      cursor:pointer;
+      gap:4px;
+      z-index:1001;
+    }
+    #hamburger span {
+      display:block;
+      width:25px;
+      height:3px;
+      background:#fff;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    #hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px,5px);
+    }
+    #hamburger.open span:nth-child(2) {
+      opacity:0;
+    }
+    #hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px,-5px);
+    }
+
+    /* Mobile dropdown menu (matches About) */
     #nav-links {
-      display: none;
-      flex-direction: column;
-      background: #000;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      padding: 15px 35px; /* matches About */
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      z-index: 1000;
+      display:none;
+      flex-direction:column;
+      background:#000;
+      position:absolute;
+      top:60px;
+      right:20px;
+      padding:15px 35px; /* IMPORTANT: matches about spacing */
+      border-radius:8px;
+      font-family:'JetBrains Mono', monospace;
+      font-size:1rem;
+      box-shadow:0 4px 12px rgba(0,0,0,0.6);
+      transition: all 0.4s ease;
+      z-index:1000;
     }
     #nav-links a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 10px 0; /* matches About vertical spacing */
+      color:#fff;
+      text-decoration:none;
+      font-weight:bold;
+      padding:10px 0; /* vertical spacing matches About */
       transition: color 0.3s ease;
     }
-    #nav-links a:hover {
-      color: #ff7b02;
+    #nav-links a:hover { color:#ff7b02; }
+    #nav-links a.active { color:#ff7b02; }
+    #nav-links.open { display:flex; }
+
+    /* Responsive rules */
+    @media screen and (max-width:768px) {
+      .desktop-nav { display:none; }
+      #hamburger { display:flex; }
+      /* ensure nav-links hidden until open; on tiny screens we rely on .open to show it */
     }
-    #nav-links a.active {
-      color: #ff7b02;
-    }
-    #hamburger {
-      display: flex !important;
-    }
-  }
 
-  /* Hamburger animation when open */
-  #hamburger.open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px,5px);
-  }
-  #hamburger.open span:nth-child(2) {
-    opacity: 0;
-  }
-  #hamburger.open span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px,-5px);
-  }
+    /* small utility */
+    .spacer { height:70px; }
+  </style>
+</head>
+<body>
 
-  #nav-links.open {
-    display: flex !important;
-  }
-</style>
+  <!-- Navbar (single, About-style) -->
+  <nav role="navigation" aria-label="Main">
+    <a class="logo-link" href="index.html">
+      <img class="logo" src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo">
+    </a>
 
-<!-- Toggle Script -->
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const hamburger = document.getElementById("hamburger");
-    const navLinks = document.getElementById("nav-links");
+    <!-- Desktop Links -->
+    <div class="desktop-nav" id="desktop-nav">
+      <a href="about.html">About</a>
+      <a href="life.html" class="active">Life</a>
+      <a href="music.html">Music</a>
+      <a href="synths.html">Electronics</a>
+      <a href="leather.html">Leather</a>
+    </div>
 
-    hamburger.addEventListener("click", () => {
-      hamburger.classList.toggle("open");
-      navLinks.classList.toggle("open");
-    });
-  });
-</script>
+    <!-- Hamburger Icon -->
+    <div id="hamburger" aria-controls="nav-links" aria-expanded="false" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
 
+    <!-- Mobile Links (same items, spacing matches About) -->
+    <div id="nav-links" aria-hidden="true">
+      <a href="about.html">About</a>
+      <a href="life.html" class="active">Life</a>
+      <a href="music.html">Music</a>
+      <a href="synths.html">Electronics</a>
+      <a href="leather.html">Leather</a>
+    </div>
+  </nav>
 
   <!-- spacer to prevent content being hidden under navbar -->
-  <div style="height:70px;"></div>
-<!-- INTRO ABOVE THE IMAGE -->
+  <div class="spacer"></div>
+
+  <!-- INTRO ABOVE THE IMAGE -->
   <div id="intro" class="wrap">
     <p>
-      I am currently living a nomadic lifestlye that grants me the freedom to prioritize creative endeavors.  
-      On the horizon over the course of 9 months is a route through Asia, Europe, and Central America. Traveling with my girlfriend, we 
+      I am currently living a nomadic lifestyle that grants me the freedom to prioritize creative endeavors.  
+      On the horizon is a route through Asia, Europe, and Central America. Traveling with my girlfriend, we 
       have already spent time in Tokyo, Taipei, and Hong Kong, while currently enjoying Da Nang as we slowly work 
       our way west. We visit locations anywhere from a week to a month at a time with other notable stays 
       in Spain, Portugal, Morocco, and Mexico since the start of 2025. This list of items has accompanied 
@@ -325,6 +258,8 @@
       <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
     </div>
   </div>
+
+  <!-- FULL PDF CONTENT BELOW THE IMAGE -->
 
   <!-- FULL PDF CONTENT BELOW THE IMAGE -->
   <div id="description" class="wrap">
@@ -814,6 +749,16 @@ function renderOutlines(){
 }
 renderOutlines();
 </script>
+<!-- JavaScript for toggle -->
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  </script>
 
  <!-- Footer -->
   <footer style="text-align:center; margin:50px 0 20px 0; font-size:0.9rem; color:#888;">
