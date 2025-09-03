@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iajuar | Leather</title>
 
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/128favicon.png"> 
+  <!-- Favicon (Safari, Chrome, macOS, iOS) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128favicon.png">
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!-- JetBrains Mono font -->
@@ -19,106 +19,15 @@
       background-color: #111;
       color: #fff;
     }
-
-    /* Navbar hover + active */
-    nav a:hover, nav a.active {
+    /* Hover + active link colors */
+    nav a:hover {
       color: #ff7b02 !important;
     }
-
-    /* Desktop navbar */
-    .desktop-nav {
-      display: flex;
-      gap: 25px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      overflow-x: auto;
-    }
-
-    /* Hamburger */
-    #hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 4px;
-      z-index: 1001;
-    }
-    #hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: #fff;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-    #hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(5px,5px);
-    }
-    #hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
-    #hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px,-5px);
-    }
-
-    /* Mobile menu */
-    #nav-links {
-      display: none;
-      flex-direction: column;
-      background: #000;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      padding: 15px 35px;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      transition: all 0.4s ease;
-      z-index: 1000;
-    }
-    #nav-links a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 10px 0;
-      transition: color 0.3s ease;
-    }
-    #nav-links a:hover {
-      color: #ff7b02;
-    }
-    #nav-links a.active {
-      color: #ff7b02;
-    }
-    #nav-links.open {
-      display: flex;
-    }
-
-    /* Mobile responsive */
-    @media screen and (max-width: 768px) {
-      .desktop-nav { display: none; }
-      #hamburger { display: flex; }
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 0px;
-      padding: 10px 5px;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-    footer p strong { color:#fff; font-weight:bold; }
-
-    /* Mobile footer adjustments */
-    @media screen and (max-width: 768px) {
-      footer {
-        padding: 0px 15px 10px 15px;
-        font-size: 0.85rem;
-        line-height: 1.4;
-      }
+    nav a.active {
+      color: #ff7b02 !important;
     }
   </style>
 </head>
-
 <body>
 
   <!-- Navbar -->
@@ -126,42 +35,14 @@
     <a href="index.html">
       <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
     </a>
-
-    <!-- Desktop Links -->
-    <div class="desktop-nav">
+    <div style="display:flex; gap:25px; flex-wrap:wrap; justify-content:flex-end; overflow-x:auto;">
       <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
       <a href="life.html" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
       <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
       <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
       <a href="leather.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
     </div>
-
-    <!-- Hamburger Icon -->
-    <div id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <!-- Mobile Links -->
-    <div id="nav-links">
-      <a href="about.html">About</a>
-      <a href="life.html">Life</a>
-      <a href="music.html">Music</a>
-      <a href="synths.html">Electronics</a>
-      <a href="leather.html" class="active">Leather</a>
-    </div>
   </nav>
-
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
-
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
-    });
-  </script>
 
   <!-- Leather Content -->
   <div style="max-width:1100px; margin:100px auto 40px auto; padding:0 20px;">
@@ -300,8 +181,71 @@
   }
 </script>
 
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Vertical Messenger</h3> 
+<p>
+The leather I tend to favor typically has a soft temper which allows it to to drape and move with the user in elegant ways. However - after making a couple bags of that character, I decided to attempt a more firm construction. While visiting Mexico City in March, I used an afternoon to seek out a tannery that I had been hearing positive things about. There I sourced the leather which I used for this project: a side of 9oz Buffalo. I paid as much to ship this cut home to myself as I did to purchase the leather total but have no regrets. The front design is clean to draw attention to the same swivel snap closure featured on my tote bags. The leather of the back document pocket and the side gusset all needed to be skived to reduce visual bulk. Notably on this bag I decided not to hide the edges or stitching to give a different character than my previous designs. 
+</p>
 
-  <!-- Laptop Sleeve -->
+<!-- Scrollable gallery (with lightbox integration) -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3041.jpeg" alt="Vertical Messenger 1" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3042.jpeg" alt="Vertical Messenger 2" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(1)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2849.jpeg" alt="Vertical Messenger 3" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(2)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2852.jpeg" alt="Vertical Messenger 4" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(3)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2547.jpeg" alt="Vertical Messenger 5" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(4)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3043.jpeg" alt="Vertical Messenger 6" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(5)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2855.jpeg" alt="Vertical Messenger 7" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(6)">
+</div>
+
+<!-- Lightbox overlay (Vertical Messenger) -->
+<div id="messengerLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeMessengerLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="messengerLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows -->
+  <span onclick="prevMessengerImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextMessengerImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Vertical Messenger gallery images
+  const messengerImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3041.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3042.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2849.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2852.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2547.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3043.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2855.jpeg"
+  ];
+
+  let messengerIndex = 0;
+
+  function openMessengerLightbox(index) {
+    messengerIndex = index;
+    document.getElementById("messengerLightbox").style.display = "flex";
+    document.getElementById("messengerLightboxImg").src = messengerImages[messengerIndex];
+  }
+
+  function closeMessengerLightbox() {
+    document.getElementById("messengerLightbox").style.display = "none";
+  }
+
+  function nextMessengerImage() {
+    messengerIndex = (messengerIndex + 1) % messengerImages.length;
+    document.getElementById("messengerLightboxImg").src = messengerImages[messengerIndex];
+  }
+
+  function prevMessengerImage() {
+    messengerIndex = (messengerIndex - 1 + messengerImages.length) % messengerImages.length;
+    document.getElementById("messengerLightboxImg").src = messengerImages[messengerIndex];
+  }
+</script>
+
+       <!-- Laptop Sleeve -->
 <h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Laptop Sleeve</h3>
 <p>
   The first project that I formally completed - more of an excuse to use this rich cherry colored leather than a need for a laptop sleeve. One long piece of leather and a belt to keep the flap closed while the laptop is inside. Sewn in an inside out construction to hide the stitches.
