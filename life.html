@@ -171,8 +171,6 @@
       #hamburger { display:flex; }
     }
 
-  
-
     /* Globe Container */
     #globeContainer {
       width:100%;
@@ -180,18 +178,23 @@
       position:relative;
       overflow:hidden;
       margin-top:20px;
+      background: linear-gradient(to bottom, #000000 0%, #0b0b0b 100%);
     }
+
+    /* Caption */
     #globeCaption {
-      text-align:center;
-      margin-top:10px;
-      font-family:'JetBrains Mono', monospace;
-      font-size:1rem;
-      color:#61dafb;
-      
+      position: absolute;       /* stays on top of the globe */
+      bottom: 12px;             /* distance from bottom of container */
+      width: 100%;              /* span full width */
+      text-align: center;       /* center text horizontally */
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      color: #61dafb;           /* match your links */
+      text-shadow: 0 0 4px rgba(0,0,0,0.6); /* makes it readable */
+      z-index: 11;              /* ensures it's above globe and overlay */
     }
-    
+
     /* Footer */
-   
     footer {
       margin-top: 0px;
       padding: 10px 5px;
@@ -262,20 +265,17 @@
     </div>
   </nav>
 
- <!-- Globe Container -->
-<div id="globeContainer" style="width:100%; height:600px; position:relative; overflow:hidden; ">
-  <div id="globeViz" style="width:100%; height:100%;"></div>
+  <!-- Globe Container -->
+  <div id="globeContainer">
+    <div id="globeViz"></div>
 
-  <!-- Overlay for Trackball Controls -->
-  <div id="globeOverlay" 
-       style="position:absolute; top:0; left:25%; width:50%; height:100%; z-index:10;">
+    <!-- Overlay for Trackball Controls -->
+    <div id="globeOverlay"></div>
+
+    <!-- Caption inside container -->
+    <div id="globeCaption">Current Global Position: 16.0544, 108.2022</div>
   </div>
-</div>
 
-<!-- Caption -->
-<div id="globeCaption">
-  Current Global Position: 16.0544, 108.2022
-</div>
 
   <!-- INTRO -->
   <div id="intro" class="wrap">
@@ -559,11 +559,14 @@ until I just grab the whole bag and head off to a laundromat.</p>
         .pathTransitionDuration(4000);
     }, 6000);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setClearColor(0x0b0b0b, 1); // matches var(--bg) 
-    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
-    renderer.setSize(globeContainer.clientWidth, globeContainer.clientHeight);
-    document.getElementById('globeViz').appendChild(renderer.domElement);
+   // Make renderer transparent
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+renderer.setSize(globeContainer.clientWidth, globeContainer.clientHeight);
+document.getElementById('globeViz').appendChild(renderer.domElement);
+
+// No need to setClearColor, or:
+renderer.setClearColor(0x000000, 0); // fully transparent
 
     const scene = new THREE.Scene();
     scene.add(Globe);
@@ -633,7 +636,7 @@ until I just grab the whole bag and head off to a laundromat.</p>
 
     (function animate() {
       tbControls.update();
-      Globe.rotation.y += 0.015;
+      Globe.rotation.y += 0.012;
       animatePulse();
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
