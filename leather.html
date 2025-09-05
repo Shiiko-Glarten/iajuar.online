@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iajuar | About</title>
+  <title>iajuar | Leather</title>
 
-  <!-- Favicon -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/128favicon.png"> 
+  <!-- Favicon (Safari, Chrome, macOS, iOS) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128favicon.png">
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!-- JetBrains Mono font -->
@@ -19,124 +19,13 @@
       background-color: #111;
       color: #fff;
     }
-
-    /* Navbar hover + active */
-    nav a:hover, nav a.active {
+    /* Hover + active link colors */
+    nav a:hover {
       color: #ff7b02 !important;
     }
-
-    /* Desktop navbar */
-    .desktop-nav {
-      display: flex;
-      gap: 25px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      overflow-x: auto;
+    nav a.active {
+      color: #ff7b02 !important;
     }
-
-    /* Hamburger */
-    #hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 4px;
-      z-index: 1001;
-    }
-    #hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background: #fff;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-    #hamburger.open span:nth-child(1) {
-      transform: rotate(45deg) translate(5px,5px);
-    }
-    #hamburger.open span:nth-child(2) {
-      opacity: 0;
-    }
-    #hamburger.open span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px,-5px);
-    }
-
-    /* Mobile menu */
-    #nav-links {
-      display: none;
-      flex-direction: column;
-      background: #000;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      padding: 15px 35px;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      transition: all 0.4s ease;
-      z-index: 1000;
-    }
-    #nav-links a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 10px 0;
-      transition: color 0.3s ease;
-    }
-    #nav-links a:hover {
-      color: #ff7b02;
-    }
-    #nav-links a.active {
-      color: #ff7b02;
-    }
-    #nav-links.open {
-      display: flex;
-    }
-
-    /* Mobile responsive */
-    @media screen and (max-width: 768px) {
-      .desktop-nav { display: none; }
-      #hamburger { display: flex; }
-    }
-
-    /* About content */
-    .about-container {
-      max-width: 900px;
-      margin: 100px auto 40px auto;
-      padding: 0 20px;
-    }
-    .about-box {
-      background-color: #1a1a1a;
-      padding: 20px 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-      text-align: center;
-    }
-    .about-box img {
-      max-width: 40%;
-      height: auto;
-      margin: 15px auto;
-      display: block;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-    .about-box a {
-      color: #fff;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    .about-box a:hover { color: #ff7b02; }
-
-    .pronunciation {
-      margin-top: 0.4rem;
-      line-height: 1.3;
-      text-align: left;
-      display: inline-block;
-    }
-    .contact {
-      margin-top: 1.6rem;
-      font-weight: bold;
-    }
-
     /* Footer */
     footer {
       margin-top: 0px;
@@ -180,7 +69,6 @@
     }
   </style>
 </head>
-
 <body>
 
   <!-- Navbar -->
@@ -188,71 +76,568 @@
     <a href="index.html">
       <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
     </a>
-
-    <!-- Desktop Links -->
-    <div class="desktop-nav">
-      <a href="about.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
+    <div style="display:flex; gap:25px; flex-wrap:wrap; justify-content:flex-end; overflow-x:auto;">
+      <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
       <a href="life.html" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
       <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
       <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
-      <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
-    </div>
-
-    <!-- Hamburger Icon -->
-    <div id="hamburger">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-    <!-- Mobile Links -->
-    <div id="nav-links">
-      <a href="about.html" class="active">About</a>
-      <a href="life.html">Life</a>
-      <a href="music.html">Music</a>
-      <a href="synths.html">Electronics</a>
-      <a href="leather.html">Leather</a>
+      <a href="leather.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
     </div>
   </nav>
 
-  <script>
-    const hamburger = document.getElementById('hamburger');
-    const navLinks = document.getElementById('nav-links');
+  <!-- Leather Content -->
+  <div style="max-width:1100px; margin:100px auto 40px auto; padding:0 20px;">
 
-    // Click toggles menu
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
-    });
-  </script>
+    <!-- Title -->
+    <h1 style="text-align:center;">Leather</h1>
 
-  <!-- About Content -->
-  <div class="about-container">
-    <div class="about-box">
-      <p style="line-height:1.5;">
-        My name is Pearson Schwartz
-        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/PEARSON.jpeg" alt="Pearson Schwartz">
-        For the past 5 years I’ve worked at a record store in Minneapolis while producing 
-        <a href="music.html">music</a>, designing analog <a href="synths.html">synthesizers</a>, 
-        and hand making <a href="leather.html">leather</a> goods in my spare time. 
-        In 2025, I sold what I owned and have been prioritizing travel and a nomadic 
-        <a href="life.html">lifestyle</a> in order to create more under my project: <strong style="color:#ff7b02;">iajuar</strong>
+  <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">  
+      <p>
+        The newest discipline in my rotation, I have been enjoying the process of producing physical objects as a change from musical intangibilities. I am self taught in this field, just as I am in music, because I believe the most satisfying growth happens in the absence of instruction.
+      </p>
+    </div>
+      <p style="text-align:center;">
+  Listed here are my various forays into the leather making world:
+</p>
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+
+      <h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Mail Carrier</h3>
+<p>
+  My favorite project so far- this uses Italian pebble grain leather of a 4oz variety. My goal for this project was to highlight the metal closures and contrasting details around the handle and side gussets. I particularly enjoyed the contrast of the smooth leather which I used for the handle and shoulder strap against the pebbled texture of the body along with the buckles and rivets. This one features the main internal cavity, two internal pockets, a laptop sleeve, and two pockets on each side of the exterior. This bag is fully lined with the same leather as the exterior making the bag functionally 8oz leather - much sturdier than a single layer but still supple.
+</p>
+
+<!-- Scrollable image gallery with clickable images -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3474.jpeg" alt="Mail Carrier Bag 1" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2332.jpeg" alt="Mail Carrier Bag 2" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(1)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2133.jpeg" alt="Mail Carrier Bag 3" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(2)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2748.jpeg" alt="Mail Carrier Bag 4" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(3)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2754.jpeg" alt="Mail Carrier Bag 5" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(4)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3474.jpeg" alt="Mail Carrier Bag 6" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(5)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3476.jpeg" alt="Mail Carrier Bag 7" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(6)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3480.jpeg" alt="Mail Carrier Bag 8" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(7)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3485.jpeg" alt="Mail Carrier Bag 9" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightbox(8)">
+</div>
+
+<!-- Lightbox modal -->
+<div id="lightbox" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
+  <span style="position:absolute; top:20px; right:40px; color:white; font-size:40px; cursor:pointer;" onclick="closeLightbox()">&times;</span>
+  <span style="position:absolute; top:50%; left:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlide(-1)">&#10094;</span>
+  <span style="position:absolute; top:50%; right:20px; color:white; font-size:40px; cursor:pointer;" onclick="changeSlide(1)">&#10095;</span>
+  <img id="lightbox-img" src="" alt="" style="max-width:90%; max-height:80%;">
+</div>
+
+<script>
+  const images = [
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3474.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2332.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2133.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2748.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2754.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3474.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3476.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3480.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3485.jpeg"}
+  ];
+  let currentIndex = 0;
+
+  function openLightbox(index) {
+    currentIndex = index;
+    document.getElementById("lightbox").style.display = "flex";
+    updateLightbox();
+  }
+  function closeLightbox() {
+    document.getElementById("lightbox").style.display = "none";
+  }
+  function changeSlide(n) {
+    currentIndex = (currentIndex + n + images.length) % images.length;
+    updateLightbox();
+  }
+  function updateLightbox() {
+    const img = document.getElementById("lightbox-img");
+    img.src = images[currentIndex].src;
+  }
+</script>
+      
+    </div>
+    
+    <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+      <h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Bucket Tote</h3>
+<p>
+  This was the first bag I completed and an unexpected delight. This shares much of its DNA with the Mail Carrier bag - type of leather and ethos - because at one point it was meant to be. An uncertainty with how the leather would behave when folded over itself and bonded together caused me to second guess using this type of Italian pebbled leather for the Mail Carrier, but to my joy my doubts were proven baseless. This bag is also lined with itself in the method I prefer to use in order to hide the raw edges at the top of the bag's opening, folding the same long piece of leather over itself hides these elegantly. There is an internal pocket and a key clip inside the bag for organization. Weeks after its completion, I added the swivel snap closure to add functionality and bring more visual interest to the large uninterrupted faces of the front and back.
+</p>
+
+<!-- Image strip -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2698.jpeg" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightboxBucket(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2785.jpeg" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightboxBucket(1)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1888.jpeg" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightboxBucket(2)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2789.jpeg" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightboxBucket(3)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2793.jpeg" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openLightboxBucket(4)">
+</div>
+
+<!-- Lightbox for Bucket Tote -->
+<div id="lightbox-bucket" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <span onclick="closeLightboxBucket()" style="position:absolute; top:20px; right:35px; color:white; font-size:40px; cursor:pointer;">&times;</span>
+  <img id="lightbox-bucket-img" src="" style="max-width:90%; max-height:80%; border-radius:12px;">
+  <a onclick="changeBucket(-1)" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</a>
+  <a onclick="changeBucket(1)" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</a>
+</div>
+
+<script>
+  const bucketImages = [
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2698.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2785.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1888.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2789.jpeg"},
+    {src: "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2793.jpeg"}
+  ];
+
+  let currentBucketIndex = 0;
+
+  function openLightboxBucket(index) {
+    currentBucketIndex = index;
+    document.getElementById("lightbox-bucket").style.display = "flex";
+    updateLightboxBucket();
+  }
+
+  function closeLightboxBucket() {
+    document.getElementById("lightbox-bucket").style.display = "none";
+  }
+
+  function changeBucket(n) {
+    currentBucketIndex = (currentBucketIndex + n + bucketImages.length) % bucketImages.length;
+    updateLightboxBucket();
+  }
+
+  function updateLightboxBucket() {
+    const img = document.getElementById("lightbox-bucket-img");
+    img.src = bucketImages[currentBucketIndex].src;
+  }
+</script>
+      
+    </div>
+    
+        <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+    
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Vertical Messenger</h3> 
+<p>
+The leather I tend to favor typically has a soft temper which allows it to to drape and move with the user in elegant ways. However - after making a couple bags of that character, I decided to attempt a more firm construction. While visiting Mexico City in March, I used an afternoon to seek out a tannery that I had been hearing positive things about. There I sourced the leather which I used for this project: a side of 9oz Buffalo. I paid as much to ship this cut home to myself as I did to purchase the leather total but have no regrets. The front design is clean to draw attention to the same swivel snap closure featured on my tote bags. The leather of the back document pocket and the side gusset all needed to be skived to reduce visual bulk. Notably on this bag I decided not to hide the edges or stitching to give a different character than my previous designs. 
+</p>
+
+<!-- Scrollable gallery (with lightbox integration) -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3041.jpeg" alt="Vertical Messenger 1" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3042.jpeg" alt="Vertical Messenger 2" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(1)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2849.jpeg" alt="Vertical Messenger 3" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(2)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2852.jpeg" alt="Vertical Messenger 4" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(3)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2547.jpeg" alt="Vertical Messenger 5" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(4)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3043.jpeg" alt="Vertical Messenger 6" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(5)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2855.jpeg" alt="Vertical Messenger 7" style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" onclick="openMessengerLightbox(6)">
+</div>
+
+<!-- Lightbox overlay (Vertical Messenger) -->
+<div id="messengerLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeMessengerLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="messengerLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows -->
+  <span onclick="prevMessengerImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextMessengerImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Vertical Messenger gallery images
+  const messengerImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3041.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3042.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2849.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2852.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2547.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3043.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2855.jpeg"
+  ];
+
+  let messengerIndex = 0;
+
+  function openMessengerLightbox(index) {
+    messengerIndex = index;
+    document.getElementById("messengerLightbox").style.display = "flex";
+    document.getElementById("messengerLightboxImg").src = messengerImages[messengerIndex];
+  }
+
+  function closeMessengerLightbox() {
+    document.getElementById("messengerLightbox").style.display = "none";
+  }
+
+  function nextMessengerImage() {
+    messengerIndex = (messengerIndex + 1) % messengerImages.length;
+    document.getElementById("messengerLightboxImg").src = messengerImages[messengerIndex];
+  }
+
+  function prevMessengerImage() {
+    messengerIndex = (messengerIndex - 1 + messengerImages.length) % messengerImages.length;
+    document.getElementById("messengerLightboxImg").src = messengerImages[messengerIndex];
+  }
+</script>
+      
+    </div>
+    
+        <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+    
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+       <!-- Laptop Sleeve -->
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Laptop Sleeve</h3>
+<p>
+  The first project that I formally completed - more of an excuse to use this rich cherry colored leather than a need for a laptop sleeve. One long piece of leather and a belt to keep the flap closed while the laptop is inside. Sewn in an inside out construction to hide the stitches.
+</p>
+
+<!-- Scrollable gallery -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1716.jpeg" 
+       alt="Laptop Sleeve 1" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openLaptopSleeveLightbox(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1699.jpeg" 
+       alt="Laptop Sleeve 2" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openLaptopSleeveLightbox(1)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1550.jpeg" 
+       alt="Laptop Sleeve 3" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openLaptopSleeveLightbox(2)">
+</div>
+
+<!-- Lightbox overlay just for Laptop Sleeve -->
+<div id="laptopSleeveLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeLaptopSleeveLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="laptopSleeveLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows -->
+  <span onclick="prevLaptopSleeveImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextLaptopSleeveImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Laptop Sleeve gallery images
+  const laptopSleeveImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1716.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1699.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1550.jpeg"
+  ];
+
+  let laptopSleeveIndex = 0;
+
+  function openLaptopSleeveLightbox(index) {
+    laptopSleeveIndex = index;
+    document.getElementById("laptopSleeveLightbox").style.display = "flex";
+    document.getElementById("laptopSleeveLightboxImg").src = laptopSleeveImages[laptopSleeveIndex];
+  }
+
+  function closeLaptopSleeveLightbox() {
+    document.getElementById("laptopSleeveLightbox").style.display = "none";
+  }
+
+  function nextLaptopSleeveImage() {
+    laptopSleeveIndex = (laptopSleeveIndex + 1) % laptopSleeveImages.length;
+    document.getElementById("laptopSleeveLightboxImg").src = laptopSleeveImages[laptopSleeveIndex];
+  }
+
+  function prevLaptopSleeveImage() {
+    laptopSleeveIndex = (laptopSleeveIndex - 1 + laptopSleeveImages.length) % laptopSleeveImages.length;
+    document.getElementById("laptopSleeveLightboxImg").src = laptopSleeveImages[laptopSleeveIndex];
+  }
+</script>
+
+    </div>
+    
+        <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+    
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+     <!-- Card Carrier -->
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Card Carrier</h3>
+<p>
+  After doing a couple bags, I had surplus of scraps - not large enough to make another bag but still plenty usable. I mimicked a common 5 card style card carrier design which features two on each face and a pocket in the middle for more cards or a small amount of cash. I first made these from scraps of the black Italian pebble grain leather but also later sourced white pebbled leather from which to make the same design.
+</p>
+
+<!-- Scrollable gallery -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1936.jpeg" 
+       alt="Card Carrier 1" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openCardCarrierLightbox(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2010.jpeg" 
+       alt="Card Carrier 2" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openCardCarrierLightbox(1)">
+</div>
+
+<!-- Lightbox overlay just for Card Carrier -->
+<div id="cardCarrierLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeCardCarrierLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="cardCarrierLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows -->
+  <span onclick="prevCardCarrierImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextCardCarrierImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Card Carrier gallery images
+  const cardCarrierImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1936.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2010.jpeg"
+  ];
+
+  let cardCarrierIndex = 0;
+
+  function openCardCarrierLightbox(index) {
+    cardCarrierIndex = index;
+    document.getElementById("cardCarrierLightbox").style.display = "flex";
+    document.getElementById("cardCarrierLightboxImg").src = cardCarrierImages[cardCarrierIndex];
+  }
+
+  function closeCardCarrierLightbox() {
+    document.getElementById("cardCarrierLightbox").style.display = "none";
+  }
+
+  function nextCardCarrierImage() {
+    cardCarrierIndex = (cardCarrierIndex + 1) % cardCarrierImages.length;
+    document.getElementById("cardCarrierLightboxImg").src = cardCarrierImages[cardCarrierIndex];
+  }
+
+  function prevCardCarrierImage() {
+    cardCarrierIndex = (cardCarrierIndex - 1 + cardCarrierImages.length) % cardCarrierImages.length;
+    document.getElementById("cardCarrierLightboxImg").src = cardCarrierImages[cardCarrierIndex];
+  }
+</script>
+      
+    </div>
+    
+        <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+    
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+
+     <!-- Wrap Wallet -->
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Wrap Wallet</h3>
+<p>
+  A new favorite- one single piece of leather wrapped around itself in a descending slope to give access to cards. My personal daily carry and the wallet I have made the most number of.
+</p>
+
+<!-- Scrollable gallery -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3797.jpeg" 
+       alt="Wrap Wallet 1" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openWrapWalletLightbox(0)">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2034.jpeg" 
+       alt="Wrap Wallet 2" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openWrapWalletLightbox(1)">
+</div>
+
+<!-- Lightbox overlay just for Wrap Wallet -->
+<div id="wrapWalletLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeWrapWalletLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="wrapWalletLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows -->
+  <span onclick="prevWrapWalletImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextWrapWalletImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Wrap Wallet gallery images
+  const wrapWalletImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_3797.jpeg",
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2034.jpeg"
+  ];
+
+  let wrapWalletIndex = 0;
+
+  function openWrapWalletLightbox(index) {
+    wrapWalletIndex = index;
+    document.getElementById("wrapWalletLightbox").style.display = "flex";
+    document.getElementById("wrapWalletLightboxImg").src = wrapWalletImages[wrapWalletIndex];
+  }
+
+  function closeWrapWalletLightbox() {
+    document.getElementById("wrapWalletLightbox").style.display = "none";
+  }
+
+  function nextWrapWalletImage() {
+    wrapWalletIndex = (wrapWalletIndex + 1) % wrapWalletImages.length;
+    document.getElementById("wrapWalletLightboxImg").src = wrapWalletImages[wrapWalletIndex];
+  }
+
+  function prevWrapWalletImage() {
+    wrapWalletIndex = (wrapWalletIndex - 1 + wrapWalletImages.length) % wrapWalletImages.length;
+    document.getElementById("wrapWalletLightboxImg").src = wrapWalletImages[wrapWalletIndex];
+  }
+</script>
+      
+    </div>
+    
+        <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+    
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+
+   <!-- Coin Carrier -->
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Coin Carrier</h3>
+<p>
+  Another design which features just a single piece of leather folded over itself with a snap closure at either end to hold things shut. A simple joy to make and a simple joy to gift.
+</p>
+
+<!-- Scrollable gallery -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1658.jpeg" 
+       alt="Coin Carrier 1" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openCoinCarrierLightbox(0)">
+</div>
+
+<!-- Lightbox overlay just for Coin Carrier -->
+<div id="coinCarrierLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeCoinCarrierLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="coinCarrierLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows (optional, but still included for consistency) -->
+  <span onclick="prevCoinCarrierImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextCoinCarrierImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Coin Carrier gallery images
+  const coinCarrierImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_1658.jpeg"
+  ];
+
+  let coinCarrierIndex = 0;
+
+  function openCoinCarrierLightbox(index) {
+    coinCarrierIndex = index;
+    document.getElementById("coinCarrierLightbox").style.display = "flex";
+    document.getElementById("coinCarrierLightboxImg").src = coinCarrierImages[coinCarrierIndex];
+  }
+
+  function closeCoinCarrierLightbox() {
+    document.getElementById("coinCarrierLightbox").style.display = "none";
+  }
+
+  function nextCoinCarrierImage() {
+    coinCarrierIndex = (coinCarrierIndex + 1) % coinCarrierImages.length;
+    document.getElementById("coinCarrierLightboxImg").src = coinCarrierImages[coinCarrierIndex];
+  }
+
+  function prevCoinCarrierImage() {
+    coinCarrierIndex = (coinCarrierIndex - 1 + coinCarrierImages.length) % coinCarrierImages.length;
+    document.getElementById("coinCarrierLightboxImg").src = coinCarrierImages[coinCarrierIndex];
+  }
+</script>
+
+    </div>
+    
+        <!-- Spacer to prevent overlap -->
+<div style="height:10px;"></div>
+    
+    <div style="background-color:#1a1a1a; padding:20px 25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.6);">
+
+    <!-- Belts -->
+<h3 style="color:#ff7b02; text-decoration:underline; text-align:left;">Belts</h3>
+<p>
+  Made from the same 9oz Buffalo leather as my vertical messenger, I've found this leather is best for straps and belts than the total body of bags.
+</p>
+
+<!-- Scrollable gallery -->
+<div style="overflow-x:auto; white-space:nowrap; margin:30px 0; padding-bottom:10px; text-align:center;">
+  <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2692.jpeg" 
+       alt="Belts 1" 
+       style="height:250px; display:inline-block; margin-right:10px; border-radius:12px; cursor:pointer;" 
+       onclick="openBeltsLightbox(0)">
+</div>
+
+<!-- Lightbox overlay just for Belts -->
+<div id="beltsLightbox" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;">
+  <!-- Close button -->
+  <span style="position:absolute; top:20px; right:30px; font-size:40px; color:white; cursor:pointer;"
+        onclick="closeBeltsLightbox()">&times;</span>
+  <!-- Image -->
+  <img id="beltsLightboxImg" src="" style="max-height:80%; max-width:80%; border-radius:12px;">
+  <!-- Arrows (optional for single image) -->
+  <span onclick="prevBeltsImage()" style="position:absolute; top:50%; left:20px; font-size:40px; color:white; cursor:pointer;">&#10094;</span>
+  <span onclick="nextBeltsImage()" style="position:absolute; top:50%; right:20px; font-size:40px; color:white; cursor:pointer;">&#10095;</span>
+</div>
+
+<script>
+  // Belts gallery images
+  const beltsImages = [
+    "https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/refs/heads/main/images/IMG_2692.jpeg"
+  ];
+
+  let beltsIndex = 0;
+
+  function openBeltsLightbox(index) {
+    beltsIndex = index;
+    document.getElementById("beltsLightbox").style.display = "flex";
+    document.getElementById("beltsLightboxImg").src = beltsImages[beltsIndex];
+  }
+
+  function closeBeltsLightbox() {
+    document.getElementById("beltsLightbox").style.display = "none";
+  }
+
+  function nextBeltsImage() {
+    beltsIndex = (beltsIndex + 1) % beltsImages.length;
+    document.getElementById("beltsLightboxImg").src = beltsImages[beltsIndex];
+  }
+
+  function prevBeltsImage() {
+    beltsIndex = (beltsIndex - 1 + beltsImages.length) % beltsImages.length;
+    document.getElementById("beltsLightboxImg").src = beltsImages[beltsIndex];
+  }
+</script>
+
+    </div>
+    <p>
+        When I began leather working, my initial intention was to make small goods like wallets and notebook covers in order to get experience with the medium with a longterm goal of learning how to make leather shoes by hand. However, along this path I realized that the leap between wallets and larger goods like briefcases and messenger bags was smaller than I previously thought and came to love producing bags after giving them a try. So far everything I’ve made has been gifted or is used personally by myself. I had to put leather working on hold while I travel nomadically, but still have a sizable amount of leather and my tools stored in Minneapolis waiting to be retrieved. Conveniently, practicing leather work by hand and foregoing the use of powered tools like sewing machines means that the tools of the trade are easily portable. Next year I plan on bringing my tools to Leon - Mexico’s leather tannery capital - and spending most of the year there, producing goods for commercial sale.
       </p>
 
-      <div class="pronunciation">
-        <h3 style="text-align:center; margin-bottom:0.5rem;"><strong>(“EE-ah-zhwar”) → /ˈiɑˌʒwɑr/</strong></h3>
-        <p style="margin:0.2rem 0;">* i  → “ee” as in see</p>
-        <p style="margin:0.2rem 0;">* a  → “ah” as in father</p>
-        <p style="margin:0.2rem 0;">* j  → “zh” sound as in measure</p>
-        <p style="margin:0.2rem 0;">* u  → “w” glide as in quick</p>
-        <p style="margin:0.2rem 0;">* ar → “ahr” as in far</p>
-      </div>
+      <p>
+        Leather is a unique and satisfying medium, able to be dressed to fit the elegant poise of the most luxurious spaces, while simultaneously existing as a utilitarian workhorse in demanding environments. I maintain a reverence for artisans of the medium who create leather boots and shoes by hand. The skills of a shoemaker are something I hope to learn sooner or later, however - footwear requires more tools than other projects, proving logistically challenging. I am always looking for recommendations regarding how to get a start in that space from anyone who has experience.
+      </p>
 
-      <div class="contact">
-        Contact me: 
-        <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02; text-decoration:underline;">iajuar.online@gmail.com</a>
-      </div>
-    </div>
   </div>
 
   <!-- Footer -->
