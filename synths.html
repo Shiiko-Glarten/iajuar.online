@@ -164,6 +164,47 @@
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
+        /* Footer */
+    footer {
+      margin-top: 0px;
+      padding: 10px 5px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      background-color: #111; /* Keep the gray/black page background */
+    }
+    footer p strong { color:#fff; font-weight:bold; }
+
+    .social-icons {
+      margin-top: 12px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .social-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: color 0.2s ease, transform 0.12s ease;
+      width: 32px;
+      height: 32px;
+    }
+
+    .social-icons a svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .social-icons a:hover { color: #ff7b02; transform: translateY(-1px); }
+    .social-icons a:active { transform: translateY(0); }
+
+    @media screen and (max-width: 768px) {
+      .social-icons { gap: 12px; }
+      .social-icons a { width: 24px; height: 24px; }
+    }
 
   </style>
 </head>
@@ -724,13 +765,18 @@
   </div>
 
 </div>
+    
+  </div>
+  
+  <!-- Spacer to prevent overlap -->
+<div style="height:30px;"></div>
 
   
  <!-- Auxiliary Designs Main Container -->
 <div style="background:#181818; padding:25px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.6); margin-bottom:40px; font-family:'JetBrains Mono', monospace;">
 
   <!-- Section Title -->
-  <p style="color:#ff7b02; text-align:center; margin:10px 0 20px 0; font-size:24px;">
+  <p style="color:#(0,0,0,0); text-align:center; margin:10px 0 20px 0; font-size:30px;">
     Auxiliary Designs
   </p>
 
@@ -825,6 +871,7 @@
     </div>
   </div> <!-- ✅ END Step Sequencer subcontainer -->
 
+  </div> 
   <!-- Circuit Bending Subcontainer -->
   <div style="background:#202020; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.5);">
     <p style="color:#ff7b02; text-align:center; margin:10px 0; font-size:24px;">Circuit Bending</p>
@@ -919,9 +966,40 @@ else img.addEventListener('load', createHotspots);
 </script>
 
   <!-- Footer -->
-  <footer style="text-align:center; margin:50px 0 20px 0; font-size:0.9rem; color:#888;">
-    <p>Rendered in Detail via <strong style="color:#fff;">++ iajuar.online ++</strong> © 2025</p>
-  </footer>
+<footer>
+  <p>
+    Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2025
+  </p>
+  <div class="social-icons">
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/iajuar.digital?igsh=bnFhY25kZXlxeWpv&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <circle cx="17" cy="7" r="1" fill="currentColor"/>
+      </svg>
+    </a>
+    
+     <!-- Bandcamp (nudged right) -->
+    <a href="https://iajuar.bandcamp.com" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp" style="margin-left:4px;">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <polygon points="6,4 22,4 16,20 0,20" stroke="currentColor" stroke-width="1.5" fill="none"/>
+      </svg>
+    </a>
+
+    <!-- YouTube -->
+    <a href="https://www.youtube.com/@iajuar.online" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <polygon points="10,8 16,12 10,16" fill="currentColor"/>
+      </svg>
+    </a>
+
+  </div>
+</footer>
+  
+  <div style="height:15px;"></div>
+
 
 </body>
 </html>
