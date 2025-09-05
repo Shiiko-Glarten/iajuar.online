@@ -110,7 +110,6 @@
     nav a.logo-link { display:inline-flex; align-items:center; }
     nav img.logo { height:36px; display:block; }
 
-    /* Desktop nav container */
     .desktop-nav {
       display:flex;
       gap:25px;
@@ -172,7 +171,24 @@
       #hamburger { display:flex; }
     }
 
-    .spacer { height:70px; }
+  
+
+    /* Globe Container */
+    #globeContainer {
+      width:100%;
+      height:600px;
+      position:relative;
+      overflow:hidden;
+      margin-top:20px;
+    }
+    #globeCaption {
+      text-align:center;
+      margin-top:10px;
+      font-family:'JetBrains Mono', monospace;
+      font-size:1rem;
+      color:#61dafb;
+      
+    }
   </style>
 </head>
 <body>
@@ -203,7 +219,20 @@
     </div>
   </nav>
 
-  <div class="spacer"></div>
+ <!-- Globe Container -->
+<div id="globeContainer" style="width:100%; height:600px; position:relative; overflow:hidden; ">
+  <div id="globeViz" style="width:100%; height:100%;"></div>
+
+  <!-- Overlay for Trackball Controls -->
+  <div id="globeOverlay" 
+       style="position:absolute; top:0; left:25%; width:50%; height:100%; z-index:10;">
+  </div>
+</div>
+
+<!-- Caption -->
+<div id="globeCaption">
+  Current Global Position: 16.0544, 108.2022
+</div>
 
   <!-- INTRO -->
   <div id="intro" class="wrap">
@@ -231,6 +260,7 @@
       <img id="kit" src="https://Shiiko-Glarten.github.io/iajuar.online/images/IMG_4435.jpeg" alt="kit layout" />
     </div>
   </div>
+
 
   <div id="description" class="wrap">
     <h2><u>BAGS</u></h2>
@@ -434,6 +464,138 @@ A convenient solution for keeping my clean and dirty clothes separate, I simply 
 until I just grab the whole bag and head off to a laundromat.</p>
 
   </div>
+  
+  
+  <!-- Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://esm.sh/three",
+      "three/": "https://esm.sh/three/"
+    }
+  }
+  </script>
+
+  <!-- Globe Script -->
+  <script type="module">
+    import ThreeGlobe from 'https://esm.sh/three-globe?external=three';
+    import * as THREE from 'https://esm.sh/three';
+    import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js?external=three';
+
+    const myLocation = { lat: 16.0544, lng: 108.2022 };
+
+    const N_PATHS = 10;
+    const MAX_POINTS_PER_LINE = 10000;
+    const MAX_STEP_DEG = 1;
+    const MAX_STEP_ALT = 0.015;
+    const gData = [...Array(N_PATHS).keys()].map(() => {
+      let lat = (Math.random() - 0.5) * 90;
+      let lng = (Math.random() - 0.5) * 360;
+      let alt = 0;
+      return [[lat, lng, alt], ...[...Array(Math.round(Math.random() * MAX_POINTS_PER_LINE)).keys()].map(() => {
+        lat += (Math.random() * 2 - 1) * MAX_STEP_DEG;
+        lng += (Math.random() * 2 - 1) * MAX_STEP_DEG;
+        alt += (Math.random() * 2 - 1) * MAX_STEP_ALT;
+        alt = Math.max(0, alt);
+        return [lat, lng, alt];
+      })];
+    });
+
+    const Globe = new ThreeGlobe({ animateIn: false })
+      .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-dark.jpg')
+      .bumpImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-topology.png')
+      .pathsData(gData)
+      .pathColor(() => '#ff7b02')
+      .pathDashLength(0.01)
+      .pathDashGap(0.004)
+      .pathDashAnimateTime(100000);
+
+    setTimeout(() => {
+      Globe
+        .pathPointAlt(pnt => pnt[2])
+        .pathTransitionDuration(4000);
+    }, 6000);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+    renderer.setSize(globeContainer.clientWidth, globeContainer.clientHeight);
+    document.getElementById('globeViz').appendChild(renderer.domElement);
+
+    const scene = new THREE.Scene();
+    scene.add(Globe);
+    scene.add(new THREE.AmbientLight(0xcccccc, Math.PI));
+    scene.add(new THREE.DirectionalLight(0xffffff, 0.6 * Math.PI));
+
+    const camera = new THREE.PerspectiveCamera();
+    camera.aspect = globeContainer.clientWidth / globeContainer.clientHeight;
+    camera.updateProjectionMatrix();
+    camera.position.z = 500;
+    const overlay = document.getElementById('globeOverlay');
+    const tbControls = new TrackballControls(camera, overlay);
+    tbControls.minDistance = 101;
+    tbControls.rotateSpeed = 5;
+    tbControls.zoomSpeed = 0.8;
+
+    const pulseGroup = new THREE.Group();
+    Globe.add(pulseGroup);
+
+    function latLngToVector3(lat, lng, radius = 100) {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lng + 90) * (Math.PI / 180);
+      return new THREE.Vector3(
+        -(radius * Math.sin(phi) * Math.cos(theta)),
+        radius * Math.cos(phi),
+        radius * Math.sin(phi) * Math.sin(theta)
+      );
+    }
+
+    const pulseOrigin = latLngToVector3(myLocation.lat, myLocation.lng, 100);
+
+    const dotMaterial = new THREE.MeshBasicMaterial({ color: '#61dafb' });
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(1.5, 16, 16), dotMaterial);
+    dot.position.copy(pulseOrigin.clone().normalize().multiplyScalar(101));
+    pulseGroup.add(dot);
+
+    const rings = [];
+    for (let i = 0; i < 3; i++) {
+      const ringMaterial = new THREE.MeshBasicMaterial({
+        color: '#61dafb',
+        transparent: true,
+        opacity: 0.6,
+        side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(new THREE.RingGeometry(1, 1.5, 64), ringMaterial);
+      ring.position.copy(pulseOrigin.clone().normalize().multiplyScalar(101));
+      ring.lookAt(new THREE.Vector3(0,0,0));
+      pulseGroup.add(ring);
+      rings.push(ring);
+    }
+
+    let pulseTime = 0;
+    function animatePulse() {
+      pulseTime += 0.02;
+      rings.forEach((ring, i) => {
+        const scale = (pulseTime + i * 0.6) % 3;
+        ring.scale.setScalar(scale * 6 + 1);
+        ring.material.opacity = 0.6 * (1 - scale / 3);
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      renderer.setSize(globeContainer.clientWidth, globeContainer.clientHeight);
+      camera.aspect = globeContainer.clientWidth / globeContainer.clientHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    (function animate() {
+      tbControls.update();
+      Globe.rotation.y += 0.015;
+      animatePulse();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    })();
+  </script>
+
 
  <script>
     // COORDS + LABELS
