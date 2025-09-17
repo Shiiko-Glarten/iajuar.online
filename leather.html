@@ -19,13 +19,85 @@
       background-color: #111;
       color: #fff;
     }
-    /* Hover + active link colors */
-    nav a:hover {
+
+    /* Navbar hover + active */
+    nav a:hover, nav a.active {
       color: #ff7b02 !important;
     }
-    nav a.active {
-      color: #ff7b02 !important;
+
+    /* Desktop navbar */
+    .desktop-nav {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      overflow-x: auto;
     }
+
+    /* Hamburger */
+    #hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 4px;
+      z-index: 1001;
+    }
+    #hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    #hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px,5px);
+    }
+    #hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+    #hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px,-5px);
+    }
+
+    /* Mobile menu */
+    #nav-links {
+      display: none;
+      flex-direction: column;
+      background: #000;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      padding: 15px 35px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+    #nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 10px 0;
+      transition: color 0.3s ease;
+    }
+    #nav-links a:hover {
+      color: #ff7b02;
+    }
+    #nav-links a.active {
+      color: #ff7b02;
+    }
+    #nav-links.open {
+      display: flex;
+    }
+
+    /* Mobile responsive */
+    @media screen and (max-width: 768px) {
+      .desktop-nav { display: none; }
+      #hamburger { display: flex; }
+    }
+
     /* Footer */
     footer {
       margin-top: 0px;
@@ -76,14 +148,43 @@
     <a href="index.html">
       <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/iajuar_transparentLOGOTYPEwhite.png" alt="iajuar logo" style="height:36px;">
     </a>
-    <div style="display:flex; gap:25px; flex-wrap:wrap; justify-content:flex-end; overflow-x:auto;">
+
+    <!-- Desktop Links -->
+    <div class="desktop-nav">
       <a href="about.html" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
       <a href="life.html" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
       <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
       <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
       <a href="leather.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
     </div>
+
+    <!-- Hamburger Icon -->
+    <div id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Mobile Links -->
+    <div id="nav-links">
+      <a href="about.html">About</a>
+      <a href="life.html">Life</a>
+      <a href="music.html">Music</a>
+      <a href="synths.html">Electronics</a>
+      <a href="leather.html" class="active">Leather</a>
+    </div>
   </nav>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    // Click toggles menu
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+  </script>
 
   <!-- Leather Content -->
   <div style="max-width:1100px; margin:100px auto 40px auto; padding:0 20px;">
