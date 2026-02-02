@@ -144,7 +144,7 @@
       text-align: center;
       font-size: 0.9rem;
       color: #aaa;
-      background-color: #111; /* Keep the gray/black page background */
+      background-color: #111;
     }
     footer p strong { color:#fff; font-weight:bold; }
 
@@ -192,10 +192,8 @@
     <!-- Desktop Links -->
     <div class="desktop-nav">
       <a href="about.html" class="active" style="color:#fff; text-decoration:none; font-weight:bold;">About</a>
-      <a href="life.html" style="color:#fff; text-decoration:none; font-weight:bold;">Life</a>
       <a href="music.html" style="color:#fff; text-decoration:none; font-weight:bold;">Music</a>
       <a href="synths.html" style="color:#fff; text-decoration:none; font-weight:bold;">Electronics</a>
-      <a href="leather.html" style="color:#fff; text-decoration:none; font-weight:bold;">Leather</a>
     </div>
 
     <!-- Hamburger Icon -->
@@ -208,10 +206,8 @@
     <!-- Mobile Links -->
     <div id="nav-links">
       <a href="about.html" class="active">About</a>
-      <a href="life.html">Life</a>
       <a href="music.html">Music</a>
       <a href="synths.html">Electronics</a>
-      <a href="leather.html">Leather</a>
     </div>
   </nav>
 
@@ -219,7 +215,6 @@
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
 
-    // Click toggles menu
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       navLinks.classList.toggle('open');
@@ -233,10 +228,9 @@
         My name is Pearson Schwartz
         <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/PEARSON.jpeg" alt="Pearson Schwartz">
         For the past 5 years I’ve worked at a record store in Minneapolis while producing 
-        <a href="music.html">music</a>, designing analog <a href="synths.html">synthesizers</a>, 
-        and hand making <a href="leather.html">leather</a> goods in my spare time. 
-        In 2025, I sold what I owned and have been prioritizing travel and a nomadic 
-        <a href="life.html">lifestyle</a> in order to create more under my project: <strong style="color:#ff7b02;">iajuar</strong>
+        <a href="music.html">music</a>, designing analog <a href="synths.html">synthesizers</a>, and handcrafting <a href="leather.html">leather</a> goods in my spare time.
+        Since 2025, I have been prioritizing <a href="life.html" class="active">living lighlty</a> and inexpensively
+        in order to create more under my project: <strong style="color:#ff7b02;">iajuar</strong>
       </p>
 
       <div class="pronunciation">
@@ -256,38 +250,34 @@
   </div>
 
   <!-- Footer -->
-<footer>
-  <p>
-    Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2025
-  </p>
-  <div class="social-icons">
-    <!-- Instagram -->
-    <a href="https://www.instagram.com/iajuar.online/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-        <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        <circle cx="17" cy="7" r="1" fill="currentColor"/>
-      </svg>
-    </a>
-    
-     <!-- Bandcamp (nudged right) -->
-    <a href="https://iajuar.bandcamp.com" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp" style="margin-left:4px;">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-        <polygon points="6,4 22,4 16,20 0,20" stroke="currentColor" stroke-width="1.5" fill="none"/>
-      </svg>
-    </a>
+  <footer>
+    <p>
+      Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2026
+    </p>
+    <div class="social-icons">
+      <a href="https://www.instagram.com/iajuar.online/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="17" cy="7" r="1" fill="currentColor"/>
+        </svg>
+      </a>
+      
+      <a href="https://iajuar.bandcamp.com" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp" style="margin-left:4px;">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <polygon points="6,4 22,4 16,20 0,20" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+      </a>
 
-    <!-- YouTube -->
-    <a href="https://www.youtube.com/@iajuar.online" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-        <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        <polygon points="10,8 16,12 10,16" fill="currentColor"/>
-      </svg>
-    </a>
+      <a href="https://www.youtube.com/@iajuar.online" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <polygon points="10,8 16,12 10,16" fill="currentColor"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
 
-  </div>
-</footer>
-  
   <div style="height:15px;"></div>
 
 </body>
