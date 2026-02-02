@@ -98,12 +98,13 @@
       #hamburger { display: flex; }
     }
 
-    /* About content */
+     /* About content */
     .about-container {
       max-width: 900px;
       margin: 100px auto 40px auto;
       padding: 0 20px;
     }
+
     .about-box {
       background-color: #1a1a1a;
       padding: 20px 25px;
@@ -111,6 +112,8 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.6);
       text-align: center;
     }
+
+    /* Image stays the same */
     .about-box img {
       max-width: 40%;
       height: auto;
@@ -119,12 +122,22 @@
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
+
+    /* NEW: narrower text column */
+    .about-text {
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
     .about-box a {
       color: #fff;
       text-decoration: underline;
-      cursor: pointer;
     }
-    .about-box a:hover { color: #ff7b02; }
+    .about-box a:hover {
+      color: #ff7b02;
+    }
+
 
     .pronunciation {
       margin-top: 0.4rem;
@@ -220,65 +233,45 @@
       navLinks.classList.toggle('open');
     });
   </script>
-
   <!-- About Content -->
   <div class="about-container">
     <div class="about-box">
-      <p style="line-height:1.5;">
-        My name is Pearson Schwartz
-        <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/PEARSON.jpeg" alt="Pearson Schwartz">
-        For the past 5 years I’ve worked at a record store in Minneapolis while producing 
-        <a href="music.html">music</a>, designing analog <a href="synths.html">synthesizers</a>, and handcrafting <a href="leather.html">leather</a> goods in my spare time.
-        Since 2025, I have been prioritizing <a href="life.html" class="active">living lighlty</a> and inexpensively
-        in order to create more under my project: <strong style="color:#ff7b02;">iajuar</strong>
-      </p>
+
+      <p class="about-name">My name is Pearson Schwartz</p>
+
+      <img src="https://raw.githubusercontent.com/Shiiko-Glarten/iajuar.online/main/images/PEARSON.jpeg" alt="Pearson Schwartz">
+
+      <div class="about-text">
+        <p>
+          For the past 5 years, I've worked at a record store in Minneapolis while producing 
+          <a href="music.html">music</a>, designing analog <a href="synths.html">synthesizers</a>, and handcrafting 
+          <a href="leather.html">leather</a> goods.</p>
+        <p>
+          Since 2025, I have been prioritizing <a href="life.html">living lightly</a> and inexpensively
+          in order to create more under my project: <strong style="color:#ff7b02;">iajuar</strong>.
+        </p>
+      </div>
 
       <div class="pronunciation">
-        <h3 style="text-align:center; margin-bottom:0.5rem;"><strong>(“EE-ah-zhwar”) → /ˈiɑˌʒwɑr/</strong></h3>
-        <p style="margin:0.2rem 0;">* i  → “ee” as in see</p>
-        <p style="margin:0.2rem 0;">* a  → “ah” as in father</p>
-        <p style="margin:0.2rem 0;">* j  → “zh” sound as in measure</p>
-        <p style="margin:0.2rem 0;">* u  → “w” glide as in quick</p>
-        <p style="margin:0.2rem 0;">* ar → “ahr” as in far</p>
+        <h3 style="text-align:center;">(“EE-ah-zhwar”) → /ˈiɑˌʒwɑr/</h3>
+        <p>* i → “ee” as in see</p>
+        <p>* a → “ah” as in father</p>
+        <p>* j → “zh” as in measure</p>
+        <p>* u → “w” glide as in quick</p>
+        <p>* ar → “ahr” as in far</p>
       </div>
 
       <div class="contact">
-        Contact me: 
-        <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02; text-decoration:underline;">iajuar.online@gmail.com</a>
+        Contact me:
+        <a href="mailto:iajuar.online@gmail.com" style="color:#ff7b02;">iajuar.online@gmail.com</a>
       </div>
+
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
-    <p>
-      Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2026
-    </p>
-    <div class="social-icons">
-      <a href="https://www.instagram.com/iajuar.online/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
-          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
-          <circle cx="17" cy="7" r="1" fill="currentColor"/>
-        </svg>
-      </a>
-      
-      <a href="https://iajuar.bandcamp.com" target="_blank" rel="noopener noreferrer" aria-label="Bandcamp" style="margin-left:4px;">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <polygon points="6,4 22,4 16,20 0,20" stroke="currentColor" stroke-width="1.5" fill="none"/>
-        </svg>
-      </a>
-
-      <a href="https://www.youtube.com/@iajuar.online" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <rect x="3" y="3" width="18" height="18" rx="4" ry="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
-          <polygon points="10,8 16,12 10,16" fill="currentColor"/>
-        </svg>
-      </a>
-    </div>
+    Rendered in Detail via <strong>++ iajuar.online ++</strong> © 2026
   </footer>
-
-  <div style="height:15px;"></div>
 
 </body>
 </html>
